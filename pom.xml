@@ -34,9 +34,9 @@
     </developers>
 
     <scm>
-        <connection>scm:git:git://github.com/HugoQuinn2/jadb.git</connection>
-        <developerConnection>scm:git:ssh://github.com:HugoQuinn2/jadb.git</developerConnection>
-        <url>http://github.com/HugoQuinn2/jadb/tree/master</url>
+        <connection>scm:git:git://github.com/HugoQuinn2/fxpopup.git</connection>
+        <developerConnection>scm:git:ssh://github.com:HugoQuinn2/fxpopup.git</developerConnection>
+        <url>http://github.com/HugoQuinn2/fxpopup/tree/master</url>
     </scm>
 
     <dependencies>
