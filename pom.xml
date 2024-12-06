@@ -9,7 +9,7 @@
     <version>0.1.0</version>
 
     <name>fxpopup</name>
-    <description>FxPopup is a java library </description>
+    <description>FxPopup It is a javafx library for displaying notifications in a very simple way.</description>
     <url>https://github.com/HugoQuinn2/fxpopup</url>
 
     <licenses>
