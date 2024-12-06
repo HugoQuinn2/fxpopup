@@ -1,0 +1,32 @@
+#messageBody {
+    -fx-background-color: #FFB4B4;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0.1, 0, 5);
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+}
+
+#alertPane {
+    -fx-background-color: #ED5151;
+    -fx-border-radius: 8px 0px 0px 8px;
+    -fx-background-radius: 8px 0px 0px 8px;
+}
+
+#messageBody .label{
+    -fx-text-fill: #920000;
+    -fx-wrap-text: true;
+}
+
+#messageTitle .label{
+    -fx-wrap-text: true;
+}
+
+#messageContext{
+    -fx-wrap-text: true;
+}
+
+#buttonCloseMessage {
+    -fx-background-color: transparent;
+    -fx-border-radius: 0px;
+    -fx-background-radius: 0px;
+    -fx-text-fill: #920000;
+}
