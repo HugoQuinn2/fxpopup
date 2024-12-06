@@ -1,6 +1,7 @@
 package io.github.hugoquinn2.fxpopup.controller;
 
 import io.github.hugoquinn2.fxpopup.config.FxPopupConfig;
+import io.github.hugoquinn2.fxpopup.constants.Theme;
 import io.github.hugoquinn2.fxpopup.model.Message;
 import io.github.hugoquinn2.fxpopup.utils.FxPopupUtil;
 import javafx.geometry.Pos;
@@ -11,16 +12,20 @@ import static io.github.hugoquinn2.fxpopup.utils.FxPopupUtil.*;
 public class FxPopup implements FxPopupInterface{
     private StackPane stackPane;
     private Pos pos;
+    private Theme theme;
 
-    public FxPopup(StackPane stackPane) {
-        this.stackPane = stackPane;
+    public FxPopup(StackPane root) {
+        this.stackPane = root;
         pos = FxPopupConfig.defaultPos;
+        theme = FxPopupConfig.defaultTheme;
     }
 
     @Override
     public void add(Message message) {
         int duration = message.getDuration();
 
+        if (message.getTheme() == null)
+            message.setTheme(theme);
         if (message.getContent() == null)
             message.setContent(getDefaultContent());
         if (message.getCss() == null)
@@ -49,5 +54,9 @@ public class FxPopup implements FxPopupInterface{
 
     public void setPos(Pos pos) {
         this.pos = pos;
+    }
+
+    public void setTheme(Theme theme) {
+        this.theme = theme;
     }
 }

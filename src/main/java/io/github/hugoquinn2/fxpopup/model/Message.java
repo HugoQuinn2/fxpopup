@@ -11,7 +11,7 @@ public class Message <T extends Event> {
     private String title;
     private String context;
     private MessageType messageType;
-    private Theme theme = Theme.LIGHT;
+    private Theme theme;
     private int duration;
     private Parent content;
     private EventHandler<T> actionEvent;

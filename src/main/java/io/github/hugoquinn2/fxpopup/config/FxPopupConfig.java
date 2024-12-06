@@ -1,5 +1,6 @@
 package io.github.hugoquinn2.fxpopup.config;
 
+import io.github.hugoquinn2.fxpopup.constants.Theme;
 import javafx.geometry.Pos;
 
 public class FxPopupConfig {
@@ -14,6 +15,7 @@ public class FxPopupConfig {
 
     public static final String pathBody = "/layout/popupSimple.fxml";
 
+    public static final Theme defaultTheme = Theme.LIGHT;
     public static final String pathDarkError = "/themes/dark/error.css";
     public static final String pathDarkInfo = "/themes/dark/info.css";
     public static final String pathDarkWarning = "/themes/dark/warning.css";
