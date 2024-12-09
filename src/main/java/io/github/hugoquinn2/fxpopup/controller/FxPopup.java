@@ -4,8 +4,10 @@ import io.github.hugoquinn2.fxpopup.config.FxPopupConfig;
 import io.github.hugoquinn2.fxpopup.constants.Theme;
 import io.github.hugoquinn2.fxpopup.model.Message;
 import io.github.hugoquinn2.fxpopup.utils.FxPopupUtil;
+import io.github.hugoquinn2.fxpopup.utils.MessageFormUtil;
 import javafx.geometry.Pos;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 
 import static io.github.hugoquinn2.fxpopup.utils.FxPopupUtil.*;
 
@@ -46,6 +48,13 @@ public class FxPopup implements FxPopupInterface{
     @Override
     public void remove(Message message) {
         FxPopupUtil.removeFxml(stackPane, message);
+    }
+
+    @Override
+    public void show(Object model) {
+        VBox form = MessageFormUtil.generateForm(model);
+        MessageFormUtil.injectFxm(stackPane, form, Pos.CENTER);
+
     }
 
     public Pos getPos() {
