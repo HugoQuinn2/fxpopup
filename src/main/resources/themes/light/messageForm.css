@@ -1,0 +1,8 @@
+#messageFormBody {
+    -fx-background-color: #FFFFFF;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0.1, 0, 5);
+}
+
+#messageFormBody .label {
+    -fx-text-fill: #212121;
+}

@@ -1,21 +1,27 @@
 package io.github.hugoquinn2.fxpopup.utils;
 
+import io.github.hugoquinn2.fxpopup.config.FxPopupConfig;
 import io.github.hugoquinn2.fxpopup.constants.FieldType;
+import io.github.hugoquinn2.fxpopup.constants.Theme;
 import io.github.hugoquinn2.fxpopup.controller.MessageForm;
+import io.github.hugoquinn2.fxpopup.model.Message;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
 public class MessageFormUtil {
-    public static boolean isValid(String value, FieldType type, String regex) {
-        if (value == null || value.isEmpty()) return false;
+    public static boolean isValid(String value, FieldType type, String regex, MessageForm annotation) {
+        if (annotation.required() && value == null) return false;
 
         return switch (type) {
             case EMAIL -> value.matches("^[\\w.%+-]+@[\\w.-]+\\.[a-zA-Z]{2,}$");
@@ -28,15 +34,22 @@ public class MessageFormUtil {
 
     public static void injectFxm(StackPane root, VBox form, Pos pos) {
         StackPane.setAlignment(form, pos);
+        root.getChildren().remove(form);
         root.getChildren().add(form);
     }
 
-    public static VBox generateForm(Object model) {
-        VBox form = new VBox(10); // Layout con espaciado entre elementos
+    private static void injectTheme(VBox form, Theme theme) {
+        form.getStylesheets().add(getDefaultStyle(theme));
+    }
+
+    public static VBox generateForm(Object model, Theme theme) {
+        VBox form = getDefaultContent();
         Class<?> clazz = model.getClass();
 
+        injectTheme(form, theme);
+
         Arrays.stream(clazz.getDeclaredFields())
-                .filter(field -> field.isAnnotationPresent(MessageForm.class)) // Solo campos anotados
+                .filter(field -> field.isAnnotationPresent(MessageForm.class))
                 .forEach(field -> createField(field, model, form));
 
         Button submitButton = new Button("Enviar");
@@ -44,6 +57,16 @@ public class MessageFormUtil {
         form.getChildren().add(submitButton);
 
         return form;
+    }
+
+    public static void setClose(StackPane root, VBox form) {
+        Button close = (Button) form.lookup("#buttonClose");
+        close.setOnAction(event -> root.getChildren().remove(form));
+
+        root.setOnMouseClicked(event -> {
+            if (!form.getBoundsInParent().contains(event.getX(), event.getY()))
+                root.getChildren().remove(form);
+        });
     }
 
     private static void createField(Field field, Object model, VBox form) {
@@ -55,6 +78,9 @@ public class MessageFormUtil {
         FieldType fieldType = annotation.type();
         String fieldName = field.getName();
         boolean required = annotation.required();
+
+        if (required)
+            labelText = labelText + "*";
 
         Label label = new Label(labelText);
         label.setId(String.format("%sLabel", fieldName));
@@ -111,7 +137,7 @@ public class MessageFormUtil {
         textField.focusedProperty().addListener((obs, wasFocused, isNowFocused) -> {
             if (!isNowFocused) { // Validar cuando pierde el foco
                 String value = textField.getText();
-                if (!isValid(value, type, regex)) {
+                if (!isValid(value, type, regex, annotation)) {
                     textField.setStyle("-fx-border-color: red;");
                     Tooltip tooltip = new Tooltip("Valor inválido para " + annotation.label());
                     Tooltip.install(textField, tooltip);
@@ -120,5 +146,26 @@ public class MessageFormUtil {
                 }
             }
         });
+    }
+
+    public static VBox getDefaultContent() {
+        try {
+            return new FXMLLoader(FxPopupUtil.class.getResource(FxPopupConfig.pathMessageForm)).load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    private static String getStylePath(Theme theme) {
+        return switch (theme){
+            case LIGHT -> FxPopupConfig.pathLightMessageForm;
+            case DARK -> FxPopupConfig.pathDarkMessageForm;
+        };
+    }
+
+    public static String getDefaultStyle(Theme theme) {
+        return Objects.requireNonNull(FxPopupUtil.class.getResource(Objects.requireNonNull(getStylePath(theme)))).toExternalForm();
     }
 }

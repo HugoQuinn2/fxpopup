@@ -52,9 +52,9 @@ public class FxPopup implements FxPopupInterface{
 
     @Override
     public void show(Object model) {
-        VBox form = MessageFormUtil.generateForm(model);
+        VBox form = MessageFormUtil.generateForm(model, theme);
         MessageFormUtil.injectFxm(stackPane, form, Pos.CENTER);
-
+        MessageFormUtil.setClose(stackPane, form);
     }
 
     public Pos getPos() {
