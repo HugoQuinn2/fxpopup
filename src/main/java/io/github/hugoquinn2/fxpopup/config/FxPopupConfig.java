@@ -12,6 +12,7 @@ public class FxPopupConfig {
     public static final String contextId = "#messageContext";
     public static final String messageManagerId = "messageManager";
     public static final String buttonDropId = "buttonCloseMessage";
+    public static final String messageFormId = "messageFormBody";
 
     public static final String pathBody = "/layout/popupSimple.fxml";
     public static final String pathMessageForm = "/layout/MessageForm.fxml";

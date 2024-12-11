@@ -2,19 +2,33 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox id="messageFormBody" fx:id="messageFormBody" maxHeight="-Infinity" maxWidth="450.0" minHeight="-Infinity" minWidth="-Infinity" prefWidth="450.0" spacing="5.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
+<VBox id="messageFormBody" fx:id="messageFormBody" maxHeight="-Infinity" maxWidth="450.0" minHeight="-Infinity" minWidth="-Infinity" prefWidth="450.0" spacing="10.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <HBox alignment="CENTER_RIGHT" prefHeight="0.0" prefWidth="521.0">
+      <HBox alignment="CENTER_LEFT" prefHeight="0.0" prefWidth="521.0">
          <children>
+            <Label id="titleForm" fx:id="titleForm" text="Form Title" wrapText="true">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Region HBox.hgrow="ALWAYS" />
             <Button id="buttonClose" fx:id="buttonClose" mnemonicParsing="false" prefHeight="0.0" prefWidth="0.0" text="x">
                <font>
                   <Font size="14.0" />
                </font>
             </Button>
+         </children>
+      </HBox>
+      <VBox id="fieldsContainer" fx:id="fieldsContainer" spacing="5.0" />
+      <HBox alignment="CENTER_RIGHT" prefHeight="0.0" prefWidth="430.0">
+         <children>
+            <Button id="successButton" fx:id="successButton" mnemonicParsing="false" text="Success" />
          </children>
       </HBox>
    </children>

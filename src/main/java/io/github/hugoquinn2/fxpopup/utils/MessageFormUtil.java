@@ -3,8 +3,7 @@ package io.github.hugoquinn2.fxpopup.utils;
 import io.github.hugoquinn2.fxpopup.config.FxPopupConfig;
 import io.github.hugoquinn2.fxpopup.constants.FieldType;
 import io.github.hugoquinn2.fxpopup.constants.Theme;
-import io.github.hugoquinn2.fxpopup.controller.MessageForm;
-import io.github.hugoquinn2.fxpopup.model.Message;
+import io.github.hugoquinn2.fxpopup.controller.MessageField;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -20,7 +19,21 @@ import java.util.Objects;
 import java.util.regex.Pattern;
 
 public class MessageFormUtil {
-    public static boolean isValid(String value, FieldType type, String regex, MessageForm annotation) {
+
+    public static void injectFxml(StackPane root, Parent form, Pos pos) {
+        StackPane.setAlignment(form, pos);
+        root.getChildren().remove(form);
+        root.getChildren().add(form);
+    }
+
+    public static void removeMessageForm(StackPane root) {
+        Node messageForm = root.lookup(String.format("#%s", FxPopupConfig.messageFormId));
+
+        if (messageForm != null)
+            root.getChildren().remove(messageForm);
+    }
+
+    public static boolean isValid(String value, FieldType type, String regex, MessageField annotation) {
         if (annotation.required() && value == null) return false;
 
         return switch (type) {
@@ -32,46 +45,52 @@ public class MessageFormUtil {
         };
     }
 
-    public static void injectFxm(StackPane root, VBox form, Pos pos) {
-        StackPane.setAlignment(form, pos);
-        root.getChildren().remove(form);
-        root.getChildren().add(form);
-    }
-
     private static void injectTheme(VBox form, Theme theme) {
         form.getStylesheets().add(getDefaultStyle(theme));
     }
 
-    public static VBox generateForm(Object model, Theme theme) {
+    public static Parent generateForm(Object model, Theme theme) {
         VBox form = getDefaultContent();
+
+        if (form == null)
+            return null;
+
+        VBox fieldsContainer = (VBox) form.lookup("#fieldsContainer");
+
         Class<?> clazz = model.getClass();
 
         injectTheme(form, theme);
 
         Arrays.stream(clazz.getDeclaredFields())
-                .filter(field -> field.isAnnotationPresent(MessageForm.class))
-                .forEach(field -> createField(field, model, form));
+                .filter(field -> field.isAnnotationPresent(MessageField.class))
+                .forEach(field -> createField(field, model, fieldsContainer));
 
-        Button submitButton = new Button("Enviar");
-        submitButton.setOnAction(e -> System.out.println("Modelo actualizado: " + model));
-        form.getChildren().add(submitButton);
+        form.getChildren().add(getSubmit(model));
 
         return form;
     }
 
-    public static void setClose(StackPane root, VBox form) {
+    public static void setClose(StackPane root, Parent form) {
         Button close = (Button) form.lookup("#buttonClose");
-        close.setOnAction(event -> root.getChildren().remove(form));
+        close.setOnAction(event -> removeMessageForm(root));
 
         root.setOnMouseClicked(event -> {
             if (!form.getBoundsInParent().contains(event.getX(), event.getY()))
-                root.getChildren().remove(form);
+                removeMessageForm(root);
         });
+    }
+
+    private static Button getSubmit(Object model) {
+        Button submitButton = new Button("Enviar");
+        submitButton.setId("submitButton");
+        submitButton.setOnAction(e -> System.out.println("Modelo actualizado: " + model));
+
+        return submitButton;
     }
 
     private static void createField(Field field, Object model, VBox form) {
         field.setAccessible(true);
-        MessageForm annotation = field.getAnnotation(MessageForm.class);
+        MessageField annotation = field.getAnnotation(MessageField.class);
 
         String labelText = annotation.label();
         String placeholder = annotation.placeholder();
@@ -130,7 +149,7 @@ public class MessageFormUtil {
         });
     }
 
-    private static void applyValidation(TextField textField, MessageForm annotation) {
+    private static void applyValidation(TextField textField, MessageField annotation) {
         FieldType type = annotation.type();
         String regex = annotation.regex();
 
