@@ -1,6 +1,7 @@
 package io.github.hugoquinn2.fxpopup.controller;
 
 import io.github.hugoquinn2.fxpopup.constants.FieldType;
+import io.github.hugoquinn2.fxpopup.constants.FxPopIcon;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -13,6 +14,7 @@ public @interface MessageField {
     String label();
     String placeholder();
     FieldType type() default FieldType.TEXT;
+    FxPopIcon icon() default FxPopIcon.NOTHING;
 
     boolean editable() default true;
     int maxValue() default 0;

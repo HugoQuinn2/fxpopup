@@ -8,6 +8,8 @@ public class FxPopupConfig {
     public static final int insetsMessageManager = 20;
     public static final Pos defaultPos = Pos.BOTTOM_CENTER;
 
+    public static final String iconPath = "/icons/%s.svg";
+
     public static final String titleId = "#messageTitle";
     public static final String contextId = "#messageContext";
     public static final String messageManagerId = "messageManager";

@@ -2,21 +2,31 @@ package io.github.hugoquinn2.fxpopup.utils;
 
 import io.github.hugoquinn2.fxpopup.config.FxPopupConfig;
 import io.github.hugoquinn2.fxpopup.constants.FieldType;
+import io.github.hugoquinn2.fxpopup.constants.FxPopIcon;
 import io.github.hugoquinn2.fxpopup.constants.Theme;
 import io.github.hugoquinn2.fxpopup.controller.MessageField;
+import io.github.hugoquinn2.fxpopup.service.SVGLoader;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.SVGPath;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.regex.Pattern;
+import java.util.spi.AbstractResourceBundleProvider;
 
 public class MessageFormUtil {
 
@@ -31,18 +41,6 @@ public class MessageFormUtil {
 
         if (messageForm != null)
             root.getChildren().remove(messageForm);
-    }
-
-    public static boolean isValid(String value, FieldType type, String regex, MessageField annotation) {
-        if (annotation.required() && value == null) return false;
-
-        return switch (type) {
-            case EMAIL -> value.matches("^[\\w.%+-]+@[\\w.-]+\\.[a-zA-Z]{2,}$");
-            case PHONE -> value.matches("^\\+?[0-9]{7,15}$");
-            case NUMBER -> value.matches("^[0-9]+$");
-            case CUSTOM -> Pattern.matches(regex, value);
-            default -> true;
-        };
     }
 
     private static void injectTheme(VBox form, Theme theme) {
@@ -65,7 +63,7 @@ public class MessageFormUtil {
                 .filter(field -> field.isAnnotationPresent(MessageField.class))
                 .forEach(field -> createField(field, model, fieldsContainer));
 
-        form.getChildren().add(getSubmit(model));
+        setSubmit(model, form);
 
         return form;
     }
@@ -74,18 +72,18 @@ public class MessageFormUtil {
         Button close = (Button) form.lookup("#buttonClose");
         close.setOnAction(event -> removeMessageForm(root));
 
+        close.setGraphic(SVGUtil.getIcon(FxPopIcon.CLOSE));
+        close.setText("");
+
         root.setOnMouseClicked(event -> {
             if (!form.getBoundsInParent().contains(event.getX(), event.getY()))
                 removeMessageForm(root);
         });
     }
 
-    private static Button getSubmit(Object model) {
-        Button submitButton = new Button("Enviar");
-        submitButton.setId("submitButton");
+    private static void setSubmit(Object model, Parent form) {
+        Button submitButton = (Button) form.lookup("#successButton");
         submitButton.setOnAction(e -> System.out.println("Modelo actualizado: " + model));
-
-        return submitButton;
     }
 
     private static void createField(Field field, Object model, VBox form) {
@@ -93,78 +91,29 @@ public class MessageFormUtil {
         MessageField annotation = field.getAnnotation(MessageField.class);
 
         String labelText = annotation.label();
-        String placeholder = annotation.placeholder();
-        FieldType fieldType = annotation.type();
         String fieldName = field.getName();
         boolean required = annotation.required();
 
-        if (required)
-            labelText = labelText + "*";
+        Text textRequired = new Text();
+        Text label = new Text(labelText);
 
-        Label label = new Label(labelText);
         label.setId(String.format("%sLabel", fieldName));
+        textRequired.getStyleClass().add("text-required");
 
-        Node textField = createFieldByType(fieldName, placeholder, fieldType);
+        if (required)
+            textRequired.setText("*");
 
-        // Validar el contenido del campo
-        applyValidation((TextField) textField, annotation);
-
-        // Aplicar que los campos siempre se guarden en el modelo
-        autoUpdateModel((TextField) textField, field, model);
-
-        form.getChildren().addAll(label, textField);
+        form.getChildren().addAll(new TextFlow(label, textRequired), createFieldByType(field, model));
     }
 
-    private static Node createFieldByType(String fieldName, String placeholder, FieldType type) {
-        Node text = null;
+    private static Parent createFieldByType(Field field, Object model) {
+        MessageField annotation = field.getAnnotation(MessageField.class);
 
-        if (type.equals(FieldType.PASSWORD)) {
-            PasswordField passwordField = new PasswordField();
-            passwordField.setPromptText(placeholder);
-
-            text = (Node) passwordField;
-        } else {
-            TextField textField = new TextField();
-            textField.setPromptText(placeholder);
-
-            text = (Node) textField;
-        }
-
-        text.setId(String.format("%sTextField", fieldName));
-
-        return text;
-    }
-
-    private static void autoUpdateModel(TextField textField, Field field, Object model) {
-        textField.textProperty().addListener((obs, oldVal, newVal) -> {
-            try {
-                if (field.getType() == int.class || field.getType() == Integer.class) {
-                    field.set(model, Integer.parseInt(newVal));
-                } else {
-                    field.set(model, newVal);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-    }
-
-    private static void applyValidation(TextField textField, MessageField annotation) {
-        FieldType type = annotation.type();
-        String regex = annotation.regex();
-
-        textField.focusedProperty().addListener((obs, wasFocused, isNowFocused) -> {
-            if (!isNowFocused) { // Validar cuando pierde el foco
-                String value = textField.getText();
-                if (!isValid(value, type, regex, annotation)) {
-                    textField.setStyle("-fx-border-color: red;");
-                    Tooltip tooltip = new Tooltip("Valor inválido para " + annotation.label());
-                    Tooltip.install(textField, tooltip);
-                } else {
-                    textField.setStyle(null);
-                }
-            }
-        });
+        return switch (annotation.type()) {
+            case TEXT -> FieldUtil.createTextField(field, model, annotation.icon());
+            case PASSWORD -> FieldUtil.createPasswordField(field, model, annotation.icon());
+            default -> new HBox();
+        };
     }
 
     public static VBox getDefaultContent() {

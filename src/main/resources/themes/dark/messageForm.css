@@ -1,8 +1,52 @@
 #messageFormBody {
-    -fx-background-color: #212121;
+    -fx-background-color: #242424;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0.1, 0, 5);
+    -fx-font-family: "Roboto";
+    -fx-family: "Roboto";
+    -fx-text-fill: #FFFFFF;
+    -fx-fill: #FFFFFF;
 }
 
-#messageFormBody .label {
+.label, .button, .text-field {
+    -fx-font-family: "Roboto";
+    -fx-family: "Roboto";
     -fx-text-fill: #FFFFFF;
+    -fx-fill: #FFFFFF;
+}
+
+#titleForm {
+    -fx-font-size: 18px;
+}
+
+#buttonClose {
+    -fx-background-color: transparent;
+    -fx-padding: 0px;
+    -fx-margin: 0px;
+}
+
+#buttonClose:hover {
+    -fx-background-color: #ededed;
+    -fx-border-radius: 100%;
+    -fx-background-radius: 100%;
+}
+
+#successButton {
+    -fx-background-color: #176DFF;
+    -fx-text-fill: #DAFCFF;
+    -fx-border-radius: 30px;
+    -fx-background-radius: 30px;
+}
+
+.field {
+    -fx-background-color: #555555;
+    -fx-border-radius: 30px;
+    -fx-background-radius: 30px;
+    -fx-pref-height: 33px;
+    -fx-min-height: 33px;
+    -fx-max-height: 33px;
+    -fx-padding: 3px 10px 3px 10px;
+}
+
+.text-required{
+    -fx-fill: red;
 }

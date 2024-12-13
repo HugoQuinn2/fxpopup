@@ -12,13 +12,9 @@
    <children>
       <HBox alignment="CENTER_LEFT" prefHeight="0.0" prefWidth="521.0">
          <children>
-            <Label id="titleForm" fx:id="titleForm" text="Form Title" wrapText="true">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
+            <Label id="titleForm" fx:id="titleForm" text="Form Title" wrapText="true" />
             <Region HBox.hgrow="ALWAYS" />
-            <Button id="buttonClose" fx:id="buttonClose" mnemonicParsing="false" prefHeight="0.0" prefWidth="0.0" text="x">
+            <Button id="buttonClose" fx:id="buttonClose" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0" text="x">
                <font>
                   <Font size="14.0" />
                </font>
@@ -28,7 +24,10 @@
       <VBox id="fieldsContainer" fx:id="fieldsContainer" spacing="5.0" />
       <HBox alignment="CENTER_RIGHT" prefHeight="0.0" prefWidth="430.0">
          <children>
-            <Button id="successButton" fx:id="successButton" mnemonicParsing="false" text="Success" />
+            <Button id="successButton" fx:id="successButton" minHeight="30.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="80.0" text="Success">
+               <font>
+                  <Font size="14.0" />
+               </font></Button>
          </children>
       </HBox>
    </children>
