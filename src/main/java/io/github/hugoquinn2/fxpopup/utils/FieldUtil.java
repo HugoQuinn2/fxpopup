@@ -105,6 +105,15 @@ public class FieldUtil {
             container.getStyleClass().add("field");
             container.setAlignment(Pos.CENTER);
 
+            textField.focusedProperty().addListener((obs, wasFocused, isNowFocused) -> {
+                if (!isNowFocused && annotation.required()) {
+                    if (textField.getText().isEmpty() || textField.getText().isBlank())
+                        container.getStyleClass().add("required");
+                    else
+                        container.getStyleClass().remove("required");
+                }
+            });
+
             return container;
         } catch (Exception e) {
             throw new RuntimeException(e);
