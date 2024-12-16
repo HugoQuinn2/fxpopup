@@ -27,17 +27,19 @@ import java.util.Objects;
 
 public class MessageFormUtil {
 
-    public static void injectFxml(StackPane root, Parent form, Pos pos) {
-        StackPane.setAlignment(form, pos);
-        root.getChildren().remove(form);
-        root.getChildren().add(form);
-    }
+    public static void injectFxml(Parent form, Pos pos) {
+        Parent root = MasterUtils.wrapInStackPane(MasterUtils.getRoot());
+        Parent formInRoot = (Parent) MasterUtils.findNodeById(root, FxPopupConfig.messageFormId);
 
-    public static void removeMessageForm(StackPane root) {
-        Node messageForm = root.lookup(String.format("#%s", FxPopupConfig.messageFormId));
-
-        if (messageForm != null)
-            root.getChildren().remove(messageForm);
+        if (formInRoot == null) {
+            if (root instanceof StackPane) {
+                StackPane.setAlignment(form, pos);
+                ((StackPane) root).getChildren().remove(form);
+                ((StackPane) root).getChildren().add(form);
+            }
+        } else {
+            MasterUtils.findAndDeleteById(FxPopupConfig.messageFormId);
+        }
     }
 
     public static void removeMessageForm() {

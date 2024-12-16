@@ -5,11 +5,13 @@ import io.github.hugoquinn2.fxpopup.constants.Theme;
 import io.github.hugoquinn2.fxpopup.exceptions.ExceptionAnnotation;
 import io.github.hugoquinn2.fxpopup.model.Message;
 import io.github.hugoquinn2.fxpopup.utils.FxPopupUtil;
+import io.github.hugoquinn2.fxpopup.utils.MasterUtils;
 import io.github.hugoquinn2.fxpopup.utils.MessageFormUtil;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
+import javafx.scene.text.Text;
 
 import static io.github.hugoquinn2.fxpopup.utils.FxPopupUtil.*;
 
@@ -59,26 +61,24 @@ public class FxPopup implements FxPopupInterface{
     }
 
     @Override
-    public void show(Object model) {
+    public void show(Object model) throws Exception {
         Class<?> clazz = model.getClass();
 
         if (!clazz.isAnnotationPresent(MessageForm.class))
-            throw new ExceptionAnnotation(String.format("Object <%s> required annotation @MessageForm", clazz.getName()));
+            throw new Exception(String.format("Object <%s> required annotation @MessageForm", clazz.getName()));
 
         Parent form = MessageFormUtil.generateForm(model, theme);
 
         if (form != null) {
-            Label titleForm = (Label) form.lookup("#titleForm");
-            titleForm.setText(clazz.getAnnotation(MessageForm.class).name());
-
-            MessageFormUtil.injectFxml(stackPane, form, Pos.CENTER);
+            MasterUtils.findAndEditText(form, "titleForm", clazz.getAnnotation(MessageForm.class).name());
+            MessageFormUtil.injectFxml(form, Pos.CENTER);
             MessageFormUtil.setClose(form);
         }
     }
 
     @Override
     public void removeMessageForm() {
-        MessageFormUtil.removeMessageForm(stackPane);
+        MessageFormUtil.removeMessageForm();
     }
 
     public Pos getPos() {
