@@ -13,6 +13,7 @@ import java.lang.annotation.Target;
 public @interface MessageField {
     String label();
     String placeholder();
+    String context() default "";
     FieldType type() default FieldType.TEXT;
     FxPopIcon icon() default FxPopIcon.NOTHING;
 

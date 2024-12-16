@@ -7,10 +7,13 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.SVGPath;
 
 public class SVGUtil {
-    public static SVGPath getIcon(FxPopIcon fxPopIcon) {
+    public static SVGPath getIcon(FxPopIcon fxPopIcon, double scale) {
         String svgPathContent = SVGLoader.loadSVGFromResources(String.format(FxPopupConfig.iconPath, fxPopIcon.literalIcon));
         SVGPath svg = new SVGPath();
         svg.setContent(svgPathContent);
+        svg.setScaleX(scale);
+        svg.setScaleY(scale);
+        svg.getStyleClass().add("icon");
 
         return svg;
     }

@@ -22,6 +22,12 @@ public class FxPopup implements FxPopupInterface{
         this.stackPane = root;
         pos = FxPopupConfig.defaultPos;
         theme = FxPopupConfig.defaultTheme;
+
+        System.setProperty("prism.lcdtext", "false");
+        System.setProperty("prism.text", "t2k");
+        System.setProperty("prism.lcdtext", "true");
+        System.setProperty("prism.order", "d3d,es2");
+
     }
 
     @Override

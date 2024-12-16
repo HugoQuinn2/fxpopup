@@ -10,7 +10,12 @@ public enum FxPopIcon {
     PADLOCK("padlock"),
     WIFI("wifi"),
     MODEM("modem"),
-    LAN_CABLE("lan-cable");
+    LAN_CABLE("lan-cable"),
+    LEFT("left"),
+    RIGHT("right"),
+    MAIL("mail"),
+    CHEVRON_DOWN("chevron-down"),
+    PHONE("phone");
 
     public String literalIcon;
 

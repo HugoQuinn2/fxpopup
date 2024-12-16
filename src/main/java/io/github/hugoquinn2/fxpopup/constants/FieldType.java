@@ -6,5 +6,8 @@ public enum FieldType {
     EMAIL,
     PHONE,
     NUMBER,
-    CUSTOM;
+    CUSTOM,
+    IP,
+    MAC,
+    AGE;
 }

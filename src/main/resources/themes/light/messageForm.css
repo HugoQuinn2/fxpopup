@@ -1,47 +1,64 @@
+.label, .text, .button, .text-field {
+    -fx-font-family: arial;
+}
+
 #messageFormBody {
-    -fx-background-color: #FFFFFF;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0.1, 0, 5);
-    -fx-font-family: "Roboto";
-    -fx-family: "Roboto";
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+
+    -fx-background-color: #FFFFFF; /* Fondo claro */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.15), 10, 0.1, 0, 5);
 }
 
 #titleForm {
-    -fx-font-size: 18px;
-}
-
-#messageFormBody .label {
-    -fx-text-fill: #212121;
+    -fx-font-size: 22px;
+    -fx-text-fill: #363636; /* Texto oscuro para mejor contraste en fondo claro */
 }
 
 #buttonClose {
     -fx-background-color: transparent;
     -fx-padding: 0px;
     -fx-margin: 0px;
-}
-
-#buttonClose:hover {
-    -fx-background-color: #ededed;
-    -fx-border-radius: 100%;
-    -fx-background-radius: 100%;
+    -fx-font-size: 8px;
+    -fx-text-fill: #363636; /* Texto oscuro para contraste */
 }
 
 #successButton {
-    -fx-background-color: #176DFF;
-    -fx-text-fill: #DAFCFF;
-    -fx-border-radius: 30px;
-    -fx-background-radius: 30px;
+    -fx-background-color: #4CAF50; /* Verde claro para éxito */
+    -fx-text-fill: #FFFFFF; /* Texto blanco para contraste */
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
 }
 
 .field {
-    -fx-background-color: #E9E9E9;
-    -fx-border-radius: 30px;
-    -fx-background-radius: 30px;
+    -fx-background-color: #F5F5F5; /* Fondo ligeramente gris para contraste suave */
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
     -fx-pref-height: 33px;
     -fx-min-height: 33px;
     -fx-max-height: 33px;
-    -fx-padding: 3px 10px 3px 10px;
+    -fx-padding: 3px 0px 3px 10px;
+    -fx-text-fill: #363636; /* Texto oscuro para mejor legibilidad */
 }
 
-.text-required{
-    -fx-fill: red;
+.text-required {
+    -fx-fill: #D32F2F; /* Rojo vibrante para resaltar */
+}
+
+.required {
+    -fx-border-color: #D32F2F; /* Rojo vibrante para bordes */
+}
+
+.context {
+    -fx-fill: #757575; /* Texto contextual gris medio */
+    -fx-font-size: 12px;
+}
+
+.label {
+    -fx-fill: #363636; /* Texto oscuro para etiquetas */
+    -fx-font-size: 14px;
+}
+
+.icon {
+    -fx-fill: #363636;
 }

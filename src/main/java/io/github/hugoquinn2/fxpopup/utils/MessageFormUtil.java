@@ -1,23 +1,17 @@
 package io.github.hugoquinn2.fxpopup.utils;
 
 import io.github.hugoquinn2.fxpopup.config.FxPopupConfig;
-import io.github.hugoquinn2.fxpopup.constants.FieldType;
 import io.github.hugoquinn2.fxpopup.constants.FxPopIcon;
 import io.github.hugoquinn2.fxpopup.constants.Theme;
 import io.github.hugoquinn2.fxpopup.controller.MessageField;
-import io.github.hugoquinn2.fxpopup.service.SVGLoader;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
-import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.SVGPath;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
@@ -25,8 +19,6 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.Objects;
-import java.util.regex.Pattern;
-import java.util.spi.AbstractResourceBundleProvider;
 
 public class MessageFormUtil {
 
@@ -72,13 +64,13 @@ public class MessageFormUtil {
         Button close = (Button) form.lookup("#buttonClose");
         close.setOnAction(event -> removeMessageForm(root));
 
-        close.setGraphic(SVGUtil.getIcon(FxPopIcon.CLOSE));
+        close.setGraphic(SVGUtil.getIcon(FxPopIcon.CLOSE, 0.8));
         close.setText("");
-
-        root.setOnMouseClicked(event -> {
-            if (!form.getBoundsInParent().contains(event.getX(), event.getY()))
-                removeMessageForm(root);
-        });
+//
+//        root.setOnMouseClicked(event -> {
+//            if (!form.getBoundsInParent().contains(event.getX(), event.getY()))
+//                removeMessageForm(root);
+//        });
     }
 
     private static void setSubmit(Object model, Parent form) {
@@ -96,22 +88,36 @@ public class MessageFormUtil {
 
         Text textRequired = new Text();
         Text label = new Text(labelText);
+        Text context = new Text(annotation.context());
 
         label.setId(String.format("%sLabel", fieldName));
+
         textRequired.getStyleClass().add("text-required");
+        context.getStyleClass().add("context");
+        label.getStyleClass().add("label");
 
         if (required)
             textRequired.setText("*");
 
-        form.getChildren().addAll(new TextFlow(label, textRequired), createFieldByType(field, model));
+        if (!Objects.equals(labelText, ""))
+            form.getChildren().addAll(new TextFlow(label, textRequired));
+
+        if (!Objects.equals(annotation.context(), ""))
+            form.getChildren().addAll(StyleUtil.setTransparent(new VBox(createFieldByType(field, model), context)));
+        else
+            form.getChildren().addAll(StyleUtil.setTransparent(new VBox(createFieldByType(field, model))));
     }
 
     private static Parent createFieldByType(Field field, Object model) {
         MessageField annotation = field.getAnnotation(MessageField.class);
 
         return switch (annotation.type()) {
-            case TEXT -> FieldUtil.createTextField(field, model, annotation.icon());
+            case TEXT, EMAIL -> FieldUtil.createTextField(field, model, annotation.icon());
             case PASSWORD -> FieldUtil.createPasswordField(field, model, annotation.icon());
+            case IP -> FieldUtil.createIPField(field, model, annotation.icon());
+            case MAC -> FieldUtil.createMACField(field, model, annotation.icon());
+            case NUMBER -> FieldUtil.createIntField(field, model, annotation.icon());
+            case PHONE -> FieldUtil.createPhoneField(field, model, annotation.icon());
             default -> new HBox();
         };
     }

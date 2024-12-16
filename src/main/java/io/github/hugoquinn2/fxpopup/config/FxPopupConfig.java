@@ -7,6 +7,7 @@ public class FxPopupConfig {
     public static final int maxWidth = 400;
     public static final int insetsMessageManager = 20;
     public static final Pos defaultPos = Pos.BOTTOM_CENTER;
+    public static final double iconScale = 1;
 
     public static final String iconPath = "/icons/%s.svg";
 

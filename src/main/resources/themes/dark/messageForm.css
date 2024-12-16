@@ -1,52 +1,64 @@
-#messageFormBody {
-    -fx-background-color: #242424;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0.1, 0, 5);
-    -fx-font-family: "Roboto";
-    -fx-family: "Roboto";
-    -fx-text-fill: #FFFFFF;
-    -fx-fill: #FFFFFF;
+.label, .text, .button, .text-field {
+    -fx-font-family: arial;
 }
 
-.label, .button, .text-field {
-    -fx-font-family: "Roboto";
-    -fx-family: "Roboto";
-    -fx-text-fill: #FFFFFF;
-    -fx-fill: #FFFFFF;
+#messageFormBody {
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+
+    -fx-background-color: #2F3032; /* Fondo oscuro */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.6), 10, 0.1, 0, 5);
 }
 
 #titleForm {
-    -fx-font-size: 18px;
+    -fx-font-size: 22px;
+    -fx-text-fill: #F3F9F5; /* Texto claro para contraste */
 }
 
 #buttonClose {
     -fx-background-color: transparent;
     -fx-padding: 0px;
     -fx-margin: 0px;
-}
-
-#buttonClose:hover {
-    -fx-background-color: #ededed;
-    -fx-border-radius: 100%;
-    -fx-background-radius: 100%;
+    -fx-font-size: 8px;
+    -fx-text-fill: #F3F9F5; /* Texto claro para contraste */
 }
 
 #successButton {
-    -fx-background-color: #176DFF;
-    -fx-text-fill: #DAFCFF;
-    -fx-border-radius: 30px;
-    -fx-background-radius: 30px;
+    -fx-background-color: #3A6F41; /* Verde oscuro para éxito */
+    -fx-text-fill: #F3F9F5; /* Texto claro */
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
 }
 
 .field {
-    -fx-background-color: #555555;
-    -fx-border-radius: 30px;
-    -fx-background-radius: 30px;
+    -fx-background-color: #404040; /* Fondo oscuro */
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
     -fx-pref-height: 33px;
     -fx-min-height: 33px;
     -fx-max-height: 33px;
-    -fx-padding: 3px 10px 3px 10px;
+    -fx-padding: 3px 0px 3px 10px;
+    -fx-text-fill: #F3F9F5; /* Texto claro para campos */
 }
 
-.text-required{
-    -fx-fill: red;
+.text-required {
+    -fx-fill: #FF6F6F; /* Rojo más brillante para resaltar */
+}
+
+.required {
+    -fx-border-color: #FF6F6F; /* Rojo más brillante para bordes */
+}
+
+.context {
+    -fx-fill: #A0A0A0; /* Texto contextual más claro */
+    -fx-font-size: 12px;
+}
+
+.label {
+    -fx-fill: #F3F9F5; /* Texto claro para etiquetas */
+    -fx-font-size: 14px;
+}
+
+.icon {
+    -fx-fill: #F3F9F5;
 }
