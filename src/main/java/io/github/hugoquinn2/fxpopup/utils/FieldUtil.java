@@ -93,7 +93,7 @@ public class FieldUtil {
                 textField.setManaged(!isTextVisible);
                 passField.setVisible(isTextVisible);
                 passField.setManaged(isTextVisible);
-                eyeButton.setGraphic(isTextVisible ? SVGUtil.getIcon(FxPopIcon.EYE,FxPopupConfig.iconScale) : SVGUtil.getIcon(FxPopIcon.EYE_CLOSE, FxPopupConfig.iconScale));
+                eyeButton.setGraphic(isTextVisible ? SVGUtil.getIcon(FxPopIcon.EYE, FxPopupConfig.iconScale) : SVGUtil.getIcon(FxPopIcon.EYE_CLOSE, FxPopupConfig.iconScale));
             });
 
             setAutoUpdateModel(textField, field, model);
@@ -101,6 +101,7 @@ public class FieldUtil {
 
             HBox.setHgrow(passField, Priority.ALWAYS);
             HBox.setHgrow(textField, Priority.ALWAYS);
+
             HBox container = new HBox(iconLabel, passField, textField, eyeButton);
             container.getStyleClass().add("field");
             container.setAlignment(Pos.CENTER);
@@ -108,6 +109,15 @@ public class FieldUtil {
             textField.focusedProperty().addListener((obs, wasFocused, isNowFocused) -> {
                 if (!isNowFocused && annotation.required()) {
                     if (textField.getText().isEmpty() || textField.getText().isBlank())
+                        container.getStyleClass().add("required");
+                    else
+                        container.getStyleClass().remove("required");
+                }
+            });
+
+            passField.focusedProperty().addListener((obs, wasFocused, isNowFocused) -> {
+                if (!isNowFocused && annotation.required()) {
+                    if (passField.getText().isEmpty() || passField.getText().isBlank())
                         container.getStyleClass().add("required");
                     else
                         container.getStyleClass().remove("required");

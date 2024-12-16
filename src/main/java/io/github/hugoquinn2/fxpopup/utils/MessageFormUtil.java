@@ -3,11 +3,14 @@ package io.github.hugoquinn2.fxpopup.utils;
 import io.github.hugoquinn2.fxpopup.config.FxPopupConfig;
 import io.github.hugoquinn2.fxpopup.constants.FxPopIcon;
 import io.github.hugoquinn2.fxpopup.constants.Theme;
+import io.github.hugoquinn2.fxpopup.controller.FxPopupForm;
 import io.github.hugoquinn2.fxpopup.controller.MessageField;
+import io.github.hugoquinn2.fxpopup.controller.MessageForm;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -17,7 +20,9 @@ import javafx.scene.text.TextFlow;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 public class MessageFormUtil {
@@ -33,6 +38,10 @@ public class MessageFormUtil {
 
         if (messageForm != null)
             root.getChildren().remove(messageForm);
+    }
+
+    public static void removeMessageForm() {
+        MasterUtils.findAndDeleteById(FxPopupConfig.messageFormId);
     }
 
     private static void injectTheme(VBox form, Theme theme) {
@@ -60,9 +69,9 @@ public class MessageFormUtil {
         return form;
     }
 
-    public static void setClose(StackPane root, Parent form) {
+    public static void setClose(Parent form) {
         Button close = (Button) form.lookup("#buttonClose");
-        close.setOnAction(event -> removeMessageForm(root));
+        close.setOnAction(event -> removeMessageForm());
 
         close.setGraphic(SVGUtil.getIcon(FxPopIcon.CLOSE, 0.8));
         close.setText("");
@@ -73,9 +82,47 @@ public class MessageFormUtil {
 //        });
     }
 
-    private static void setSubmit(Object model, Parent form) {
-        Button submitButton = (Button) form.lookup("#successButton");
-        submitButton.setOnAction(e -> System.out.println("Modelo actualizado: " + model));
+    private static <T> void setSubmit(Object model, Parent form) {
+        try {
+            Class<?> formClass = model.getClass();
+
+            MessageForm messageForm = formClass.getAnnotation(MessageForm.class);
+            Class<? extends FxPopupForm<?>> validatorClass = messageForm.validator();
+
+            FxPopupForm<Object> validador = (FxPopupForm<Object>) validatorClass.getDeclaredConstructor().newInstance();
+
+            Button submitButton = (Button) form.lookup("#successButton");
+            submitButton.setOnAction(e -> {
+                MasterUtils.requestFocusOnAllFields(form);
+                if (isAllRequired(form) && validador.validate(model)) {
+                    validador.isValidForm(model);
+                    removeMessageForm();
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static boolean isAllRequired(Parent form) {
+        return searchNodesWithClass(form, "required").isEmpty();
+    }
+
+    private static List<Node> searchNodesWithClass(Node node, String cssClass) {
+        List<Node> nodes = new ArrayList<>();
+        if (node.getStyleClass().contains(cssClass)) {
+            nodes.add(node);
+        }
+
+        if (node instanceof Parent) {
+            Parent parent = (Parent) node;
+
+            for (Node child : parent.getChildrenUnmodifiable()) {
+                nodes.addAll(searchNodesWithClass(child, cssClass));
+            }
+        }
+
+        return nodes;
     }
 
     private static void createField(Field field, Object model, VBox form) {

@@ -72,7 +72,7 @@ public class FxPopup implements FxPopupInterface{
             titleForm.setText(clazz.getAnnotation(MessageForm.class).name());
 
             MessageFormUtil.injectFxml(stackPane, form, Pos.CENTER);
-            MessageFormUtil.setClose(stackPane, form);
+            MessageFormUtil.setClose(form);
         }
     }
 
