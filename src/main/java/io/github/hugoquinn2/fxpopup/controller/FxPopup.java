@@ -16,12 +16,10 @@ import javafx.scene.text.Text;
 import static io.github.hugoquinn2.fxpopup.utils.FxPopupUtil.*;
 
 public class FxPopup implements FxPopupInterface{
-    private StackPane stackPane;
     private Pos pos;
     private Theme theme;
 
-    public FxPopup(StackPane root) {
-        this.stackPane = root;
+    public FxPopup() {
         pos = FxPopupConfig.defaultPos;
         theme = FxPopupConfig.defaultTheme;
 
@@ -48,16 +46,16 @@ public class FxPopup implements FxPopupInterface{
 
         injectTheme(message);
         loadContent(message);
-        FxPopupUtil.injectFxml(stackPane, message, pos);
+        FxPopupUtil.injectFxml(message, pos);
 
         if (duration != 0) {
-            FxPopupUtil.setFadeTransition(stackPane, message);
+            FxPopupUtil.setFadeTransition(message);
         }
     }
 
     @Override
     public void remove(Message message) {
-        FxPopupUtil.removeFxml(stackPane, message);
+        FxPopupUtil.removeFxml(message);
     }
 
     @Override

@@ -27,71 +27,79 @@ import java.util.Objects;
 
 public class FxPopupUtil {
 
-    public static void removeFxml(StackPane stackPane, Message message) {
-        FlowPane messageManager = getMessageManager(stackPane);
+    public static void removeFxml(Message message) {
+        FlowPane messageManager = getMessageManager();
         Node parent = message.getContent();
 
         messageManager.getChildren().remove(parent);
     }
 
-    public static void injectFxml(StackPane stackPane, Message message, Pos pos) {
-        Parent parent = message.getContent();
-        final FlowPane messageManager;
-        Button buttonClose = getButtonClose(parent);
+    public static void injectFxml(Message message, Pos pos) {
+        Parent root = MasterUtils.wrapInStackPane(MasterUtils.getRoot());
 
-        if (isMessageManager(stackPane)) {
-            messageManager = getMessageManager(stackPane);
-        } else {
-            messageManager = new FlowPane();
-            setMessageManagerConfig(stackPane, messageManager, pos);
+        if (root instanceof StackPane) {
+            Parent parent = message.getContent();
+            final FlowPane messageManager;
+            Button buttonClose = getButtonClose(parent);
+
+            if (isMessageManager()) {
+                messageManager = getMessageManager();
+            } else {
+                messageManager = new FlowPane();
+                setMessageManagerConfig(messageManager, pos);
+            }
+
+            setTranslateTransition(message);
+
+            if (message.getActionEvent() != null && message.getEventType() != null)
+                loadActionEvent(message);
+
+            messageManager.getChildren().add(parent);
+
+            if (buttonClose != null)
+                buttonClose.setOnAction(event -> {
+                    removeFxml(message);
+                });
         }
 
-        setTranslateTransition(message);
-
-        if (message.getActionEvent() != null && message.getEventType() != null)
-            loadActionEvent(message);
-
-        messageManager.getChildren().add(parent);
-
-        if (buttonClose != null)
-            buttonClose.setOnAction(event -> {
-                removeFxml(stackPane, message);
-            });
     }
 
-    private static boolean isMessageManager(StackPane stackPane) {
-        return stackPane.lookup(String.format("#%s", FxPopupConfig.messageManagerId)) != null;
+    private static boolean isMessageManager() {
+        return MasterUtils.findNodeById(MasterUtils.getRoot(), FxPopupConfig.messageManagerId) != null;
     }
 
     private static Button getButtonClose(Parent parent) {
         return (Button) parent.lookup(String.format("#%s", FxPopupConfig.buttonDropId));
     }
 
-    private static FlowPane getMessageManager(StackPane stackPane) {
-        return (FlowPane) stackPane.lookup(String.format("#%s", FxPopupConfig.messageManagerId));
+    private static FlowPane getMessageManager() {
+        return (FlowPane) MasterUtils.findNodeById(MasterUtils.getRoot(), FxPopupConfig.messageManagerId);
     }
 
-    private static void setMessageManagerConfig(StackPane stackPane,FlowPane messageManager, Pos pos) {
-        messageManager.setId(FxPopupConfig.messageManagerId);
-        messageManager.setVgap(FxPopupConfig.insetsMessageManager);
-        messageManager.setAlignment(pos);
-        messageManager.setStyle("-fx-background-color: transparent;");
+    private static void setMessageManagerConfig(FlowPane messageManager, Pos pos) {
+        Parent root = MasterUtils.getRoot();
+        if (root instanceof StackPane) {
+            messageManager.setId(FxPopupConfig.messageManagerId);
+            messageManager.setVgap(FxPopupConfig.insetsMessageManager);
+            messageManager.setAlignment(pos);
+            messageManager.setStyle("-fx-background-color: transparent;");
 
-        messageManager.setMaxWidth(FxPopupConfig.maxWidth);
-        messageManager.setMinWidth(FxPopupConfig.maxWidth);
+            messageManager.setMaxWidth(FxPopupConfig.maxWidth);
+            messageManager.setMinWidth(FxPopupConfig.maxWidth);
 
-        messageManager.maxHeightProperty().bind(stackPane.heightProperty());
-        messageManager.minHeightProperty().bind(stackPane.heightProperty());
-        messageManager.prefHeightProperty().bind(stackPane.heightProperty());
+            messageManager.maxHeightProperty().bind(((StackPane) root).heightProperty());
+            messageManager.minHeightProperty().bind(((StackPane) root).heightProperty());
+            messageManager.prefHeightProperty().bind(((StackPane) root).heightProperty());
 
-        messageManager.setPadding(new Insets(FxPopupConfig.insetsMessageManager));
-        StackPane.setAlignment(messageManager, Pos.TOP_RIGHT);
-        stackPane.getChildren().add(messageManager);
+            messageManager.setPadding(new Insets(FxPopupConfig.insetsMessageManager));
+            StackPane.setAlignment(messageManager, Pos.TOP_RIGHT);
+            ((StackPane) root).getChildren().add(messageManager);
 
 //        addHeightListener(stackPane, messageManager);
 
-        // Drop Message Manager if is empty
-        addChildListener(stackPane, messageManager);
+            // Drop Message Manager if is empty
+            addChildListener(((StackPane) root), messageManager);
+        }
     }
 
     public static void addChildListener(StackPane stackPane, FlowPane messageManager) {
@@ -201,7 +209,7 @@ public class FxPopupUtil {
         return null;
     }
 
-    public static void setFadeTransition(StackPane stackPane, Message message) {
+    public static void setFadeTransition(Message message) {
         Parent parent = message.getContent();
         int duration = message.getDuration();
 
@@ -214,8 +222,8 @@ public class FxPopupUtil {
         fadeOut.setToValue(0.0);
 
         fadeOut.setOnFinished(event -> {
-            if (isMessageManager(stackPane))
-                removeFxml(stackPane, message);
+            if (isMessageManager())
+                removeFxml(message);
         });
 
         pauseBeforeFade.setOnFinished(event -> fadeOut.play());
