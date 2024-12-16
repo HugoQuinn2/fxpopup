@@ -282,7 +282,7 @@ public class FieldUtil {
             if (data != null)
                 textField = new TextField(data.toString());
             else
-                textField = new TextField();
+                textField = new TextField("0");
 
             StyleUtil.setTransparent(textField);
             StyleUtil.setTransparent(less);
@@ -296,11 +296,13 @@ public class FieldUtil {
             plus.setGraphic(SVGUtil.getIcon(FxPopIcon.RIGHT, FxPopupConfig.iconScale));
 
             less.setOnAction(event -> {
-                textField.setText(String.valueOf(Double.parseDouble(textField.getText()) - 1.0));
+                double value = parseDoubleOrDefault(textField.getText(), 0);
+                textField.setText(String.valueOf(value - 1.0));
             });
 
             plus.setOnAction(event -> {
-                textField.setText(String.valueOf(Double.parseDouble(textField.getText()) + 1.0));
+                double value = parseDoubleOrDefault(textField.getText(), 0);
+                textField.setText(String.valueOf(value + 1.0));
             });
 
             setAutoUpdateModel(textField, field, model);
@@ -322,6 +324,12 @@ public class FieldUtil {
             });
 
             textField.setTextFormatter(textFormatter);
+
+            textField.textProperty().addListener((obs, oldValue, newValue) -> {
+                if (newValue == null || newValue.trim().isEmpty()) {
+                    textField.setText("0");
+                }
+            });
 
             textField.focusedProperty().addListener((obs, wasFocused, isNowFocused) -> {
                 if (!isNowFocused && annotation.required()) {
@@ -528,6 +536,14 @@ public class FieldUtil {
             case "BR": return "+55";  // Brasil
             case "CL": return "+56";  // Chile
             default: return "";
+        }
+    }
+
+    private static double parseDoubleOrDefault(String text, double defaultValue) {
+        try {
+            return Double.parseDouble(text);
+        } catch (NumberFormatException e) {
+            return defaultValue;
         }
     }
 }
