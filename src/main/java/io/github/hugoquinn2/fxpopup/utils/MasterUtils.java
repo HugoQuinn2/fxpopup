@@ -76,7 +76,7 @@ public class MasterUtils {
     }
 
     public static void findAndEditText(Parent parent, String id, String text){
-        if (findNodeById(parent, "titleForm") instanceof Label)
-            ((Label) findNodeById(parent, "titleForm")).setText(text);
+        if (findNodeById(parent, id) instanceof Label)
+            ((Label) findNodeById(parent, id)).setText(text);
     }
 }

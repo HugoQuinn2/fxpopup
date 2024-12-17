@@ -43,6 +43,7 @@
 
 .text-required {
     -fx-fill: #D32F2F; /* Rojo vibrante para resaltar */
+    -fx-text-fill: #D32F2F; /* Rojo vibrante para resaltar */
 }
 
 .required {

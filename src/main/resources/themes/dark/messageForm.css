@@ -43,6 +43,7 @@
 
 .text-required {
     -fx-fill: #FF6F6F; /* Rojo más brillante para resaltar */
+    -fx-text-fill: #FF6F6F; /* Rojo más brillante para resaltar */
 }
 
 .required {

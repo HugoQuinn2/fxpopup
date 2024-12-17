@@ -6,6 +6,7 @@ import io.github.hugoquinn2.fxpopup.constants.Theme;
 import io.github.hugoquinn2.fxpopup.controller.FxPopupForm;
 import io.github.hugoquinn2.fxpopup.controller.MessageField;
 import io.github.hugoquinn2.fxpopup.controller.MessageForm;
+import io.github.hugoquinn2.fxpopup.exceptions.ValidationException;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -96,9 +97,13 @@ public class MessageFormUtil {
             Button submitButton = (Button) form.lookup("#successButton");
             submitButton.setOnAction(e -> {
                 MasterUtils.requestFocusOnAllFields(form);
-                if (isAllRequired(form) && validador.validate(model)) {
-                    validador.isValidForm(model);
-                    removeMessageForm();
+                try {
+                    if (isAllRequired(form) && validador.validate(model)) {
+                        validador.isValidForm(model);
+                        removeMessageForm();
+                    }
+                } catch (Exception ex) {
+                    MasterUtils.findAndEditText(form, "messageError", ex.getMessage());
                 }
             });
         } catch (Exception e) {
