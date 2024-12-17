@@ -1,3 +1,14 @@
+@font-face {
+    font-family: 'Lora';
+    src: local('/fonts/Lora-VariableFont_wght.ttf');
+}
+
+@font-face {
+    font-family: 'Oswald';
+    src: local('/fonts/Oswald-VariableFont_wght.ttf');
+}
+
+
 .label, .text, .button, .text-field {
     -fx-font-family: arial;
 }
