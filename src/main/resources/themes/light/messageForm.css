@@ -1,16 +1,11 @@
-@font-face {
-    font-family: 'Lora';
-    src: local('/fonts/Lora-VariableFont_wght.ttf');
+.root, #buttonClose, .text-field, .check-box, .icon, .label {
+    -fx-font: 14px sans-serif;
+    -fx-text-fill: #363636;
+    -fx-fill: #363636;
 }
 
-@font-face {
-    font-family: 'Oswald';
-    src: local('/fonts/Oswald-VariableFont_wght.ttf');
-}
-
-
-.label, .text, .button, .text-field {
-    -fx-font-family: arial;
+.button {
+    -fx-font: 16px sans-serif;
 }
 
 #messageFormBody {
@@ -23,14 +18,12 @@
 
 #titleForm {
     -fx-font-size: 22px;
-    -fx-text-fill: #363636; /* Texto oscuro para mejor contraste en fondo claro */
 }
 
 #buttonClose {
     -fx-background-color: transparent;
     -fx-padding: 0px;
     -fx-margin: 0px;
-    -fx-font-size: 8px;
     -fx-text-fill: #363636; /* Texto oscuro para contraste */
 }
 
@@ -49,7 +42,6 @@
     -fx-min-height: 33px;
     -fx-max-height: 33px;
     -fx-padding: 3px 0px 3px 10px;
-    -fx-text-fill: #363636; /* Texto oscuro para mejor legibilidad */
 }
 
 .text-required {
@@ -64,13 +56,4 @@
 .context {
     -fx-fill: #757575; /* Texto contextual gris medio */
     -fx-font-size: 12px;
-}
-
-.label {
-    -fx-fill: #363636; /* Texto oscuro para etiquetas */
-    -fx-font-size: 14px;
-}
-
-.icon {
-    -fx-fill: #363636;
 }

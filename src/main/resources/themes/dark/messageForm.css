@@ -1,18 +1,24 @@
-.label, .text, .button, .text-field {
-    -fx-font-family: arial;
+.root, #buttonClose, .text-field, .check-box, .icon, .label {
+    -fx-font: 14px sans-serif;
+    -fx-text-fill: #F3F9F5; /* Texto claro */
+    -fx-fill: #F3F9F5;
+}
+
+.button {
+    -fx-font: 16px sans-serif;
+    -fx-text-fill: #F3F9F5; /* Texto claro para botones */
 }
 
 #messageFormBody {
     -fx-border-radius: 8px;
     -fx-background-radius: 8px;
-
     -fx-background-color: #2F3032; /* Fondo oscuro */
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.6), 10, 0.1, 0, 5);
 }
 
 #titleForm {
     -fx-font-size: 22px;
-    -fx-text-fill: #F3F9F5; /* Texto claro para contraste */
+    -fx-text-fill: #F3F9F5; /* Texto claro */
 }
 
 #buttonClose {
@@ -20,11 +26,11 @@
     -fx-padding: 0px;
     -fx-margin: 0px;
     -fx-font-size: 8px;
-    -fx-text-fill: #F3F9F5; /* Texto claro para contraste */
+    -fx-text-fill: #F3F9F5; /* Texto claro */
 }
 
 #successButton {
-    -fx-background-color: #3A6F41; /* Verde oscuro para éxito */
+    -fx-background-color: #3A6F41; /* Verde oscuro */
     -fx-text-fill: #F3F9F5; /* Texto claro */
     -fx-border-radius: 8px;
     -fx-background-radius: 8px;
@@ -38,16 +44,16 @@
     -fx-min-height: 33px;
     -fx-max-height: 33px;
     -fx-padding: 3px 0px 3px 10px;
-    -fx-text-fill: #F3F9F5; /* Texto claro para campos */
+    -fx-text-fill: #F3F9F5; /* Texto claro */
 }
 
 .text-required {
-    -fx-fill: #FF6F6F; /* Rojo más brillante para resaltar */
-    -fx-text-fill: #FF6F6F; /* Rojo más brillante para resaltar */
+    -fx-fill: #FF6F6F; /* Rojo brillante */
+    -fx-text-fill: #FF6F6F; /* Rojo brillante */
 }
 
 .required {
-    -fx-border-color: #FF6F6F; /* Rojo más brillante para bordes */
+    -fx-border-color: #FF6F6F; /* Bordes en rojo brillante */
 }
 
 .context {
@@ -56,10 +62,10 @@
 }
 
 .label {
-    -fx-fill: #F3F9F5; /* Texto claro para etiquetas */
+    -fx-fill: #F3F9F5; /* Texto claro */
     -fx-font-size: 14px;
 }
 
 .icon {
-    -fx-fill: #F3F9F5;
+    -fx-fill: #F3F9F5; /* Iconos claros */
 }
