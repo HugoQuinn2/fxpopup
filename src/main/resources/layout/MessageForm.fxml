@@ -21,12 +21,8 @@
             </Button>
          </children>
       </HBox>
-      <VBox id="fieldsContainer" fx:id="fieldsContainer" spacing="5.0" />
-      <VBox VBox.vgrow="ALWAYS">
-         <children>
-            <Label id="messageError" fx:id="messageError" styleClass="text-required" />
-         </children>
-      </VBox>
+      <VBox id="fieldsContainer" fx:id="fieldsContainer" spacing="5.0" VBox.vgrow="ALWAYS" />
+      <Label id="messageError" fx:id="messageError" styleClass="text-required" wrapText="true" VBox.vgrow="ALWAYS" />
       <HBox alignment="CENTER_RIGHT" prefHeight="0.0" prefWidth="430.0">
          <children>
             <Button id="successButton" fx:id="successButton" minHeight="30.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="130.0" text="Send">

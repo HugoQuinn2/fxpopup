@@ -4,5 +4,5 @@ import io.github.hugoquinn2.fxpopup.exceptions.ValidationException;
 
 public interface FxPopupForm<T> {
     boolean validate(T form) throws Exception;
-    void isValidForm(T form);
+    void isValidForm(T form) throws Exception;
 }
