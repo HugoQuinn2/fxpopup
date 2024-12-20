@@ -4,6 +4,8 @@ import io.github.hugoquinn2.fxpopup.constants.Theme;
 import javafx.geometry.Pos;
 
 public class FxPopupConfig {
+    public static final String NOMINATIM_URL = "https://nominatim.openstreetmap.org/search?format=json&q=";
+
     public static final int maxWidth = 400;
     public static final int insetsMessageManager = 20;
     public static final Pos defaultPos = Pos.BOTTOM_CENTER;

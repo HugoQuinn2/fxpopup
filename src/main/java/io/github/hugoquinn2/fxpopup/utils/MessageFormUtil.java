@@ -172,6 +172,8 @@ public class MessageFormUtil {
             case MAC -> FieldUtil.createMACField(field, model, annotation.icon());
             case NUMBER -> FieldUtil.createIntField(field, model, annotation.icon());
             case PHONE -> FieldUtil.createPhoneField(field, model, annotation.icon());
+            case COUNTRY -> FieldUtil.createCountryField(field, model, annotation.icon());
+            case ADDRESS -> FieldUtil.createAddressField(field, model, annotation.icon());
             default -> new HBox();
         };
     }

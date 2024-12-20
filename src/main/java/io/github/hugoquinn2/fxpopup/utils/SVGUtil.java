@@ -8,6 +8,9 @@ import javafx.scene.shape.SVGPath;
 
 public class SVGUtil {
     public static SVGPath getIcon(FxPopIcon fxPopIcon, double scale) {
+        if (fxPopIcon.equals(FxPopIcon.NOTHING))
+            return null;
+
         String svgPathContent = SVGLoader.loadSVGFromResources(String.format(FxPopupConfig.iconPath, fxPopIcon.literalIcon));
         SVGPath svg = new SVGPath();
         svg.setContent(svgPathContent);

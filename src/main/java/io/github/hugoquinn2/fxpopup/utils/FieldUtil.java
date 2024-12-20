@@ -1,9 +1,13 @@
 package io.github.hugoquinn2.fxpopup.utils;
 
+import io.github.hugoquinn2.fxpopup.config.FieldData;
 import io.github.hugoquinn2.fxpopup.config.FxPopupConfig;
 import io.github.hugoquinn2.fxpopup.constants.FieldType;
 import io.github.hugoquinn2.fxpopup.constants.FxPopIcon;
 import io.github.hugoquinn2.fxpopup.controller.MessageField;
+import io.github.hugoquinn2.fxpopup.service.OpenStreetMapService;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Orientation;
@@ -13,10 +17,13 @@ import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 
 import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 public class FieldUtil {
@@ -351,7 +358,16 @@ public class FieldUtil {
             MessageField annotation = field.getAnnotation(MessageField.class);
             Object data = field.get(model);
             Label iconLabel = new Label();
-            ComboBox<String> ladaList = createLadaList();
+
+            ComboBox<String> ladaList;
+            if (annotation.data().length == 0) {
+                ladaList = CustomsFxml.createCustomComboBox(FieldData.ladaList);
+                ladaList.getSelectionModel().select(FieldData.ladaList.getFirst());
+            }
+            else {
+                ladaList = CustomsFxml.createCustomComboBox(FXCollections.observableArrayList(annotation.data()));
+                ladaList.getSelectionModel().select(FXCollections.observableArrayList(annotation.data()).getFirst());
+            }
 
             iconLabel.setGraphic(SVGUtil.getIcon(icon, FxPopupConfig.iconScale));
 
@@ -418,6 +434,107 @@ public class FieldUtil {
             throw new RuntimeException(e);
         }
     }
+    public static Parent createCountryField(Field field, Object model, FxPopIcon icon) {
+        field.setAccessible(true);
+        try {
+            MessageField annotation = field.getAnnotation(MessageField.class);
+            ComboBox<String> countryBox;
+
+            if (annotation.data().length == 0)
+                countryBox = CustomsFxml.createCustomComboBox(FieldData.countryList);
+            else
+                countryBox = CustomsFxml.createCustomComboBox(FXCollections.observableArrayList(annotation.data()));
+
+            countryBox.setPromptText(annotation.placeholder());
+
+            Label iconLabel = new Label();
+
+            iconLabel.setGraphic(SVGUtil.getIcon(icon, FxPopupConfig.iconScale));
+
+            countryBox.setCursor(Cursor.HAND);
+
+            setAutoUpdateModel(countryBox, field, model);
+//            applyValidation(countryBox, annotation);
+
+            HBox.setHgrow(countryBox, Priority.ALWAYS);
+            countryBox.setMaxWidth(Double.MAX_VALUE);
+
+            HBox container = new HBox(iconLabel, countryBox);
+            container.getStyleClass().add("field");
+            container.setAlignment(Pos.CENTER);
+
+            return container;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public static Parent createAddressField(Field field ,Object model, FxPopIcon icon) {
+        field.setAccessible(true);
+        try {
+            MessageField annotation = field.getAnnotation(MessageField.class);
+            Object data = field.get(model);
+            Label iconLabel = new Label();
+            ListView<String> suggestionsList = new ListView<>();
+            suggestionsList.setVisible(false);
+
+            iconLabel.setGraphic(SVGUtil.getIcon(icon, FxPopupConfig.iconScale));
+
+            TextField textField;
+            if (data != null)
+                textField = new TextField(data.toString());
+            else
+                textField = new TextField();
+
+            StyleUtil.setTransparent(textField);
+            textField.setPromptText(annotation.placeholder());
+
+            setAutoUpdateModel(textField, field, model);
+            applyValidation(textField, annotation);
+
+            HBox.setHgrow(textField, Priority.ALWAYS);
+
+            HBox container = new HBox(iconLabel, textField, suggestionsList);
+            container.getStyleClass().add("field");
+            container.setAlignment(Pos.CENTER);
+
+            textField.focusedProperty().addListener((obs, wasFocused, isNowFocused) -> {
+                if (!isNowFocused && annotation.required()) {
+                    if (textField.getText().isEmpty() || textField.getText().isBlank())
+                        container.getStyleClass().add("required");
+                    else
+                        container.getStyleClass().remove("required");
+                }
+            });
+
+            textField.textProperty().addListener((observable, oldValue, newValue) -> {
+                if (newValue.length() > 2) {
+                    suggestionsList.setVisible(true);
+                    suggestionsList.getItems().clear();
+                    // Obtener sugerencias de OpenStreetMap
+                    String[] suggestions = OpenStreetMapService.fetchSuggestions(newValue);
+                    if (suggestions != null) {
+                        suggestionsList.getItems().addAll(suggestions);
+                    }
+                } else {
+                    suggestionsList.setVisible(false);
+                }
+            });
+
+            suggestionsList.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+                @Override
+                public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                    if (newValue != null) {
+                        textField.setText(newValue);
+                        suggestionsList.setVisible(false);
+                    }
+                }
+            });
+
+            return container;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     private static void setAutoUpdateModel(TextField textField, Field field, Object model) {
         textField.textProperty().addListener((obs, oldVal, newVal) -> {
@@ -432,6 +549,27 @@ public class FieldUtil {
                     field.set(model, Double.parseDouble(newVal));
             } catch (Exception e) {
                 e.printStackTrace();
+            }
+        });
+    }
+
+    private static void setAutoUpdateModel(ComboBox<?> comboBox, Field field, Object model) {
+        comboBox.valueProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal != null && !newVal.equals(oldVal)) {  // Asegúrate de que el valor sea distinto
+                try {
+                    // Actualizar el modelo solo si el valor realmente cambia
+                    if (field.getType() == int.class || field.getType() == Integer.class) {
+                        field.set(model, Integer.parseInt(newVal.toString()));
+                    } else if (field.getType() == String.class) {
+                        field.set(model, newVal.toString());
+                    } else if (field.getType() == long.class || field.getType() == Long.class) {
+                        field.set(model, Long.parseLong(newVal.toString()));
+                    } else if (field.getType() == double.class || field.getType() == Double.class) {
+                        field.set(model, Double.parseDouble(newVal.toString()));
+                    }
+                } catch (Exception e) {
+                    System.err.println("Error al actualizar el campo: " + e.getMessage());
+                }
             }
         });
     }
@@ -502,42 +640,31 @@ public class FieldUtil {
         }
         return true;
     }
-
-    private static ComboBox<String> createLadaList() {
-        ObservableList<String> countryCodes = FXCollections.observableArrayList("+52", "+54", "+55", "+57", "+58", "+59", "+60", "+61", "+62", "+63", "+64", "+65", "+66", "+67", "+68", "+69", "+70", "+71", "+72", "+73", "+74", "+75", "+76", "+77", "+78", "+79", "+81", "+82", "+84", "+86", "+90", "+91", "+93", "+94", "+95", "+96", "+97", "+98", "+99");
-        ComboBox<String> countryCodeListView = new ComboBox<>(countryCodes);
-        String countryPhone = getCountryPhoneCode(Locale.getDefault().getCountry());
-
-        StyleUtil.setTransparent(countryCodeListView);
-
-        if (countryPhone.isBlank() && countryPhone.isEmpty())
-            countryCodeListView.getSelectionModel().select(countryPhone);
-        else
-            countryCodeListView.getSelectionModel().select("+52");
-
-        countryCodeListView.skinProperty().addListener((obs, oldSkin, newSkin) -> {
-            StackPane arrowButton = (StackPane) countryCodeListView.lookup(".arrow-button");
-
-            if (arrowButton != null) {
-                arrowButton.getChildren().clear();
-                arrowButton.getChildren().add(SVGUtil.getIcon(FxPopIcon.CHEVRON_DOWN, 0.8));
-            }
-        });
-
-        return countryCodeListView;
-    }
-
-    private static String getCountryPhoneCode(String countryCode) {
-        switch (countryCode) {
-            case "US": return "+1";   // Estados Unidos
-            case "MX": return "+52";  // México
-            case "ES": return "+34";  // España
-            case "AR": return "+54";  // Argentina
-            case "BR": return "+55";  // Brasil
-            case "CL": return "+56";  // Chile
-            default: return "";
-        }
-    }
+//
+//    private static ComboBox<String> createLadaList() {
+//        ObservableList<String> countryCodes = FXCollections.observableArrayList("+52", "+54", "+55", "+57", "+58", "+59", "+60", "+61", "+62", "+63", "+64", "+65", "+66", "+67", "+68", "+69", "+70", "+71", "+72", "+73", "+74", "+75", "+76", "+77", "+78", "+79", "+81", "+82", "+84", "+86", "+90", "+91", "+93", "+94", "+95", "+96", "+97", "+98", "+99");
+//        ComboBox<String> countryCodeListView = CustomsFxml.createCustomComboBox();
+//        countryCodes.addAll(countryCodes);
+//        String countryPhone = getCountryPhoneCode(Locale.getDefault().getCountry());
+//
+//        StyleUtil.setTransparent(countryCodeListView);
+//
+//        if (countryPhone.isBlank() && countryPhone.isEmpty())
+//            countryCodeListView.getSelectionModel().select(countryPhone);
+//        else
+//            countryCodeListView.getSelectionModel().select("+52");
+//
+//        countryCodeListView.skinProperty().addListener((obs, oldSkin, newSkin) -> {
+//            StackPane arrowButton = (StackPane) countryCodeListView.lookup(".arrow-button");
+//
+//            if (arrowButton != null) {
+//                arrowButton.getChildren().clear();
+//                arrowButton.getChildren().add(SVGUtil.getIcon(FxPopIcon.CHEVRON_DOWN, 0.8));
+//            }
+//        });
+//
+//        return countryCodeListView;
+//    }
 
     private static double parseDoubleOrDefault(String text, double defaultValue) {
         try {

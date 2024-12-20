@@ -41,7 +41,7 @@
     -fx-pref-height: 33px;
     -fx-min-height: 33px;
     -fx-max-height: 33px;
-    -fx-padding: 3px 0px 3px 10px;
+    -fx-padding: 3px 3px 3px 10px;
 }
 
 .text-required {
@@ -56,4 +56,37 @@
 .context {
     -fx-fill: #757575; /* Texto contextual gris medio */
     -fx-font-size: 12px;
+}
+
+.combo-box .list-view, .combo-box .list-cell {
+    -fx-font: 12px sans-serif;
+    -fx-text-fill: #363636;
+    -fx-fill: #363636;
+    -fx-background-color: #F5F5F5;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+}
+
+.scroll-bar .track {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar .increment-button,
+.scroll-bar .decrement-button {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar .thumb {
+    -fx-background-color: #363636;
+    -fx-background-insets: 2;
+}
+
+.scroll-bar {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.scroll-bar .increment-arrow,
+.scroll-bar .decrement-arrow {
+    -fx-background-color: #363636;
 }
