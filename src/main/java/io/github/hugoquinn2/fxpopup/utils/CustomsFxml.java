@@ -1,13 +1,15 @@
 package io.github.hugoquinn2.fxpopup.utils;
 
+import io.github.hugoquinn2.fxpopup.config.StyleConfig;
 import io.github.hugoquinn2.fxpopup.constants.FxPopIcon;
+import io.github.hugoquinn2.fxpopup.service.SVGLoader;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.scene.Cursor;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextField;
+import javafx.scene.Node;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
@@ -36,7 +38,6 @@ public class CustomsFxml {
 
         return comboBox;
     }
-
     public static <T> ComboBox<T> createSearchableComboBox(ObservableList<T> items, Function<T, String> toStringFunction) {
         ComboBox<T> comboBox = new ComboBox<>();
         comboBox.setEditable(true);
@@ -85,5 +86,77 @@ public class CustomsFxml {
 
         return comboBox;
     }
+    public static CheckBox createCustomCheckBox() {
+        CheckBox checkBox = new CheckBox();
+        checkBox.setCursor(Cursor.HAND);
 
+        checkBox.skinProperty().addListener((obs, oldSkin, newSkin) -> {
+            StackPane box = (StackPane) checkBox.lookup(".box");
+            if (box != null) {
+                StyleUtil.setTransparent(box);
+                box.getChildren().clear();
+                box.getChildren().add(SVGUtil.getIcon(FxPopIcon.SQUARE, 1));
+                checkBox.selectedProperty().addListener((obs2, wasSelected, isSelected) -> {
+                    box.getChildren().clear();
+                    box.getChildren().add( isSelected ?
+                            SVGUtil.getIcon(FxPopIcon.CHECK_SQUARE, 1) :
+                            SVGUtil.getIcon(FxPopIcon.SQUARE, 1));
+                });
+                checkBox.indeterminateProperty().addListener((obs2, wasIndeterminate, isIndeterminate) -> {
+                    box.getChildren().clear();
+                    box.getChildren().add( isIndeterminate ?
+                            SVGUtil.getIcon(FxPopIcon.MINUS_SQUARE, 1) :
+                            SVGUtil.getIcon(FxPopIcon.SQUARE, 1));
+                });
+            }
+        });
+
+        checkBox.focusedProperty().addListener((obs, wasFocused, isFocused) -> {
+            StackPane box = (StackPane) checkBox.lookup(".box");
+            if (box != null) {
+                if (isFocused)
+                    box.getStyleClass().add(StyleConfig.FOCUSED);
+                else
+                    box.getStyleClass().remove(StyleConfig.FOCUSED);
+            }
+        });
+
+        checkBox.setOnMouseClicked(mouseEvent -> {
+            StackPane box = (StackPane) checkBox.lookup(".box");
+            if (box != null)
+                box.getStyleClass().remove(StyleConfig.FOCUSED);
+        });
+
+        return checkBox;
+    }
+//    public static <T> CheckBoxTreeItem<T> createCheckBoxTreeItem() {
+//        CheckBoxTreeItem<T> checkBoxTreeItem = new CheckBoxTreeItem<>();
+//
+//        checkBoxTreeItem.pro().addListener((obs, oldSkin, newSkin) -> {
+//            StackPane box = (StackPane) checkBox.lookup(".box");
+//            if (box != null) {
+//                StyleUtil.setTransparent(box);
+//                box.getChildren().clear();
+//                box.getChildren().add(SVGUtil.getIcon(FxPopIcon.SQUARE, 1));
+//                checkBox.selectedProperty().addListener((obs2, wasSelected, isSelected) -> {
+//                    box.getChildren().clear();
+//                    box.getChildren().add( isSelected ?
+//                            SVGUtil.getIcon(FxPopIcon.CHECK_SQUARE, 1) :
+//                            SVGUtil.getIcon(FxPopIcon.SQUARE, 1));
+//                });
+//                checkBox.indeterminateProperty().addListener((obs2, wasIndeterminate, isIndeterminate) -> {
+//                    box.getChildren().clear();
+//                    box.getChildren().add( isIndeterminate ?
+//                            SVGUtil.getIcon(FxPopIcon.MINUS_SQUARE, 1) :
+//                            SVGUtil.getIcon(FxPopIcon.SQUARE, 1));
+//                });
+//            }
+//        });
+//        return checkBox;
+//    }
+    public static CheckBox createCustomCheckBox(String s) {
+        CheckBox checkBox = createCustomCheckBox();
+        checkBox.setText(s);
+        return checkBox;
+    }
 }

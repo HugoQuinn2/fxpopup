@@ -2,6 +2,7 @@ package io.github.hugoquinn2.fxpopup.utils;
 
 import io.github.hugoquinn2.fxpopup.config.FieldData;
 import io.github.hugoquinn2.fxpopup.config.FxPopupConfig;
+import io.github.hugoquinn2.fxpopup.config.StyleConfig;
 import io.github.hugoquinn2.fxpopup.constants.FieldType;
 import io.github.hugoquinn2.fxpopup.constants.FxPopIcon;
 import io.github.hugoquinn2.fxpopup.controller.MessageField;
@@ -535,6 +536,53 @@ public class FieldUtil {
             throw new RuntimeException(e);
         }
     }
+    public static Parent createCheckBoxField(Field field ,Object model, FxPopIcon icon){
+        field.setAccessible(true);
+        MessageField annotation = field.getAnnotation(MessageField.class);
+        boolean required = annotation.required();
+        try {
+            Object data = field.get(model);
+            Label iconLabel = new Label();
+
+            iconLabel.setGraphic(SVGUtil.getIcon(icon, FxPopupConfig.iconScale));
+
+            CheckBox checkBox = CustomsFxml.createCustomCheckBox(annotation.placeholder());
+
+            if (data instanceof Boolean)
+                checkBox.setSelected((Boolean) data);
+
+            setAutoUpdateModel(checkBox, field, model);
+
+            HBox.setHgrow(checkBox, Priority.ALWAYS);
+
+            HBox container = new HBox(iconLabel, checkBox);
+            container.setAlignment(Pos.CENTER_LEFT);
+
+            checkBox.focusedProperty().addListener((obs, wasFocused, isFocused) -> {
+                StackPane box = (StackPane) checkBox.lookup(".box");
+                if (box != null) {
+                    if (!checkBox.isSelected() && required && wasFocused)
+                        box.getStyleClass().add(StyleConfig.REQUIRED);
+                    else
+                        box.getStyleClass().remove(StyleConfig.REQUIRED);
+                }
+            });
+
+            checkBox.selectedProperty().addListener((obs, wasSelected, isSelected) -> {
+                StackPane box = (StackPane) checkBox.lookup(".box");
+                if (box != null) {
+                    if (!isSelected && required)
+                        box.getStyleClass().add(StyleConfig.REQUIRED);
+                    else
+                        box.getStyleClass().remove(StyleConfig.REQUIRED);
+                }
+            });
+
+            return container;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     private static void setAutoUpdateModel(TextField textField, Field field, Object model) {
         textField.textProperty().addListener((obs, oldVal, newVal) -> {
@@ -547,6 +595,19 @@ public class FieldUtil {
                     field.set(model, Long.parseLong(newVal));
                 if (field.getType() == double.class || field.getType() == Double.class)
                     field.set(model, Double.parseDouble(newVal));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    private static void setAutoUpdateModel(CheckBox checkBox, Field field, Object model) {
+        checkBox.selectedProperty().addListener((obs, oldVal, newVal) -> {
+            try {
+                // Verificar que el campo sea de tipo boolean o Boolean
+                if (field.getType() == boolean.class || field.getType() == Boolean.class) {
+                    field.set(model, newVal);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }

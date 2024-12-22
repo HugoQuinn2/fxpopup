@@ -1,6 +1,7 @@
 package io.github.hugoquinn2.fxpopup.utils;
 
 import io.github.hugoquinn2.fxpopup.config.FxPopupConfig;
+import io.github.hugoquinn2.fxpopup.config.StyleConfig;
 import io.github.hugoquinn2.fxpopup.constants.FxPopIcon;
 import io.github.hugoquinn2.fxpopup.service.SVGLoader;
 import javafx.scene.paint.Color;
@@ -16,7 +17,7 @@ public class SVGUtil {
         svg.setContent(svgPathContent);
         svg.setScaleX(scale);
         svg.setScaleY(scale);
-        svg.getStyleClass().add("icon");
+        svg.getStyleClass().add(StyleConfig.ICON);
 
         return svg;
     }

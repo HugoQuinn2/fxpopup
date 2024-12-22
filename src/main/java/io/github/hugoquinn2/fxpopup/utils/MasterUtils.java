@@ -47,6 +47,26 @@ public class MasterUtils {
         return null;
     }
 
+    public static Node findNodeByClass(Node node, String targetClass) {
+        if (node == null) return null;
+
+        for (String clazz : node.getStyleClass()) {
+            if (targetClass.equals(clazz))
+                return node;
+        }
+
+        if (node instanceof Parent) {
+            Parent parent = (Parent) node;
+            for (Node child : parent.getChildrenUnmodifiable()) {
+                Node found = findNodeByClass(child, targetClass);
+                if (found != null)
+                    return found;
+            }
+        }
+
+        return null;
+    }
+
     public static void findAndDeleteById(String id){
         Parent root = getRoot();
         if (root != null) {

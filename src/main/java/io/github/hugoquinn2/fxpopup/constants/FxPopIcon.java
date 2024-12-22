@@ -15,7 +15,12 @@ public enum FxPopIcon {
     RIGHT("right"),
     MAIL("mail"),
     CHEVRON_DOWN("chevron-down"),
-    PHONE("phone");
+    PHONE("phone"),
+    CHECK("check"),
+    CHECK_SQUARE("check-square"),
+    CLOSE_SQUARE("close-square"),
+    SQUARE("square"),
+    MINUS_SQUARE("minus-square");
 
     public String literalIcon;
 
