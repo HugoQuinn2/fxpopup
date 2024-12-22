@@ -72,7 +72,13 @@ public class MasterUtils {
         if (parent instanceof StackPane)
             return parent;
 
-        return new StackPane(parent);
+        StackPane newRoot = new StackPane();
+        newRoot.getChildren().add(parent);
+
+        Scene scene = getPrimaryScene();
+        scene.setRoot(newRoot);
+
+        return newRoot;
     }
 
     public static void findAndEditText(Parent parent, String id, String text){

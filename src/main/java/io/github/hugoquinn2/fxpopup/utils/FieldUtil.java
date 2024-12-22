@@ -362,11 +362,11 @@ public class FieldUtil {
             ComboBox<String> ladaList;
             if (annotation.data().length == 0) {
                 ladaList = CustomsFxml.createCustomComboBox(FieldData.ladaList);
-                ladaList.getSelectionModel().select(FieldData.ladaList.getFirst());
+                ladaList.getSelectionModel().select(FieldData.ladaList.get(0));
             }
             else {
                 ladaList = CustomsFxml.createCustomComboBox(FXCollections.observableArrayList(annotation.data()));
-                ladaList.getSelectionModel().select(FXCollections.observableArrayList(annotation.data()).getFirst());
+                ladaList.getSelectionModel().select(FXCollections.observableArrayList(annotation.data()).get(0));
             }
 
             iconLabel.setGraphic(SVGUtil.getIcon(icon, FxPopupConfig.iconScale));

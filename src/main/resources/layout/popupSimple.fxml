@@ -9,7 +9,7 @@
 <?import javafx.scene.text.Font?>
 
 
-<VBox id="messageBody" fx:id="messageBody" prefWidth="360.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
+<VBox id="messageBody" fx:id="messageBody" prefWidth="360.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <HBox spacing="10.0" VBox.vgrow="ALWAYS">
          <children>

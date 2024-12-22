@@ -20,8 +20,8 @@
     </licenses>
 
     <properties>
-        <maven.compiler.source>21</maven.compiler.source>
-        <maven.compiler.target>21</maven.compiler.target>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <junit.version>5.10.2</junit.version>
     </properties>
@@ -56,8 +56,6 @@
             <artifactId>json</artifactId>
             <version>20231013</version>
         </dependency>
-
-
         <!-- Dependencia de JUnit (para pruebas) -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -129,5 +127,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>
