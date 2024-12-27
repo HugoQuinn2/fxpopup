@@ -10,21 +10,27 @@ import org.w3c.dom.Element;
 
 public class SVGLoader {
 
+    /**
+     * Loads an SVG file from the resources and converts it into a string containing the path data.
+     *
+     * @param resourcePath the path to the SVG file within the resources directory
+     * @return a string containing the SVG path data, or an empty string if no valid paths are found
+     */
     public static String loadSVGFromResources(String resourcePath) {
         StringBuilder svgContent = new StringBuilder();
 
         try (InputStream inputStream = SVGLoader.class.getResourceAsStream(resourcePath)) {
-            if (inputStream == null) {
-                System.err.println("Archivo no encontrado: " + resourcePath);
-                return "";
-            }
 
-            // Pars svg file
+            // If input stream is null, the SVG file was not found
+            if (inputStream == null)
+                throw new NullPointerException("SVG file not found: " + resourcePath);
+
+            // Parse the SVG file
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
             Document document = builder.parse(inputStream);
 
-            // Extract elements <path>
+            // Extract <path> elements and append their 'd' attributes to svgContent
             NodeList pathNodes = document.getElementsByTagName("path");
             for (int i = 0; i < pathNodes.getLength(); i++) {
                 Element pathElement = (Element) pathNodes.item(i);
@@ -34,7 +40,7 @@ public class SVGLoader {
                 }
             }
 
-            // Extract elements <circle>
+            // Extract <circle> elements and convert them to path data
             NodeList circleNodes = document.getElementsByTagName("circle");
             for (int i = 0; i < circleNodes.getLength(); i++) {
                 Element circleElement = (Element) circleNodes.item(i);
@@ -50,7 +56,7 @@ public class SVGLoader {
                 }
             }
 
-            // Extract elements <rect>
+            // Extract <rect> elements and convert them to path data
             NodeList rectNodes = document.getElementsByTagName("rect");
             for (int i = 0; i < rectNodes.getLength(); i++) {
                 Element rectElement = (Element) rectNodes.item(i);
@@ -65,7 +71,7 @@ public class SVGLoader {
                 }
             }
 
-            // Extract elements <ellipse>
+            // Extract <ellipse> elements and convert them to path data
             NodeList ellipseNodes = document.getElementsByTagName("ellipse");
             for (int i = 0; i < ellipseNodes.getLength(); i++) {
                 Element ellipseElement = (Element) ellipseNodes.item(i);
@@ -85,7 +91,7 @@ public class SVGLoader {
             e.printStackTrace();
         }
 
+        // Return the final SVG path data as a string
         return svgContent.toString().trim();
     }
 }
-
