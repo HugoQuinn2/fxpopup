@@ -124,7 +124,7 @@ public class FxPopup implements FxPopupInterface {
      * Removes the current message form from the screen.
      */
     @Override
-    public void removeMessageForm() {
+    public void remove() {
         MessageFormUtil.removeMessageForm();
     }
 
