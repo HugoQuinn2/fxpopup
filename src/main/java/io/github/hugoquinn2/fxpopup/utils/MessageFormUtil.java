@@ -242,27 +242,6 @@ public class MessageFormUtil {
         }
     }
 
-    private static boolean isAllRequired(Parent form) {
-        return searchNodesWithClass(form, "required").isEmpty();
-    }
-
-    private static List<Node> searchNodesWithClass(Node node, String cssClass) {
-        List<Node> nodes = new ArrayList<>();
-        if (node.getStyleClass().contains(cssClass)) {
-            nodes.add(node);
-        }
-
-        if (node instanceof Parent) {
-            Parent parent = (Parent) node;
-
-            for (Node child : parent.getChildrenUnmodifiable()) {
-                nodes.addAll(searchNodesWithClass(child, cssClass));
-            }
-        }
-
-        return nodes;
-    }
-
     // ** Utility **
 
     /**
@@ -277,5 +256,14 @@ public class MessageFormUtil {
         }
 
         return null;
+    }
+
+    /**
+     * Extract all nodes with class REQUIRED and validate if si empty.
+     * @param form Parent where nodes with class REQUIRED will be searched.
+     * @return True if no Node was found.
+     */
+    private static boolean isAllRequired(Parent form) {
+        return MasterUtils.searchNodesWithClass(form, StyleConfig.REQUIRED).isEmpty();
     }
 }
