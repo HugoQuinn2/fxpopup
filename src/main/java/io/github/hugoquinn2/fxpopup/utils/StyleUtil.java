@@ -13,4 +13,9 @@ public class StyleUtil {
         parent.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; ");
         return parent;
     }
+
+    public static void setTransparent(Parent... parents) {
+        for (Parent parent : parents)
+            setTransparent(parent);
+    }
 }

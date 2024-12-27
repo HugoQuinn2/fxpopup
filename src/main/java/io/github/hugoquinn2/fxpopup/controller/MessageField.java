@@ -16,13 +16,12 @@ import java.util.*;
 @Target(ElementType.FIELD)
 public @interface MessageField {
     String label() default "";
-    String placeholder();
+    String placeholder() default "";
     String context() default "";
     FieldType type() default FieldType.TEXT;
     FxPopIcon icon() default FxPopIcon.NOTHING;
     String[] data() default {};
 
-    boolean editable() default true;
+    boolean disable() default false;
     boolean required() default false;
-    String regex() default "";
 }

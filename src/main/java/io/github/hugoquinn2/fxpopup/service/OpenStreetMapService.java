@@ -1,40 +1,56 @@
 package io.github.hugoquinn2.fxpopup.service;
 
-import java.net.HttpURLConnection;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.List;
+
+import io.github.hugoquinn2.fxpopup.config.FxPopupConfig;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class OpenStreetMapService {
-    public static String[] fetchSuggestions(String query) {
-        String urlString = "https://nominatim.openstreetmap.org/search?q=" + query + "&format=json&addressdetails=1&limit=5";
+
+    /*
+    *   Search a list of address using Open Street Map
+    *
+    *   @param query, query search, example: "1600 Amphitheatre Parkway, Mountain View"
+    *   @param limit, max size for recommendations
+    *   @return recommendations, String list of recommendations reformated.
+    * */
+
+    public static List<String> searchAddress(String query, int limit) {
+        List<String> recommendations = new ArrayList<>();
         try {
+            String urlString = String.format("%s?q=%s&format=json&addressdetails=1&limit=%d", FxPopupConfig.NOMINATIM_URL,
+                    query.replace(" ", "%20"), limit);
             URL url = new URL(urlString);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
-            conn.setRequestProperty("User-Agent", "JavaFX-OpenStreetMap-App");
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            connection.setRequestProperty("User-Agent", "Java OpenStreetMap Client");
 
-            Scanner scanner = new Scanner(conn.getInputStream());
-            StringBuilder response = new StringBuilder();
-            while (scanner.hasNextLine()) {
-                response.append(scanner.nextLine());
+            int responseCode = connection.getResponseCode();
+            if (responseCode == 200) {
+                BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                StringBuilder response = new StringBuilder();
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    response.append(line);
+                }
+                reader.close();
+
+                JSONArray jsonArray = new JSONArray(response.toString());
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                    recommendations.add(jsonObject.optString("display_name"));
+                }
             }
-            scanner.close();
-
-            JSONArray jsonArray = new JSONArray(response.toString());
-            String[] suggestions = new String[jsonArray.length()];
-            for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject obj = jsonArray.getJSONObject(i);
-                String displayName = obj.getString("display_name");
-                suggestions[i] = displayName;
-            }
-            return suggestions;
-
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+        return recommendations;
     }
+
 }

@@ -43,7 +43,7 @@
     -fx-pref-height: 33px;
     -fx-min-height: 33px;
     -fx-max-height: 33px;
-    -fx-padding: 3px 0px 3px 10px;
+    -fx-padding: 3px 10px 3px 10px; /* Espaciado uniforme */
     -fx-text-fill: #F3F9F5; /* Texto claro */
 }
 
@@ -68,4 +68,41 @@
 
 .icon {
     -fx-fill: #F3F9F5; /* Iconos claros */
+}
+
+.combo-box .list-view, .combo-box .list-cell {
+    -fx-font: 12px sans-serif;
+    -fx-text-fill: #F3F9F5; /* Texto claro */
+    -fx-fill: #F3F9F5;
+    -fx-background-color: #404040; /* Fondo oscuro */
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+}
+
+.scroll-bar .track {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar .increment-button,
+.scroll-bar .decrement-button {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar .thumb {
+    -fx-background-color: #F3F9F5; /* Color claro */
+    -fx-background-insets: 2;
+}
+
+.scroll-bar {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.scroll-bar .increment-arrow,
+.scroll-bar .decrement-arrow {
+    -fx-background-color: #F3F9F5; /* Color claro */
+}
+
+.focused .icon {
+    -fx-fill: #3A6F41; /* Verde oscuro para íconos enfocados */
 }
