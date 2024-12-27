@@ -4,18 +4,20 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 
 public class StyleUtil {
-    public static Node setTransparent(Node node) {
+    /**
+     * Remove background and border color to Node.
+     * @param node Node to apply css code.
+     */
+    public static void setTransparent(Node node) {
         node.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; ");
-        return node;
     }
 
-    public static Parent setTransparent(Parent parent) {
-        parent.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; ");
-        return parent;
-    }
-
-    public static void setTransparent(Parent... parents) {
-        for (Parent parent : parents)
-            setTransparent(parent);
+    /**
+     * Remove background and border color to Node list.
+     * @param nodes Nodes list to apply css code.
+     */
+    public static void setTransparent(Node... nodes) {
+        for (Node node : nodes)
+            setTransparent(node);
     }
 }
