@@ -2,14 +2,10 @@ package io.github.hugoquinn2.fxpopup.utils;
 
 import io.github.hugoquinn2.fxpopup.model.Icon;
 import io.github.hugoquinn2.fxpopup.config.FieldData;
-import io.github.hugoquinn2.fxpopup.config.FxPopupConfig;
 import io.github.hugoquinn2.fxpopup.config.StyleConfig;
 import io.github.hugoquinn2.fxpopup.constants.FxPopIcon;
 import io.github.hugoquinn2.fxpopup.controller.MessageField;
-import io.github.hugoquinn2.fxpopup.service.OpenStreetMapService;
-import javafx.animation.PauseTransition;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Parent;
@@ -17,18 +13,24 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
-import javafx.util.Duration;
 
 import java.lang.reflect.Field;
-import java.util.List;
-import java.util.Objects;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.UnaryOperator;
 
+/**
+ * Utility class to handle creation and styling of various field types.
+ */
 public class FieldUtil {
-    public static Parent createTextField(Field field ,Object model, FxPopIcon icon) {
+
+    // Field Creation Methods
+
+    /**
+     * Creates a text field with an icon and links it to the model.
+     * @param field the field to bind the value from
+     * @param model the object containing the field
+     * @param icon the icon to display beside the text field
+     * @return a container with the icon and text field
+     */
+    public static Parent createTextField(Field field, Object model, FxPopIcon icon) {
         field.setAccessible(true);
         try {
             // Field information
@@ -56,6 +58,14 @@ public class FieldUtil {
         }
     }
 
+    /**
+     * Creates a text field with an icon and a custom match string for validation.
+     * @param field the field to bind the value from
+     * @param model the object containing the field
+     * @param icon the icon to display beside the text field
+     * @param match a custom match string for validation
+     * @return a container with the icon and text field
+     */
     public static Parent createTextField(Field field ,Object model, FxPopIcon icon, String match) {
         field.setAccessible(true);
         try {
@@ -83,6 +93,14 @@ public class FieldUtil {
             throw new RuntimeException(e);
         }
     }
+
+    /**
+     * Creates a password field with an icon and an eye button to toggle visibility.
+     * @param field the field to bind the value from
+     * @param model the object containing the field
+     * @param icon the icon to display beside the password field
+     * @return a container with the icon, password field, and eye button
+     */
     public static Parent createPasswordField(Field field, Object model, FxPopIcon icon) {
         field.setAccessible(true);
         try {
@@ -133,72 +151,14 @@ public class FieldUtil {
             throw new RuntimeException(e);
         }
     }
-    public static Parent createIPField(Field field, Object model, FxPopIcon icon){
-        field.setAccessible(true);
-        try {
-            // Field Information
-            MessageField annotation = field.getAnnotation(MessageField.class);
-            Object data = field.get(model);
 
-            // Field structure
-            Icon iconLabel = new Icon(icon);
-            TextField textField = new TextField(data != null ? data.toString() : null);
-            HBox container = new HBox(iconLabel, textField);
-
-            // Define style
-            StyleUtil.setTransparent(textField);
-            container.getStyleClass().add(StyleConfig.FIELD);
-            textField.setPromptText(annotation.placeholder());
-
-            HBox.setHgrow(textField, Priority.ALWAYS);
-            container.setAlignment(Pos.CENTER);
-
-            // Special feature to ip field.
-            TextFormatter<String> textFormatter = new TextFormatter<>(change -> {
-                String newText = change.getControlNewText();
-                if (newText.matches("\\d{0,3}(\\.\\d{0,3}){0,3}") && validateIpParts(newText)) {
-                    return change;
-                } else {
-                    return null;
-                }
-            });
-
-            textField.setTextFormatter(textFormatter);
-
-            setAutoUpdateModel(textField, field, model);
-            MasterUtils.setRequired(container, annotation.required(), FieldData.ipMatch, textField);
-            return container;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-    public static Parent createMACField(Field field, Object model, FxPopIcon icon){
-        field.setAccessible(true);
-        try {
-            // Field Information
-            MessageField annotation = field.getAnnotation(MessageField.class);
-            Object data = field.get(model);
-
-            // Field structure
-            Icon iconLabel = new Icon(icon);
-            TextField textField = new TextField(data != null ? data.toString() : null);
-            HBox container = new HBox(iconLabel, textField);
-
-            // Define style
-            StyleUtil.setTransparent(textField);
-            container.getStyleClass().add(StyleConfig.FIELD);
-            textField.setPromptText(annotation.placeholder());
-
-            HBox.setHgrow(textField, Priority.ALWAYS);
-            container.setAlignment(Pos.CENTER);
-
-
-            MasterUtils.setRequired(container, annotation.required(), FieldData.macMatch, textField);
-            return container;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
+    /**
+     * Creates a number field with an icon and buttons to increase or decrease the value.
+     * @param field the field to bind the value from
+     * @param model the object containing the field
+     * @param icon the icon to display beside the number field
+     * @return a container with the icon, text field, and buttons
+     */
     public static Parent createNumberField(Field field, Object model, FxPopIcon icon){
         field.setAccessible(true);
         try {
@@ -251,6 +211,14 @@ public class FieldUtil {
             throw new RuntimeException(e);
         }
     }
+
+    /**
+     * Creates a phone number field with an icon and a combo box for international dialing codes.
+     * @param field the field to bind the value from
+     * @param model the object containing the field
+     * @param icon the icon to display beside the field
+     * @return a container with the icon, combo box, and text field
+     */
     public static Parent createPhoneField(Field field ,Object model, FxPopIcon icon) {
         field.setAccessible(true);
         try {
@@ -299,6 +267,14 @@ public class FieldUtil {
             throw new RuntimeException(e);
         }
     }
+
+    /**
+     * Creates a country field with an icon and a combo box.
+     * @param field the field to bind the value from
+     * @param model the object containing the field
+     * @param icon the icon to display beside the field
+     * @return a container with the icon, and combo box
+     */
     public static Parent createCountryField(Field field, Object model, FxPopIcon icon) {
         field.setAccessible(true);
         try {
@@ -336,99 +312,21 @@ public class FieldUtil {
             throw new RuntimeException(e);
         }
     }
-    public static Parent createAddressField(Field field ,Object model, FxPopIcon icon) {
-        field.setAccessible(true);
-        PauseTransition pauseTransition = new PauseTransition(Duration.millis(500));
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        try {
-            // Field data.
-            MessageField annotation = field.getAnnotation(MessageField.class);
-            Object data = field.get(model);
 
-            // Field structure
-            ObservableList<String> filteredItems = FXCollections.observableArrayList();
-            Icon iconLabel = new Icon(icon);
-            ComboBox<String> addressBox = CustomsFxml.createCustomComboBox(filteredItems);
-            HBox container = new HBox(iconLabel, addressBox);
-            TextField addressField = addressBox.getEditor();
-            AtomicBoolean isAddressBoxChange = new AtomicBoolean(false);
-
-            if (data != null)
-                addressField.setText(data.toString());
-
-            // Style field
-            StyleUtil.setTransparent(addressBox);
-            StyleUtil.setTransparent(addressField);
-            addressBox.setMaxWidth(Double.MAX_VALUE);
-
-            addressBox.setEditable(true);
-            HBox.setHgrow(addressBox, Priority.ALWAYS);
-            addressBox.setPromptText(annotation.placeholder());
-
-            container.getStyleClass().add(StyleConfig.FIELD);
-            container.setAlignment(Pos.CENTER);
-
-            // Special feature to address field.
-            pauseTransition.setOnFinished(event -> {
-                String query = addressField.getText();
-                if (query != null) {
-                    List<String> results = OpenStreetMapService.searchAddress(query, 5);
-
-                    if (results.isEmpty())
-                        results.add(query);
-
-                    filteredItems.setAll(results);
-
-                    if (filteredItems.isEmpty()) {
-                        addressBox.hide();
-                    } else {
-                        addressBox.show();
-                    }
-                }
-                else
-                    filteredItems.clear();
-
-            });
-
-            addressField.textProperty().addListener((obs, oldValue, newValue) -> {
-                if (addressBox.isShowing())
-                    addressBox.hide();
-
-                if (!Objects.equals(newValue, oldValue) && !isAddressBoxChange.get())
-                    pauseTransition.play();
-            });
-
-            addressBox.valueProperty().addListener((observable, oldValue, newValue) -> {
-                if (newValue != null) {
-                    isAddressBoxChange.set(true);
-                    addressField.setText(newValue);
-                    isAddressBoxChange.set(false);
-                }
-            });
-
-            addressField.setOnKeyReleased(event -> {
-                String text = addressBox.getEditor().getText();
-                if (!text.isEmpty() && !filteredItems.contains(text)) {
-                    addressBox.hide();
-                }
-            });
-
-            setAutoUpdateModel(addressBox, field, model);
-            MasterUtils.setRequired(container, annotation.required(), addressBox);
-            return container;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
+    /**
+     * Creates a checkbox field.
+     * @param field the field to bind the value from
+     * @param model the object containing the field
+     * @param icon the icon to display beside the phone field
+     * @return a container with checkbox, and header
+     */
     public static Parent createCheckBoxField(Field field ,Object model, FxPopIcon icon){
         field.setAccessible(true);
-        MessageField annotation = field.getAnnotation(MessageField.class);
-        boolean required = annotation.required();
-        try {
-            Object data = field.get(model);
-            Label iconLabel = new Label();
 
-            iconLabel.setGraphic(SVGUtil.getIcon(icon, FxPopupConfig.iconScale));
+        try {
+            MessageField annotation = field.getAnnotation(MessageField.class);
+            Object data = field.get(model);
+            Icon iconLabel = new Icon(icon);
 
             CheckBox checkBox = CustomsFxml.createCustomCheckBox(annotation.placeholder());
 
@@ -445,7 +343,7 @@ public class FieldUtil {
             checkBox.focusedProperty().addListener((obs, wasFocused, isFocused) -> {
                 StackPane box = (StackPane) checkBox.lookup(".box");
                 if (box != null) {
-                    if (!checkBox.isSelected() && required && wasFocused)
+                    if (!checkBox.isSelected() && annotation.required() && wasFocused)
                         box.getStyleClass().add(StyleConfig.REQUIRED);
                     else
                         box.getStyleClass().remove(StyleConfig.REQUIRED);
@@ -455,7 +353,7 @@ public class FieldUtil {
             checkBox.selectedProperty().addListener((obs, wasSelected, isSelected) -> {
                 StackPane box = (StackPane) checkBox.lookup(".box");
                 if (box != null) {
-                    if (!isSelected && required)
+                    if (!isSelected && annotation.required())
                         box.getStyleClass().add(StyleConfig.REQUIRED);
                     else
                         box.getStyleClass().remove(StyleConfig.REQUIRED);
@@ -468,43 +366,14 @@ public class FieldUtil {
         }
     }
 
-    private static TextFormatter<String> createMACAddressFormatter() {
-        UnaryOperator<TextFormatter.Change> filter = change -> {
-            String text = change.getControlNewText().toUpperCase();
+    // Helper Methods
 
-            if (change.isDeleted()) {
-                return change;
-            }
-
-            if (text.length() > 17) {
-                return null;
-            }
-
-            if (!text.matches("[0-9A-F:]*")) {
-                return null;
-            }
-
-            StringBuilder formattedText = new StringBuilder();
-            int len = Math.min(text.length(), 12);
-            for (int i = 0; i < len; i++) {
-                formattedText.append(text.charAt(i));
-                if (i % 2 == 1 && i < 11) {
-                    formattedText.append(':');
-                }
-            }
-
-            if (text.length() > 12) {
-                formattedText.append(text.substring(12));
-            }
-
-            change.setText(formattedText.toString());
-            change.setRange(0, change.getControlText().length());
-            return change;
-        };
-
-        return new TextFormatter<>(filter);
-    }
-
+    /**
+     * Updates the model automatically whenever the text field is modified.
+     * @param textField the text field to monitor
+     * @param field the field to bind the text field to
+     * @param model the model to update
+     */
     private static void setAutoUpdateModel(TextField textField, Field field, Object model) {
         textField.textProperty().addListener((obs, oldVal, newVal) -> {
             try {
@@ -522,6 +391,12 @@ public class FieldUtil {
         });
     }
 
+    /**
+     * Updates the model automatically whenever the checkbox is modified.
+     * @param checkBox the text field to monitor
+     * @param field the field to bind the text field to
+     * @param model the model to update
+     */
     private static void setAutoUpdateModel(CheckBox checkBox, Field field, Object model) {
         checkBox.selectedProperty().addListener((obs, oldVal, newVal) -> {
             try {
@@ -535,6 +410,12 @@ public class FieldUtil {
         });
     }
 
+    /**
+     * Updates the model automatically whenever the text field is modified.
+     * @param comboBox the text field to monitor
+     * @param field the field to bind the text field to
+     * @param model the model to update
+     */
     private static void setAutoUpdateModel(ComboBox<?> comboBox, Field field, Object model) {
         comboBox.valueProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal != null && !newVal.equals(oldVal)) {  // Asegúrate de que el valor sea distinto
@@ -556,6 +437,13 @@ public class FieldUtil {
         });
     }
 
+    /**
+     * Updates the model automatically whenever the combo box and text field is modified.
+     * @param textField the text field to monitor
+     * @param comboBox the combo box to monitor
+     * @param field the field to bind the text field to
+     * @param model the model to update
+     */
     public static void setAutoUpdateModel(TextField textField, ComboBox<String> comboBox, Field field, Object model) {
         textField.textProperty().addListener((obs, oldVal, newVal) -> updateField(comboBox, textField, field, model));
 
@@ -576,26 +464,12 @@ public class FieldUtil {
         }
     }
 
-    private static boolean validateIpParts(String ip) {
-        String[] parts = ip.split("\\.");
-        for (String part : parts) {
-            if (!part.isEmpty() && Integer.parseInt(part) > 255) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private static boolean validateMacSegments(String mac) {
-        String[] parts = mac.split(":");
-        for (String part : parts) {
-            if (!part.isEmpty() && Integer.parseInt(part, 16) > 255) {
-                return false;
-            }
-        }
-        return true;
-    }
-
+    /**
+     * Parses a string to a double, defaulting to 0.0 if the string is empty or invalid.
+     * @param text the string to parse
+     * @param defaultValue the default value to return in case of error
+     * @return the parsed double value
+     */
     private static double parseDoubleOrDefault(String text, double defaultValue) {
         try {
             return Double.parseDouble(text);
