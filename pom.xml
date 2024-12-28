@@ -9,7 +9,12 @@
     <version>1.0.0</version>
 
     <name>fxpopup</name>
-    <description>FxPopup It is a javafx library for displaying notifications in a very simple way.</description>
+    <description>
+        FxPopup is a JavaFX library simplifies the creation of automatic forms
+        and popup messages with minimal effort. With just a single line of code, developers
+        can generate dynamic forms or display messages, while maintaining the flexibility to
+        use custom views for both functionalities.
+    </description>
     <url>https://github.com/HugoQuinn2/fxpopup</url>
 
     <licenses>
