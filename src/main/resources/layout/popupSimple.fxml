@@ -8,13 +8,12 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <VBox id="messageBody" fx:id="messageBody" prefWidth="360.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <HBox spacing="10.0" VBox.vgrow="ALWAYS">
          <children>
             <Pane id="alertPane" fx:id="alertPane" maxWidth="10.0" minWidth="10.0" prefWidth="10.0" HBox.hgrow="ALWAYS" />
-            <VBox HBox.hgrow="ALWAYS">
+            <VBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
                <HBox.margin>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </HBox.margin>

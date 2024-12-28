@@ -30,3 +30,7 @@
     -fx-background-radius: 0px;
     -fx-text-fill: #E9E9E9;
 }
+
+#buttonCloseMessage .icon {
+    -fx-fill: #E9E9E9;
+}

@@ -115,6 +115,31 @@ public class MasterUtils {
     }
 
     /**
+     * Deletes a node by its ID if it exists within the root node's hierarchy.
+     * @param root the root parent where the node will bew deleted.
+     * @param id the ID of the node to delete.
+     */
+    public static void findAndDeleteById(Parent root, String id) {
+        if (root != null) {
+            Node targetNode = findNodeById(root, id);
+
+            if (targetNode != null && targetNode.getParent() != null) {
+                Pane parent = (Pane) targetNode.getParent();
+                parent.getChildren().remove(targetNode);
+            }
+        }
+    }
+
+    /**
+     * Extract parent node and remove.
+     * @param node the node to remove.
+     */
+    public static void remove(Node node) {
+        Parent parent = node.getParent();
+        ((Pane) parent).getChildren().remove(node);
+    }
+
+    /**
      * Recursively requests focus on all child nodes of a given parent node.
      *
      * @param parent the parent node to process.

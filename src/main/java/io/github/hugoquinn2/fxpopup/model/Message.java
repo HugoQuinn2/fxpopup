@@ -2,21 +2,18 @@ package io.github.hugoquinn2.fxpopup.model;
 
 import io.github.hugoquinn2.fxpopup.constants.MessageType;
 import io.github.hugoquinn2.fxpopup.constants.Theme;
+import io.github.hugoquinn2.fxpopup.utils.MessagePopupUtil;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.event.EventType;
 import javafx.scene.Parent;
 
-public class Message <T extends Event> {
+public class Message {
     private String title;
     private String context;
     private MessageType messageType;
-    private Theme theme;
     private int duration;
-    private Parent content;
-    private EventHandler<T> actionEvent;
-    private EventType<T> eventType;
-    private String css;
+    private Parent parent = MessagePopupUtil.getDefaultParent();
 
     public Message() {
     }
@@ -42,20 +39,20 @@ public class Message <T extends Event> {
         this.title = title;
     }
 
-    public String getContext() {
-        return context;
-    }
-
-    public void setContext(String context) {
-        this.context = context;
-    }
-
     public MessageType getMessageType() {
         return messageType;
     }
 
     public void setMessageType(MessageType messageType) {
         this.messageType = messageType;
+    }
+
+    public String getContext() {
+        return context;
+    }
+
+    public void setContext(String context) {
+        this.context = context;
     }
 
     public int getDuration() {
@@ -66,51 +63,13 @@ public class Message <T extends Event> {
         this.duration = duration;
     }
 
-    public Theme getTheme() {
-        return theme;
+    public Parent getParent() {
+        return parent;
     }
 
-    public void setTheme(Theme theme) {
-        this.theme = theme;
+    public void setParent(Parent parent) {
+        this.parent = parent;
     }
-
-    public Parent getContent() {
-        return content;
-    }
-
-    public void setContent(Parent content) {
-        this.content = content;
-    }
-
-    public EventHandler<T> getActionEvent() {
-        return actionEvent;
-    }
-
-    public void setActionEvent(EventHandler<T> actionEvent) {
-        this.actionEvent = actionEvent;
-    }
-
-    public String getCss() {
-        return css;
-    }
-
-    public void setCss(String css) {
-        this.css = css;
-    }
-
-    public EventType<T> getEventType() {
-        return eventType;
-    }
-
-    public void setEventType(EventType<T> eventType) {
-        this.eventType = eventType;
-    }
-
-    public void setAction(EventType<T> eventType, EventHandler<T> eventHandler) {
-        this.eventType = eventType;
-        this.actionEvent = eventHandler;
-    }
-
 
     @Override
     public String toString() {
@@ -118,12 +77,8 @@ public class Message <T extends Event> {
                 "title='" + title + '\'' +
                 ", context='" + context + '\'' +
                 ", messageType=" + messageType +
-                ", theme=" + theme +
                 ", duration=" + duration +
-                ", content=" + content +
-                ", actionEvent=" + actionEvent +
-                ", eventType=" + eventType +
-                ", css='" + css + '\'' +
+                ", parent=" + parent +
                 '}';
     }
 }

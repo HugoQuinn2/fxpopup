@@ -87,7 +87,7 @@ public class MessageFormUtil {
      * @return The stylesheet path as a string.
      */
     public static String getDefaultStyle(Theme theme) {
-        return Objects.requireNonNull(FxPopupUtil.class.getResource(Objects.requireNonNull(getStylePath(theme)))).toExternalForm();
+        return Objects.requireNonNull(MessagePopupUtil.class.getResource(Objects.requireNonNull(getStylePath(theme)))).toExternalForm();
     }
 
     private static String getStylePath(Theme theme) {
@@ -250,7 +250,7 @@ public class MessageFormUtil {
      */
     public static VBox getDefaultContent() {
         try {
-            return new FXMLLoader(FxPopupUtil.class.getResource(FxPopupConfig.pathMessageForm)).load();
+            return new FXMLLoader(MessageFormUtil.class.getResource(FxPopupConfig.pathMessageForm)).load();
         } catch (IOException e) {
             e.printStackTrace();
         }

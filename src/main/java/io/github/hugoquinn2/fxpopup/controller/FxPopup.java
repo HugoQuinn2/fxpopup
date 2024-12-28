@@ -3,13 +3,11 @@ package io.github.hugoquinn2.fxpopup.controller;
 import io.github.hugoquinn2.fxpopup.config.FxPopupConfig;
 import io.github.hugoquinn2.fxpopup.constants.Theme;
 import io.github.hugoquinn2.fxpopup.model.Message;
-import io.github.hugoquinn2.fxpopup.utils.FxPopupUtil;
 import io.github.hugoquinn2.fxpopup.utils.MasterUtils;
 import io.github.hugoquinn2.fxpopup.utils.MessageFormUtil;
+import io.github.hugoquinn2.fxpopup.utils.MessagePopupUtil;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
-
-import static io.github.hugoquinn2.fxpopup.utils.FxPopupUtil.*;
 
 /**
  * Controller for managing FxPopup messages and forms.
@@ -27,31 +25,38 @@ public class FxPopup implements FxPopupInterface {
     }
 
     /**
-     * Adds a message to the popup system.
+     * Adds a message to the popup system, use default Pos (bottom left).
      *
      * @param message the message to be added. Must contain valid properties.
      */
     @Override
     public void add(Message message) {
-        int duration = message.getDuration();
+        add(message, pos);
+    }
 
-        if (message.getTheme() == null)
-            message.setTheme(theme);
-        if (message.getContent() == null)
-            message.setContent(getDefaultContent());
-        if (message.getCss() == null)
-            message.setCss(getDefaultCss(message));
+    /**
+     * Adds a message to the popup system.
+     *
+     * @param message the message to be added. Must contain valid properties.
+     * @param posMessage the position where the popup will be visible.
+     */
+    @Override
+    public void add(Message message, Pos posMessage) {
+        if (message.getContext() == null)
+            MasterUtils.findAndDeleteById(message.getParent(), FxPopupConfig.contextId);
+        else
+            MasterUtils.findAndEditText(message.getParent(), FxPopupConfig.contextId, message.getContext());
 
-        if (message.getActionEvent() != null)
-            FxPopupUtil.loadActionEvent(message);
+        MasterUtils.findAndEditText(message.getParent(), FxPopupConfig.titleId, message.getTitle());
 
-        injectTheme(message);
-        loadContent(message);
-        FxPopupUtil.injectFxml(message, pos);
+        MessagePopupUtil.injectTheme(message, theme, message.getMessageType());
+        MessagePopupUtil.setClose(message);
 
-        if (duration != 0) {
-            FxPopupUtil.setFadeTransition(message);
-        }
+        MessagePopupUtil.injectFxml(
+                message,
+                MessagePopupUtil.parsePosByPosMessage(posMessage),
+                posMessage
+        );
     }
 
     /**
@@ -61,7 +66,7 @@ public class FxPopup implements FxPopupInterface {
      */
     @Override
     public void remove(Message message) {
-        FxPopupUtil.removeFxml(message);
+        MessagePopupUtil.removeMessage(message);
     }
 
     /**

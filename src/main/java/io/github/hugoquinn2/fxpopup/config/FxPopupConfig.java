@@ -14,6 +14,12 @@ public class FxPopupConfig {
     // ===============================
 
     /**
+     *
+     */
+    public static final double messageContainerPadding = 10;
+
+
+    /**
      * URL used for geocoding services via OpenStreetMap's Nominatim API.
      */
     public static final String NOMINATIM_URL = "https://nominatim.openstreetmap.org/search";
@@ -31,7 +37,7 @@ public class FxPopupConfig {
     /**
      * Default position for the popup window (bottom center).
      */
-    public static final Pos defaultPos = Pos.BOTTOM_CENTER;
+    public static final Pos defaultPos = Pos.BOTTOM_RIGHT;
 
     /**
      * Scale factor for icons in the popup.
@@ -72,12 +78,12 @@ public class FxPopupConfig {
     /**
      * The ID of the title element in the message form.
      */
-    public static final String titleId = "#messageTitle";
+    public static final String titleId = "messageTitle";
 
     /**
      * The ID of the context element in the message form.
      */
-    public static final String contextId = "#messageContext";
+    public static final String contextId = "messageContext";
 
     /**
      * The ID of the message manager container.
@@ -97,7 +103,7 @@ public class FxPopupConfig {
     /**
      * Path to the basic popup layout FXML file.
      */
-    public static final String pathBody = "/layout/popupSimple.fxml";
+    public static final String pathPopupMessage = "/layout/popupSimple.fxml";
 
     /**
      * Path to the message form layout FXML file.
