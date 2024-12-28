@@ -6,7 +6,7 @@
 
     <groupId>io.github.hugoquinn2</groupId>
     <artifactId>fxpopup</artifactId>
-    <version>0.1.0</version>
+    <version>1.0.0</version>
 
     <name>fxpopup</name>
     <description>FxPopup It is a javafx library for displaying notifications in a very simple way.</description>
