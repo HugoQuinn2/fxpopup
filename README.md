@@ -24,6 +24,8 @@ use custom views for both functionalities.
 
 ## Getting started
 
+![Recording 2024-12-28 at 14 47 14](https://github.com/user-attachments/assets/366777a9-c1a2-4587-893e-4d90cd8d37d9)
+
 FxPopup seamlessly injects XML code into a JavaFX application to display 
 notifications to the user. To function correctly, the main container of 
 the application must be a StackPane, which is supplied to the controller. 
