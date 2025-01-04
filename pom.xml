@@ -38,6 +38,13 @@
         </developer>
     </developers>
 
+    <repositories>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
+
     <scm>
         <connection>scm:git:git://github.com/HugoQuinn2/fxpopup.git</connection>
         <developerConnection>scm:git:ssh://github.com:HugoQuinn2/fxpopup.git</developerConnection>
@@ -61,18 +68,10 @@
             <artifactId>json</artifactId>
             <version>20231013</version>
         </dependency>
-        <!-- Dependencia de JUnit (para pruebas) -->
         <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-            <version>${junit.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
-            <version>${junit.version}</version>
-            <scope>test</scope>
+            <groupId>com.github.Dansoftowner</groupId>
+            <artifactId>jSystemThemeDetector</artifactId>
+            <version>3.9.1</version>
         </dependency>
     </dependencies>
 

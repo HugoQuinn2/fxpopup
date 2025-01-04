@@ -227,6 +227,7 @@ public class MessageFormUtil {
 
             Button submitButton = (Button) form.lookup("#successButton");
             submitButton.setOnAction(e -> {
+                submitButton.setDisable(true);
                 MasterUtils.requestFocusOnAllFields(form);
                 try {
                     if (isAllRequired(form) && validador.validate(model)) {
@@ -235,6 +236,7 @@ public class MessageFormUtil {
                     }
                 } catch (Exception ex) {
                     MasterUtils.findAndEditText(form, "messageError", ex.getMessage());
+                    submitButton.setDisable(false);
                 }
             });
         } catch (Exception e) {
