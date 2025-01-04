@@ -52,13 +52,24 @@ module your.app {
 }
 ```
 
-## Add Message Popup.
+## Change Theme
+
+<p>
+FxPopup by default use <code>SYSTEM</code>, but you can force <code>LIGHT</code> & 
+<code>DARK</code> theme in forms and popup with setTheme(Theme), example:
+</p>
+
+```java
+fxPopup.setTheme(Theme.DARK);
+```
+
+## Message Popup.
 <p>
 To display a message it is necessary to create a <code>Message</code> object, 
-by default the messages will be displayed with the light theme <code>Theme.LIGHT</code>,
-the object Message required the params <code>title</code>, <code>MessageType</code> and 
-<code>duration</code> for be displayed, by optional could add <code>param</code>, 
-if you want to show a message with more information.
+by default the messages will be displayed with the system theme <code>Theme.SYSTEM</code>,
+and position <code>Pos.BOTTOM_RIGHT</code>. Message required the params <code>title</code>, 
+<code>MessageType</code> and<code>duration</code> for be displayed, 
+by optional could add <code>context</code>, if you want to show a message with more information.
 </p>
 
 ```java
@@ -80,18 +91,8 @@ Message simpleMessage = new Message(
 fxPopup.add(exampleMessage);
 fxPopup.add(simpleMessage);
 ```
-## Change Theme
 
-<p>
-You can change the theme with the function <code>fxPopup.setTheme(Theme.DARK)</code>, 
-this will apply to all messages and forms
-</p>
-
-```java
-fxPopup.setTheme(Theme.DARK);
-```
-
-## Add action event to message
+### Add action event to message
 
 <p>
 The functionalities of a message are not limited to simple plain text, 
@@ -100,14 +101,16 @@ the Message getting the parent Message.
 </p>
 
 ```java
+Message message = new Message("Just a message", MessageType.INFO, 3);
 // Example mouse clicked on message action.
-message.getParent().setOnMouseClicked(mouseEvent -> {
-    // Custom Action
-        // ...
+message.getParent().setOnMouseClicked(mouseEvent ->{
+        /*You code*/
 });
+
+fxPopup.add(message);
 ```
 
-## Default message structure.
+### Default message structure.
 
 ```ascii
 VBox (#messageBody)
@@ -123,14 +126,14 @@ VBox (#messageBody)
 ## Default form structure.
 
 ```ascii
-VBox (id: messageFormBody)
+VBox (#messageFormBody)
 ├── HBox
-│   ├── Label (id: titleForm)
-│   ├── Button (id: buttonClose)
-├── VBox (id: fieldsContainer)
-├── Label (id: messageError)
+│   ├── Label (#titleForm)
+│   ├── Button (#buttonClose)
+├── VBox (#fieldsContainer)
+├── Label (#messageError)
 └── HBox
-└── Button (id: successButton)
+    └── Button (#successButton)
 
 ```
 
