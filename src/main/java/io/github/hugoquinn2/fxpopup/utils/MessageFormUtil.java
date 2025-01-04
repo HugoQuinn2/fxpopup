@@ -1,5 +1,6 @@
 package io.github.hugoquinn2.fxpopup.utils;
 
+import com.jthemedetecor.OsThemeDetector;
 import io.github.hugoquinn2.fxpopup.model.Icon;
 import io.github.hugoquinn2.fxpopup.config.FieldData;
 import io.github.hugoquinn2.fxpopup.config.FxPopupConfig;
@@ -9,6 +10,7 @@ import io.github.hugoquinn2.fxpopup.constants.Theme;
 import io.github.hugoquinn2.fxpopup.controller.FxPopupForm;
 import io.github.hugoquinn2.fxpopup.controller.MessageField;
 import io.github.hugoquinn2.fxpopup.controller.MessageForm;
+import io.github.hugoquinn2.fxpopup.service.ThemeDetector;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -28,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Stream;
 
 public class MessageFormUtil {
 
@@ -91,7 +94,10 @@ public class MessageFormUtil {
     }
 
     private static String getStylePath(Theme theme) {
+
         return switch (theme) {
+            case SYSTEM -> ThemeDetector.isDarkTheme() ?
+                    FxPopupConfig.pathDarkMessageForm : FxPopupConfig.pathLightMessageForm;
             case LIGHT -> FxPopupConfig.pathLightMessageForm;
             case DARK -> FxPopupConfig.pathDarkMessageForm;
         };

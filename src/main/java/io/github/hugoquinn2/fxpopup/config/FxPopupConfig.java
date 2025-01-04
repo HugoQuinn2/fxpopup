@@ -117,7 +117,7 @@ public class FxPopupConfig {
     /**
      * Default theme for the popup (light theme).
      */
-    public static final Theme defaultTheme = Theme.LIGHT;
+    public static final Theme defaultTheme = Theme.SYSTEM;
 
     // Paths to the dark theme CSS files for different message types
     public static final String pathDarkError = "/themes/dark/error.css";

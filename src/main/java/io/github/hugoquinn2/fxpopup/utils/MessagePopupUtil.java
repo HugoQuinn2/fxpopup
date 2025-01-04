@@ -1,11 +1,13 @@
 package io.github.hugoquinn2.fxpopup.utils;
 
+import com.jthemedetecor.OsThemeDetector;
 import io.github.hugoquinn2.fxpopup.config.FxPopupConfig;
 import io.github.hugoquinn2.fxpopup.constants.FxPopIcon;
 import io.github.hugoquinn2.fxpopup.constants.MessageType;
 import io.github.hugoquinn2.fxpopup.constants.Theme;
 import io.github.hugoquinn2.fxpopup.model.Icon;
 import io.github.hugoquinn2.fxpopup.model.Message;
+import io.github.hugoquinn2.fxpopup.service.ThemeDetector;
 import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
 import javafx.animation.TranslateTransition;
@@ -185,7 +187,14 @@ public class MessagePopupUtil {
      * @return the style path
      */
     public static String getStylePath(Theme theme, MessageType messageType) {
+
         return switch (theme) {
+            case SYSTEM -> switch (messageType) {
+                case INFO -> ThemeDetector.isDarkTheme() ? FxPopupConfig.pathDarkInfo : FxPopupConfig.pathLightInfo;
+                case ERROR -> ThemeDetector.isDarkTheme() ? FxPopupConfig.pathDarkError : FxPopupConfig.pathLightError;
+                case SUCCESS -> ThemeDetector.isDarkTheme() ? FxPopupConfig.pathDarkSuccess : FxPopupConfig.pathLightSuccess;
+                case WARNING -> ThemeDetector.isDarkTheme() ? FxPopupConfig.pathDarkWarning : FxPopupConfig.pathLightWarning;
+            };
             case LIGHT -> switch (messageType) {
                 case INFO -> FxPopupConfig.pathLightInfo;
                 case ERROR -> FxPopupConfig.pathLightError;
