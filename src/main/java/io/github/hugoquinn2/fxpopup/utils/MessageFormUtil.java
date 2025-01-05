@@ -11,8 +11,11 @@ import io.github.hugoquinn2.fxpopup.controller.FxPopupForm;
 import io.github.hugoquinn2.fxpopup.controller.MessageField;
 import io.github.hugoquinn2.fxpopup.controller.MessageForm;
 import io.github.hugoquinn2.fxpopup.service.ThemeDetector;
+import javafx.animation.PauseTransition;
+import javafx.concurrent.Task;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
@@ -23,6 +26,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -30,6 +34,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Stream;
 
 public class MessageFormUtil {
@@ -212,6 +217,7 @@ public class MessageFormUtil {
             throw new NullPointerException(String.format("Parent form <%s> required button close: #buttonClose", form.getId()));
 
         close.setOnAction(event -> removeMessageForm());
+        close.setCursor(Cursor.HAND);
 
         close.setGraphic(new Icon(FxPopIcon.CLOSE, 0.8));
         close.setText("");
@@ -225,25 +231,34 @@ public class MessageFormUtil {
     public static void setSubmit(Object model, Parent form) {
         try {
             Class<?> formClass = model.getClass();
+            AtomicBoolean onAction = new AtomicBoolean(false);
 
             MessageForm messageForm = formClass.getAnnotation(MessageForm.class);
             Class<? extends FxPopupForm<?>> validatorClass = messageForm.validator();
 
-            FxPopupForm<Object> validador = (FxPopupForm<Object>) validatorClass.getDeclaredConstructor().newInstance();
+            FxPopupForm<Object> validator = (FxPopupForm<Object>) validatorClass.getDeclaredConstructor().newInstance();
 
             Button submitButton = (Button) form.lookup("#successButton");
+            submitButton.setCursor(Cursor.HAND);
             submitButton.setOnAction(e -> {
-                submitButton.setDisable(true);
-                MasterUtils.requestFocusOnAllFields(form);
+                if (onAction.get())
+                    return;
+
+                onAction.set(true);
+
                 try {
-                    if (isAllRequired(form) && validador.validate(model)) {
-                        validador.isValidForm(model);
+                    MasterUtils.requestFocusOnAllFields(form);
+                    if (isAllRequired(form) && validator.validate(model)) {
+                        validator.isValidForm(model);
                         removeMessageForm();
                     }
                 } catch (Exception ex) {
                     MasterUtils.findAndEditText(form, "messageError", ex.getMessage());
-                    submitButton.setDisable(false);
                 }
+
+                PauseTransition pause = new PauseTransition(Duration.seconds(1));
+                pause.setOnFinished(event -> onAction.set(false));
+                pause.play();
             });
         } catch (Exception e) {
             e.printStackTrace();
