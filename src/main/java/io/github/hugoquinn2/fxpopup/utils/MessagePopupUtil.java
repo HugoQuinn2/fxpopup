@@ -132,7 +132,10 @@ public class MessagePopupUtil {
      */
     public static void setClose(Message message) {
         Button close = (Button) MasterUtils.findNodeById(message.getParent(), FxPopupConfig.buttonDropId);
-        close.setText("");
+
+        if (close == null)
+            throw new NullPointerException("Button close #" + FxPopupConfig.buttonDropId + " not founded on message.");
+
         close.setCursor(Cursor.HAND);
         close.setGraphic(new Icon(FxPopIcon.CLOSE, 0.5));
         close.setOnAction(actionEvent -> removeMessage(message));
@@ -236,9 +239,11 @@ public class MessagePopupUtil {
      */
     public static void addChildListener(Parent messageManager) {
         ((Pane) messageManager).getChildren().addListener((ListChangeListener<Node>) change -> {
-            while (change.next()) {
-                if (change.wasRemoved() && ((Pane) messageManager).getChildren().isEmpty()) {
-                    ((Pane) MasterUtils.getRoot()).getChildren().remove(messageManager);
+            if (messageManager != null) {
+                while (change.next()) {
+                    if (change.wasRemoved() && ((Pane) messageManager).getChildren().isEmpty()) {
+                        ((Pane) MasterUtils.getRoot()).getChildren().remove(messageManager);
+                    }
                 }
             }
         });
