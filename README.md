@@ -18,8 +18,18 @@ use custom views for both functionalities.
 <dependency>
     <groupId>io.github.hugoquinn2</groupId>
     <artifactId>fxpopup</artifactId>
-    <version>0.1.0</version>
+    <version>1.0.0</version>
 </dependency>
+```
+## Gradle
+```groovy
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'io.github.hugoquinn2:fxpopup:1.0.0'
+}
 ```
 
 ## Getting started
@@ -28,9 +38,9 @@ use custom views for both functionalities.
 
 FxPopup seamlessly injects XML code into a JavaFX application to display 
 notifications to the user. To function correctly, the main container of 
-the application must be a StackPane, which is supplied to the controller. 
+the application must be a StackPane. 
 If your root parent is not a StackPane, FxPopup will automatically wrap 
-your root element in a StackPane to ensure compatibility
+your root element in a StackPane to ensure compatibility.
 
 ```java
 //Example use lib
@@ -121,6 +131,58 @@ VBox (#messageBody)
 │   └── Button (#buttonCloseMessage)
 
 ```
+
+## Message form.
+<p>
+FxPopup simplifies the process of creating forms automatically using <code>annotations</code> and <code>models</code>.
+
+To generate automatic forms, you need to define a form model and a validation class. Additionally, if you want to display 
+error messages on the form, throw an exception with the desired message. This message will automatically appear on the 
+<code>Label (#messageError)</code>:
+</p>
+
+### Form model.
+```java
+@MessageForm(name = "User Log", validator = UserLogController.class)
+public class UserLog {
+    @MessageField(label = "User Name", placeholder = "Write user name...", required = true)
+    private String userName;
+    @MessageField(label = "Password", placeholder = "Write password...", required = true, type = FieldType.PASSWORD)
+    private String password;
+    @MessageField(placeholder = "Remember me", type = FieldType.CHECK)
+    private boolean remember;
+}
+```
+
+### Form controller.
+```java
+public class UserLogController implements FxPopupForm<UserLog> {
+    @Override
+    public boolean validate(UserLog userLog) throws Exception {
+        if (!userLog.getUserName().equals("UserName"))
+            throw new Exception("User not valid.");
+
+        if (!userLog.getPassword().equals("password"))
+            throw new Exception("Password not valid to user " + userLog.getUserName());
+
+        return true;
+    }
+
+    @Override
+    public void isValidForm(UserLog userLog) throws Exception {
+        if (!saveUser(userLog))
+            throw new Exception("User cant be saved.");
+
+        if (userLog.isRemember())
+            if (!rememberUser(userLog))
+                throw new Exception("User cant be Remember.");
+    }
+}
+```
+
+<p align="center">
+<img src="https://github.com/user-attachments/assets/6ee07a04-d9bf-441e-a70b-654ee752789d" alt="Logo">
+</p>
 
 ### Default form structure.
 
