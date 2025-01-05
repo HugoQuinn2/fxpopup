@@ -1,6 +1,5 @@
 package io.github.hugoquinn2.fxpopup.utils;
 
-import com.jthemedetecor.OsThemeDetector;
 import io.github.hugoquinn2.fxpopup.model.Icon;
 import io.github.hugoquinn2.fxpopup.config.FieldData;
 import io.github.hugoquinn2.fxpopup.config.FxPopupConfig;
@@ -12,11 +11,9 @@ import io.github.hugoquinn2.fxpopup.controller.MessageField;
 import io.github.hugoquinn2.fxpopup.controller.MessageForm;
 import io.github.hugoquinn2.fxpopup.service.ThemeDetector;
 import javafx.animation.PauseTransition;
-import javafx.concurrent.Task;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;

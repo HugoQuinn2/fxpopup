@@ -2,18 +2,11 @@ package io.github.hugoquinn2.fxpopup.utils;
 
 import io.github.hugoquinn2.fxpopup.config.StyleConfig;
 import io.github.hugoquinn2.fxpopup.constants.FxPopIcon;
-import io.github.hugoquinn2.fxpopup.service.SVGLoader;
-import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.scene.Cursor;
-import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 
 import java.util.function.Function;
 

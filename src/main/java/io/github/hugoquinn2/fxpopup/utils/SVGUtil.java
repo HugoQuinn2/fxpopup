@@ -4,7 +4,6 @@ import io.github.hugoquinn2.fxpopup.config.FxPopupConfig;
 import io.github.hugoquinn2.fxpopup.config.StyleConfig;
 import io.github.hugoquinn2.fxpopup.constants.FxPopIcon;
 import io.github.hugoquinn2.fxpopup.service.SVGLoader;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.SVGPath;
 
 public class SVGUtil {
