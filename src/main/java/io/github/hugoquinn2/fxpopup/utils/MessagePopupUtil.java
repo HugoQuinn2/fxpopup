@@ -19,6 +19,7 @@ import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -161,6 +162,9 @@ public class MessagePopupUtil {
         parent.setPadding(new Insets(FxPopupConfig.messageContainerPadding));
 
         addChildListener(parent);
+
+        // set parent message transparent when mouse is over a message.
+        parent.setPickOnBounds(false);
 
         return parent;
     }
