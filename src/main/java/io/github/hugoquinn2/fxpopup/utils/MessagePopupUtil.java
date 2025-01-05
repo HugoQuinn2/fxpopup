@@ -56,7 +56,8 @@ public class MessagePopupUtil {
      * @param message the message to remove
      */
     public static void removeMessage(Message message) {
-        MasterUtils.remove(message.getParent());
+        if (message.getParent() != null)
+            MasterUtils.remove(message.getParent());
     }
 
     /**
@@ -66,6 +67,10 @@ public class MessagePopupUtil {
      */
     public static void setFadeTransition(Message message) {
         Parent parent = message.getParent();
+        if (parent == null) {
+            return;
+        }
+
         int fadeStartTime = message.getDuration() - 1;
 
         PauseTransition pauseBeforeFade = new PauseTransition(Duration.seconds(fadeStartTime));
@@ -74,7 +79,11 @@ public class MessagePopupUtil {
         fadeOut.setFromValue(1.0);
         fadeOut.setToValue(0.0);
 
-        pauseBeforeFade.setOnFinished(event -> fadeOut.play());
+        pauseBeforeFade.setOnFinished(event -> {
+            if (parent.getParent() != null) {
+                fadeOut.play();
+            }
+        });
 
         pauseBeforeFade.play();
 
@@ -87,7 +96,9 @@ public class MessagePopupUtil {
         });
 
         parent.setOnMouseExited(event -> {
-            pauseBeforeFade.play();
+            if (parent.getParent() != null) {
+                pauseBeforeFade.play();
+            }
         });
     }
 
