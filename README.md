@@ -66,10 +66,9 @@ fxPopup.setTheme(Theme.DARK);
 ## Message Popup.
 <p>
 To display a message it is necessary to create a <code>Message</code> object, 
-by default the messages will be displayed with the system theme <code>Theme.SYSTEM</code>,
-and position <code>Pos.BOTTOM_RIGHT</code>. Message required the params <code>title</code>, 
-<code>MessageType</code> and<code>duration</code> for be displayed, 
-by optional could add <code>context</code>, if you want to show a message with more information.
+by default the messages will be displayed with position <code>Pos.BOTTOM_RIGHT</code>. 
+Message required the params <code>title</code>, <code>MessageType</code> and<code>duration</code> 
+for be displayed, by optional could add <code>context</code>, if you want to show a message with more information.
 </p>
 
 ```java
@@ -123,7 +122,7 @@ VBox (#messageBody)
 
 ```
 
-## Default form structure.
+### Default form structure.
 
 ```ascii
 VBox (#messageFormBody)
