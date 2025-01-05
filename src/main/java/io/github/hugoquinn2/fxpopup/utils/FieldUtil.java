@@ -322,44 +322,26 @@ public class FieldUtil {
      */
     public static Parent createCheckBoxField(Field field ,Object model, FxPopIcon icon){
         field.setAccessible(true);
-
         try {
+            // Field data.
             MessageField annotation = field.getAnnotation(MessageField.class);
             Object data = field.get(model);
-            Icon iconLabel = new Icon(icon);
 
+            // Field structure.
             CheckBox checkBox = CustomsFxml.createCustomCheckBox(annotation.placeholder());
+            Icon iconLabel = new Icon(icon);
+            HBox container = new HBox(iconLabel, checkBox);
 
+            // Select check box if has data
             if (data instanceof Boolean)
                 checkBox.setSelected((Boolean) data);
 
-            setAutoUpdateModel(checkBox, field, model);
-
+            // Define style
             HBox.setHgrow(checkBox, Priority.ALWAYS);
-
-            HBox container = new HBox(iconLabel, checkBox);
             container.setAlignment(Pos.CENTER_LEFT);
 
-            checkBox.focusedProperty().addListener((obs, wasFocused, isFocused) -> {
-                StackPane box = (StackPane) checkBox.lookup(".box");
-                if (box != null) {
-                    if (!checkBox.isSelected() && annotation.required() && wasFocused)
-                        box.getStyleClass().add(StyleConfig.REQUIRED);
-                    else
-                        box.getStyleClass().remove(StyleConfig.REQUIRED);
-                }
-            });
-
-            checkBox.selectedProperty().addListener((obs, wasSelected, isSelected) -> {
-                StackPane box = (StackPane) checkBox.lookup(".box");
-                if (box != null) {
-                    if (!isSelected && annotation.required())
-                        box.getStyleClass().add(StyleConfig.REQUIRED);
-                    else
-                        box.getStyleClass().remove(StyleConfig.REQUIRED);
-                }
-            });
-
+            setAutoUpdateModel(checkBox, field, model);
+            MasterUtils.setRequired(container, annotation.required(), checkBox);
             return container;
         } catch (Exception e) {
             throw new RuntimeException(e);

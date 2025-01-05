@@ -4,6 +4,7 @@ import io.github.hugoquinn2.fxpopup.config.StyleConfig;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -211,6 +212,16 @@ public class MasterUtils {
                                 parent.getStyleClass().add(StyleConfig.REQUIRED);
                         } else {
                             parent.getStyleClass().remove(StyleConfig.REQUIRED);
+                        }
+                    } else if (child instanceof CheckBox) {
+                        StackPane box = (StackPane) child.lookup(".box");
+                        if (box != null) {
+                            if (!((CheckBox) child).isSelected()) {
+                                if (!box.getStyleClass().contains(StyleConfig.REQUIRED))
+                                    box.getStyleClass().add(StyleConfig.REQUIRED);
+                            } else {
+                                box.getStyleClass().remove(StyleConfig.REQUIRED);
+                            }
                         }
                     }
                 }
