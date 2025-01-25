@@ -1,6 +1,6 @@
 package io.github.hugoquinn2.fxpopup.utils;
 
-import com.jthemedetecor.OsThemeDetector;
+import io.github.hugoquinn2.fxpopup.controller.FxPopup;
 import io.github.hugoquinn2.fxpopup.model.Icon;
 import io.github.hugoquinn2.fxpopup.config.FieldData;
 import io.github.hugoquinn2.fxpopup.config.FxPopupConfig;
@@ -94,7 +94,6 @@ public class MessageFormUtil {
     }
 
     private static String getStylePath(Theme theme) {
-
         return switch (theme) {
             case SYSTEM -> ThemeDetector.isDarkTheme() ?
                     FxPopupConfig.pathDarkMessageForm : FxPopupConfig.pathLightMessageForm;
@@ -110,14 +109,14 @@ public class MessageFormUtil {
      * @param parent The parent form.
      * @param model The model containing the annotated fields.
      */
-    public static void generateFieldsForm(Parent parent, Object model) {
+    public static void generateFieldsForm(Parent parent, Object model, Theme theme) {
         if (isValidParentForm(parent)) {
             Parent fieldsContainer = (VBox) MasterUtils.findNodeById(parent, FxPopupConfig.fieldsContainerId);
             Class<?> clazz = model.getClass();
 
             Arrays.stream(clazz.getDeclaredFields())
                     .filter(field -> field.isAnnotationPresent(MessageField.class))
-                    .forEach(field -> createField(field, model, fieldsContainer));
+                    .forEach(field -> createField(field, model, fieldsContainer, theme));
         }
     }
 
@@ -139,7 +138,7 @@ public class MessageFormUtil {
         return true;
     }
 
-    private static void createField(Field field, Object model, Parent parent) {
+    private static void createField(Field field, Object model, Parent parent, Theme theme) {
         MessageField annotation = field.getAnnotation(MessageField.class);
 
         // Header
@@ -168,6 +167,13 @@ public class MessageFormUtil {
         textRequired.getStyleClass().add(StyleConfig.TEXT_REQUIRED);
         context.getStyleClass().add(StyleConfig.CONTEXT);
         label.getStyleClass().add(StyleConfig.LABEL);
+
+        // Tool Tip
+        if (!annotation.toolTip().isEmpty()) {
+            FxPopup fxPopup = new FxPopup();
+            fxPopup.setTheme(theme);
+            fxPopup.toolTip(fieldContainer, annotation.toolTip());
+        }
 
         if (!annotation.label().isEmpty())
             ((Pane) parent).getChildren().add(header);

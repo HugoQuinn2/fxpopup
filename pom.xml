@@ -6,7 +6,7 @@
 
     <groupId>io.github.hugoquinn2</groupId>
     <artifactId>fxpopup</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
 
     <name>fxpopup</name>
     <description>
@@ -52,7 +52,6 @@
     </scm>
 
     <dependencies>
-        <!-- Dependencia JavaFX (si es necesario para el plugin) -->
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
@@ -69,9 +68,10 @@
             <version>20231013</version>
         </dependency>
         <dependency>
-            <groupId>com.github.Dansoftowner</groupId>
-            <artifactId>jSystemThemeDetector</artifactId>
-            <version>3.9.1</version>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.10.0</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
@@ -111,6 +111,11 @@
                         <goals>
                             <goal>jar</goal>
                         </goals>
+                        <configuration>
+                            <!-- Ignore exception on doc comments  -->
+                            <failOnError>false</failOnError>
+                            <additionalparam>-Xdoclint:none</additionalparam>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>

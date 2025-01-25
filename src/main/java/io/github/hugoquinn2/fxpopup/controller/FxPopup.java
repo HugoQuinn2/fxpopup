@@ -6,8 +6,20 @@ import io.github.hugoquinn2.fxpopup.model.Message;
 import io.github.hugoquinn2.fxpopup.utils.MasterUtils;
 import io.github.hugoquinn2.fxpopup.utils.MessageFormUtil;
 import io.github.hugoquinn2.fxpopup.utils.MessagePopupUtil;
+import io.github.hugoquinn2.fxpopup.utils.ToolTipUtils;
+import javafx.application.Platform;
+import javafx.geometry.Bounds;
+import javafx.geometry.HPos;
 import javafx.geometry.Pos;
+import javafx.geometry.VPos;
+import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.control.Button;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
+
+import java.util.Objects;
 
 /**
  * Controller for managing FxPopup messages and forms.
@@ -112,7 +124,7 @@ public class FxPopup implements FxPopupInterface {
     public void show(Object model, Parent parent, Pos pos) {
         Class<?> clazz = model.getClass();
         if (isValidObjectForm(model) && MessageFormUtil.isValidParentForm(parent)) {
-            MessageFormUtil.generateFieldsForm(parent, model);
+            MessageFormUtil.generateFieldsForm(parent, model, theme);
             MessageFormUtil.injectTheme(parent, theme);
 
             MasterUtils.findAndEditText(parent, FxPopupConfig.titleFormId, clazz.getAnnotation(MessageForm.class).name());
@@ -123,6 +135,172 @@ public class FxPopup implements FxPopupInterface {
 
             MessageFormUtil.injectFxml(parent, pos);
         }
+    }
+
+    /**
+     * Displays a custom popup on Pos.TOP_LEFT by default.
+     *
+     * @param node  the node object to display.
+     */
+    @Override
+    public void show(Node node) {
+        show(node, Pos.TOP_LEFT);
+    }
+
+    /**
+     * Displays a custom popup on custom Pos.
+     *
+     * @param node  the node object to display.
+     * @param pos the pos.
+     */
+    @Override
+    public void show(Node node, Pos pos) {
+        Parent root = MasterUtils.wrapInStackPane(MasterUtils.getRoot());
+        StackPane.setAlignment(node, pos);
+        ((Pane) root).getChildren().add(node);
+    }
+
+    /**
+     * Displays a custom popup on coordinates x & y.
+     *
+     * @param node  the node object to display.
+     * @param x the coordinates X.
+     * @param y the coordinates Y.
+     */
+    @Override
+    public void show(Node node, double x, double y) {
+        node.setTranslateX(x);
+        node.setTranslateY(y);
+        show(node);
+    }
+
+    /**
+     * Displays a Tool Tip on a Node with custom <code>HPos</code>.
+     *
+     * @param node  the node object to display.
+     * @param s the text on tool tip.
+     * @param pos the HPos to show.
+     */
+    @Override
+    public void toolTip(Node node, String s, HPos pos) {
+        String nodeId = Integer.toString(node.hashCode());
+
+        if (ToolTipUtils.isToolTip(node))
+            MasterUtils.remove(ToolTipUtils.getToolTipByNode(node));
+
+        Node toolTip = ToolTipUtils.createToolTip(s, theme);
+        toolTip.setId(nodeId);
+
+        Platform.runLater(() -> {
+            toolTip.setVisible(false);
+            show(toolTip);
+
+            node.setOnMouseEntered(event -> {
+                Bounds parentBoundsInRoot = node.localToScene(node.getLayoutBounds());
+                Bounds toolTipBoundsInRoot = toolTip.getLayoutBounds();
+
+                double parentX = parentBoundsInRoot.getMinX();
+                double parentY = parentBoundsInRoot.getMinY();
+
+                double nodeWidth = parentBoundsInRoot.getWidth();
+                double nodeHeight = parentBoundsInRoot.getHeight();
+
+                double toolTipWidth = toolTipBoundsInRoot.getWidth();
+                double toolTipHeight = toolTipBoundsInRoot.getHeight();
+
+                int space = 5;
+
+                double translateX = pos.equals(HPos.RIGHT) ?
+                        parentX + nodeWidth + space :
+                        parentX - toolTipWidth - space;
+                double translateY = parentY + (nodeHeight / 2) - (toolTipHeight / 2);
+
+                toolTip.setTranslateX(translateX);
+                toolTip.setTranslateY(translateY);
+
+                toolTip.setVisible(true);
+//                System.out.printf(
+//                        "node: h%s w%s (x%s:y%s), tool-tip: h%s w%s%n",
+//                        nodeHeight, nodeWidth, parentX, parentY,
+//                        toolTipHeight, toolTipWidth
+//                );
+            });
+
+            node.setOnMouseExited(event -> toolTip.setVisible(false));
+        });
+
+        node.setOnMouseExited(event -> MasterUtils.remove(toolTip));
+    }
+
+    /**
+     * Displays a Tool Tip on a Node with custom VPos.
+     *
+     * @param node  the node object to display.
+     * @param s the text on tool tip.
+     * @param pos the VPos to show.
+     */
+    @Override
+    public void toolTip(Node node, String s, VPos pos) {
+        String nodeId = Integer.toString(node.hashCode());
+
+        if (ToolTipUtils.isToolTip(node))
+            MasterUtils.remove(ToolTipUtils.getToolTipByNode(node));
+
+        Node toolTip = ToolTipUtils.createToolTip(s, theme);
+        toolTip.setId(nodeId);
+
+        Platform.runLater(() -> {
+            toolTip.setVisible(false);
+
+            if (!ToolTipUtils.isToolTip(node))
+                show(toolTip);
+
+            node.setOnMouseEntered(event -> {
+                Bounds parentBoundsInRoot = node.localToScene(node.getLayoutBounds());
+                Bounds toolTipBoundsInRoot = toolTip.getLayoutBounds();
+
+                double parentX = parentBoundsInRoot.getMinX();
+                double parentY = parentBoundsInRoot.getMinY();
+
+                double nodeWidth = parentBoundsInRoot.getWidth();
+                double nodeHeight = parentBoundsInRoot.getHeight();
+
+                double toolTipWidth = toolTipBoundsInRoot.getWidth();
+                double toolTipHeight = toolTipBoundsInRoot.getHeight();
+
+                int space = 5;
+
+                double translateX = parentX + (nodeWidth / 2) - (toolTipWidth / 2);
+                double translateY = pos.equals(VPos.BOTTOM) ?
+                        parentY + nodeHeight + space :
+                        parentY - toolTipHeight - space;
+
+                toolTip.setTranslateX(translateX);
+                toolTip.setTranslateY(translateY);
+
+                toolTip.setVisible(true);
+//                System.out.printf(
+//                        "node: h%s w%s (x%s:y%s), tool-tip: h%s w%s%n",
+//                        nodeHeight, nodeWidth, parentX, parentY,
+//                        toolTipHeight, toolTipWidth
+//                );
+            });
+
+            node.setOnMouseExited(event -> toolTip.setVisible(false));
+        });
+
+        node.setOnMouseExited(event -> MasterUtils.remove(toolTip));
+    }
+
+    /**
+     * Displays a Tool Tip on a Node with default <code>VPos.BOTTOM</code>.
+     *
+     * @param node  the node object to display.
+     * @param s the text on tool tip.
+     */
+    @Override
+    public void toolTip(Node node, String s) {
+        toolTip(node,s, FxPopupConfig.defaultToolTipPos);
     }
 
     /**

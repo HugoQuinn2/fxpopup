@@ -1,6 +1,5 @@
 package io.github.hugoquinn2.fxpopup.utils;
 
-import com.jthemedetecor.OsThemeDetector;
 import io.github.hugoquinn2.fxpopup.config.FxPopupConfig;
 import io.github.hugoquinn2.fxpopup.constants.FxPopIcon;
 import io.github.hugoquinn2.fxpopup.constants.MessageType;

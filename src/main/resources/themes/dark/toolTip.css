@@ -1,0 +1,11 @@
+.tooltip {
+    -fx-background-color: #2F3032;
+    -fx-padding: 5;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+}
+
+.tool-tip-text {
+    -fx-font-size: 14px;
+    -fx-text-fill: #F3F9F5;
+}

@@ -49,4 +49,19 @@ public class StyleConfig {
      * CSS class name for the label of a form field.
      */
     public static final String LABEL = "label";
+
+    /**
+     * CSS class name for tool tip parent
+     * */
+    public static final String TOOL_TIP = "tooltip";
+
+    /**
+     * CSS class name for tool tip text
+     * */
+    public static final String TOOL_TIP_TEXT = "tool-tip-text";
+
+    /**
+     * CSS class name for tool tip pointer
+     * */
+    public static final String TOOL_TIP_POINTER = "tool-tip-pointer";
 }

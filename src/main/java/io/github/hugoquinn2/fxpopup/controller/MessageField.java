@@ -62,4 +62,6 @@ public @interface MessageField {
      * Default is false, meaning the field is optional.
      */
     boolean required() default false;
+
+    String toolTip() default "";
 }
