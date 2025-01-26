@@ -245,6 +245,8 @@ public class MessageFormUtil {
                     if (isAllRequired(form) && validador.validate(model)) {
                         validador.isValidForm(model);
                         removeMessageForm();
+                    } else {
+                        submitButton.setDisable(false);
                     }
                 } catch (Exception ex) {
                     MasterUtils.findAndEditText(form, "messageError", ex.getMessage());
