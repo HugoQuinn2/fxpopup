@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox id="messageBody" fx:id="messageBody" prefWidth="360.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+<VBox id="messageBody" fx:id="messageBody" prefWidth="360.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <HBox spacing="10.0" VBox.vgrow="ALWAYS">
          <children>
@@ -30,7 +30,7 @@
                   </Label>
                </children>
             </VBox>
-            <Button id="buttonCloseMessage" fx:id="buttonCloseMessage" mnemonicParsing="false" prefHeight="0.0" prefWidth="1.0" text="X" HBox.hgrow="ALWAYS">
+            <Button id="buttonCloseMessage" fx:id="buttonCloseMessage" mnemonicParsing="false" prefHeight="0.0" prefWidth="1.0" HBox.hgrow="ALWAYS">
                <font>
                   <Font name="Arial" size="14.0" />
                </font>

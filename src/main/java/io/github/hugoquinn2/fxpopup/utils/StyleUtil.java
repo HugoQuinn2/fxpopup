@@ -1,7 +1,6 @@
 package io.github.hugoquinn2.fxpopup.utils;
 
 import javafx.scene.Node;
-import javafx.scene.Parent;
 
 public class StyleUtil {
     /**

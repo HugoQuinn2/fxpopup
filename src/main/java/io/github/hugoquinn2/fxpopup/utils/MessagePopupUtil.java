@@ -54,7 +54,8 @@ public class MessagePopupUtil {
      * @param message the message to remove
      */
     public static void removeMessage(Message message) {
-        MasterUtils.remove(message.getParent());
+        if (message.getParent() != null)
+            MasterUtils.remove(message.getParent());
     }
 
     /**
@@ -64,6 +65,10 @@ public class MessagePopupUtil {
      */
     public static void setFadeTransition(Message message) {
         Parent parent = message.getParent();
+        if (parent == null) {
+            return;
+        }
+
         int fadeStartTime = message.getDuration() - 1;
 
         PauseTransition pauseBeforeFade = new PauseTransition(Duration.seconds(fadeStartTime));
@@ -72,7 +77,11 @@ public class MessagePopupUtil {
         fadeOut.setFromValue(1.0);
         fadeOut.setToValue(0.0);
 
-        pauseBeforeFade.setOnFinished(event -> fadeOut.play());
+        pauseBeforeFade.setOnFinished(event -> {
+            if (parent.getParent() != null) {
+                fadeOut.play();
+            }
+        });
 
         pauseBeforeFade.play();
 
@@ -85,7 +94,9 @@ public class MessagePopupUtil {
         });
 
         parent.setOnMouseExited(event -> {
-            pauseBeforeFade.play();
+            if (parent.getParent() != null) {
+                pauseBeforeFade.play();
+            }
         });
     }
 
@@ -130,7 +141,10 @@ public class MessagePopupUtil {
      */
     public static void setClose(Message message) {
         Button close = (Button) MasterUtils.findNodeById(message.getParent(), FxPopupConfig.buttonDropId);
-        close.setText("");
+
+        if (close == null)
+            throw new NullPointerException("Button close #" + FxPopupConfig.buttonDropId + " not founded on message.");
+
         close.setCursor(Cursor.HAND);
         close.setGraphic(new Icon(FxPopIcon.CLOSE, 0.5));
         close.setOnAction(actionEvent -> removeMessage(message));
@@ -160,6 +174,9 @@ public class MessagePopupUtil {
         parent.setPadding(new Insets(FxPopupConfig.messageContainerPadding));
 
         addChildListener(parent);
+
+        // set parent message transparent when mouse is over a message.
+        parent.setPickOnBounds(false);
 
         return parent;
     }
@@ -231,9 +248,11 @@ public class MessagePopupUtil {
      */
     public static void addChildListener(Parent messageManager) {
         ((Pane) messageManager).getChildren().addListener((ListChangeListener<Node>) change -> {
-            while (change.next()) {
-                if (change.wasRemoved() && ((Pane) messageManager).getChildren().isEmpty()) {
-                    ((Pane) MasterUtils.getRoot()).getChildren().remove(messageManager);
+            if (messageManager != null) {
+                while (change.next()) {
+                    if (change.wasRemoved() && ((Pane) messageManager).getChildren().isEmpty()) {
+                        ((Pane) MasterUtils.getRoot()).getChildren().remove(messageManager);
+                    }
                 }
             }
         });

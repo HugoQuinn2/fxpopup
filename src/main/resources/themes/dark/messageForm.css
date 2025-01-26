@@ -56,6 +56,11 @@
     -fx-border-color: #FF6F6F; /* Bordes en rojo brillante */
 }
 
+.required > .icon{
+    -fx-fill: #FF6F6F; /* Rojo vibrante para resaltar */
+    -fx-text-fill: #FF6F6F; /* Rojo vibrante para resaltar */
+}
+
 .context {
     -fx-fill: #A0A0A0; /* Texto contextual más claro */
     -fx-font-size: 12px;
