@@ -21,5 +21,7 @@ public interface FxPopupInterface {
     void toolTip(Node node, String s, HPos pos);
     void toolTip(Node node, String s, VPos pos);
     void toolTip(Node node, String s);
+    void removeToolTip(Node node);
+    Node getToolTip(Node node);
     void remove();
 }

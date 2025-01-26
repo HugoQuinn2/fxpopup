@@ -7,6 +7,7 @@ import io.github.hugoquinn2.fxpopup.utils.MasterUtils;
 import io.github.hugoquinn2.fxpopup.utils.MessageFormUtil;
 import io.github.hugoquinn2.fxpopup.utils.MessagePopupUtil;
 import io.github.hugoquinn2.fxpopup.utils.ToolTipUtils;
+import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.geometry.Bounds;
 import javafx.geometry.HPos;
@@ -18,6 +19,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.util.Objects;
 
@@ -155,9 +157,11 @@ public class FxPopup implements FxPopupInterface {
      */
     @Override
     public void show(Node node, Pos pos) {
-        Parent root = MasterUtils.wrapInStackPane(MasterUtils.getRoot());
-        StackPane.setAlignment(node, pos);
-        ((Pane) root).getChildren().add(node);
+        Platform.runLater(() -> {
+            Parent root = MasterUtils.wrapInStackPane(MasterUtils.getRoot());
+            StackPane.setAlignment(node, pos);
+            ((Pane) root).getChildren().add(node);
+        });
     }
 
     /**
@@ -169,9 +173,12 @@ public class FxPopup implements FxPopupInterface {
      */
     @Override
     public void show(Node node, double x, double y) {
-        node.setTranslateX(x);
-        node.setTranslateY(y);
-        show(node);
+        Platform.runLater(() -> {
+            show(node);
+
+            node.setTranslateX(x);
+            node.setTranslateY(y);
+        });
     }
 
     /**
@@ -183,7 +190,7 @@ public class FxPopup implements FxPopupInterface {
      */
     @Override
     public void toolTip(Node node, String s, HPos pos) {
-        String nodeId = Integer.toString(node.hashCode());
+        String nodeId = ToolTipUtils.getToolTipIdByNode(node);
 
         if (ToolTipUtils.isToolTip(node))
             MasterUtils.remove(ToolTipUtils.getToolTipByNode(node));
@@ -191,45 +198,37 @@ public class FxPopup implements FxPopupInterface {
         Node toolTip = ToolTipUtils.createToolTip(s, theme);
         toolTip.setId(nodeId);
 
+        // a delay on first run to ensure rendering
         Platform.runLater(() -> {
-            toolTip.setVisible(false);
-            show(toolTip);
+            PauseTransition delay = new PauseTransition(Duration.millis(200));
+            delay.setOnFinished(event -> {
+                toolTip.setVisible(false);
 
-            node.setOnMouseEntered(event -> {
-                Bounds parentBoundsInRoot = node.localToScene(node.getLayoutBounds());
-                Bounds toolTipBoundsInRoot = toolTip.getLayoutBounds();
+                if (!ToolTipUtils.isToolTip(node))
+                    show(toolTip);
 
-                double parentX = parentBoundsInRoot.getMinX();
-                double parentY = parentBoundsInRoot.getMinY();
+                // show tool tip with mouse and hover
+                node.hoverProperty().addListener((observable, oldValue, newValue) -> {
+                    if (newValue) {
+                        ToolTipUtils.positionToolTip(node, toolTip, pos);
+                        toolTip.setVisible(true);
+                    } else {
+                        toolTip.setVisible(false);
+                    }
+                });
 
-                double nodeWidth = parentBoundsInRoot.getWidth();
-                double nodeHeight = parentBoundsInRoot.getHeight();
-
-                double toolTipWidth = toolTipBoundsInRoot.getWidth();
-                double toolTipHeight = toolTipBoundsInRoot.getHeight();
-
-                int space = 5;
-
-                double translateX = pos.equals(HPos.RIGHT) ?
-                        parentX + nodeWidth + space :
-                        parentX - toolTipWidth - space;
-                double translateY = parentY + (nodeHeight / 2) - (toolTipHeight / 2);
-
-                toolTip.setTranslateX(translateX);
-                toolTip.setTranslateY(translateY);
-
-                toolTip.setVisible(true);
-//                System.out.printf(
-//                        "node: h%s w%s (x%s:y%s), tool-tip: h%s w%s%n",
-//                        nodeHeight, nodeWidth, parentX, parentY,
-//                        toolTipHeight, toolTipWidth
-//                );
+                // show tool tip with focused
+                node.focusedProperty().addListener((observable, oldValue, newValue) -> {
+                    if (newValue) {
+                        ToolTipUtils.positionToolTip(node, toolTip, pos);
+                        toolTip.setVisible(true);
+                    } else {
+                        toolTip.setVisible(false);
+                    }
+                });
             });
-
-            node.setOnMouseExited(event -> toolTip.setVisible(false));
+            delay.play();
         });
-
-        node.setOnMouseExited(event -> MasterUtils.remove(toolTip));
     }
 
     /**
@@ -249,47 +248,37 @@ public class FxPopup implements FxPopupInterface {
         Node toolTip = ToolTipUtils.createToolTip(s, theme);
         toolTip.setId(nodeId);
 
+        // a delay on first run to ensure rendering
         Platform.runLater(() -> {
-            toolTip.setVisible(false);
+            PauseTransition delay = new PauseTransition(Duration.millis(200));
+            delay.setOnFinished(event -> {
+                toolTip.setVisible(false);
 
-            if (!ToolTipUtils.isToolTip(node))
-                show(toolTip);
+                if (!ToolTipUtils.isToolTip(node))
+                    show(toolTip);
 
-            node.setOnMouseEntered(event -> {
-                Bounds parentBoundsInRoot = node.localToScene(node.getLayoutBounds());
-                Bounds toolTipBoundsInRoot = toolTip.getLayoutBounds();
+                // show tool tip with mouse and hover
+                node.hoverProperty().addListener((observable, oldValue, newValue) -> {
+                    if (newValue) {
+                        ToolTipUtils.positionToolTip(node, toolTip, pos);
+                        toolTip.setVisible(true);
+                    } else {
+                        toolTip.setVisible(false);
+                    }
+                });
 
-                double parentX = parentBoundsInRoot.getMinX();
-                double parentY = parentBoundsInRoot.getMinY();
-
-                double nodeWidth = parentBoundsInRoot.getWidth();
-                double nodeHeight = parentBoundsInRoot.getHeight();
-
-                double toolTipWidth = toolTipBoundsInRoot.getWidth();
-                double toolTipHeight = toolTipBoundsInRoot.getHeight();
-
-                int space = 5;
-
-                double translateX = parentX + (nodeWidth / 2) - (toolTipWidth / 2);
-                double translateY = pos.equals(VPos.BOTTOM) ?
-                        parentY + nodeHeight + space :
-                        parentY - toolTipHeight - space;
-
-                toolTip.setTranslateX(translateX);
-                toolTip.setTranslateY(translateY);
-
-                toolTip.setVisible(true);
-//                System.out.printf(
-//                        "node: h%s w%s (x%s:y%s), tool-tip: h%s w%s%n",
-//                        nodeHeight, nodeWidth, parentX, parentY,
-//                        toolTipHeight, toolTipWidth
-//                );
+                // show tool tip with focused
+                node.focusedProperty().addListener((observable, oldValue, newValue) -> {
+                    if (newValue) {
+                        ToolTipUtils.positionToolTip(node, toolTip, pos);
+                        toolTip.setVisible(true);
+                    } else {
+                        toolTip.setVisible(false);
+                    }
+                });
             });
-
-            node.setOnMouseExited(event -> toolTip.setVisible(false));
+            delay.play();
         });
-
-        node.setOnMouseExited(event -> MasterUtils.remove(toolTip));
     }
 
     /**
@@ -301,6 +290,16 @@ public class FxPopup implements FxPopupInterface {
     @Override
     public void toolTip(Node node, String s) {
         toolTip(node,s, FxPopupConfig.defaultToolTipPos);
+    }
+
+    @Override
+    public void removeToolTip(Node node) {
+        MasterUtils.remove(ToolTipUtils.getToolTipByNode(node));
+    }
+
+    @Override
+    public Node getToolTip(Node node) {
+        return ToolTipUtils.getToolTipByNode(node);
     }
 
     /**
