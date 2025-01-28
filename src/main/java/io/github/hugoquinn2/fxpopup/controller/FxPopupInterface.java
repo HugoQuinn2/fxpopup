@@ -1,6 +1,6 @@
 package io.github.hugoquinn2.fxpopup.controller;
 
-import io.github.hugoquinn2.fxpopup.model.Message;
+import io.github.hugoquinn2.fxpopup.control.Message;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
@@ -9,7 +9,7 @@ import javafx.scene.Parent;
 
 public interface FxPopupInterface {
     void add(Message message);
-    void add(Message message, Pos posMessage);
+//    void add(Message message, Pos posMessage);
     void remove(Message message);
     void show(Object model);
     void show(Object model, Parent parent);

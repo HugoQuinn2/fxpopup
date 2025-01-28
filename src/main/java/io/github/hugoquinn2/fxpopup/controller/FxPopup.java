@@ -2,7 +2,7 @@ package io.github.hugoquinn2.fxpopup.controller;
 
 import io.github.hugoquinn2.fxpopup.config.FxPopupConfig;
 import io.github.hugoquinn2.fxpopup.constants.Theme;
-import io.github.hugoquinn2.fxpopup.model.Message;
+import io.github.hugoquinn2.fxpopup.control.Message;
 import io.github.hugoquinn2.fxpopup.utils.MasterUtils;
 import io.github.hugoquinn2.fxpopup.utils.MessageFormUtil;
 import io.github.hugoquinn2.fxpopup.utils.MessagePopupUtil;
@@ -43,33 +43,23 @@ public class FxPopup implements FxPopupInterface {
      *
      * @param message the message to be added. Must contain valid properties.
      */
-    @Override
-    public void add(Message message) {
-        add(message, pos);
-    }
+//    @Override
+//    public void add(Message message) {
+//        add(message, pos);
+//    }
 
     /**
      * Adds a message to the popup system.
      *
      * @param message the message to be added. Must contain valid properties.
-     * @param posMessage the position where the popup will be visible.
      */
     @Override
-    public void add(Message message, Pos posMessage) {
-        if (message.getContext() == null)
-            MasterUtils.findAndDeleteById(message.getParent(), FxPopupConfig.contextId);
-        else
-            MasterUtils.findAndEditText(message.getParent(), FxPopupConfig.contextId, message.getContext());
-
-        MasterUtils.findAndEditText(message.getParent(), FxPopupConfig.titleId, message.getTitle());
-
+    public void add(Message message) {
         MessagePopupUtil.injectTheme(message, theme, message.getMessageType());
-        MessagePopupUtil.setClose(message);
-
         MessagePopupUtil.injectFxml(
                 message,
-                MessagePopupUtil.parsePosByPosMessage(posMessage),
-                posMessage
+                MessagePopupUtil.parsePosByPosMessage(message.getPosMessage()),
+                message.getPosMessage()
         );
     }
 

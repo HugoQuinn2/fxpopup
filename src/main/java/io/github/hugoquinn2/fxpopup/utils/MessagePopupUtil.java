@@ -4,8 +4,8 @@ import io.github.hugoquinn2.fxpopup.config.FxPopupConfig;
 import io.github.hugoquinn2.fxpopup.constants.FxPopIcon;
 import io.github.hugoquinn2.fxpopup.constants.MessageType;
 import io.github.hugoquinn2.fxpopup.constants.Theme;
+import io.github.hugoquinn2.fxpopup.control.Message;
 import io.github.hugoquinn2.fxpopup.model.Icon;
-import io.github.hugoquinn2.fxpopup.model.Message;
 import io.github.hugoquinn2.fxpopup.service.ThemeDetector;
 import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
@@ -13,6 +13,7 @@ import javafx.animation.TranslateTransition;
 import javafx.collections.ListChangeListener;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
@@ -21,6 +22,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
 import java.io.IOException;
@@ -43,9 +45,9 @@ public class MessagePopupUtil {
                 createMessageManager(posMessageManager, posMessage) :
                 (Parent) MasterUtils.findNodeById(root, FxPopupConfig.messageManagerId + posMessageManager + posMessage);
 
-        setFadeTransition(message);
-        setTranslateTransition(message, posMessage);
-        ((Pane) messageManager).getChildren().add(message.getParent());
+//        setFadeTransition(message);
+//        setTranslateTransition(message, posMessage);
+        ((Pane) messageManager).getChildren().add(message);
     }
 
     /**
@@ -64,40 +66,40 @@ public class MessagePopupUtil {
      * @param message the message to apply the fade-out transition to
      */
     public static void setFadeTransition(Message message) {
-        Parent parent = message.getParent();
-        if (parent == null) {
-            return;
-        }
-
-        int fadeStartTime = message.getDuration() - 1;
-
-        PauseTransition pauseBeforeFade = new PauseTransition(Duration.seconds(fadeStartTime));
-
-        FadeTransition fadeOut = new FadeTransition(Duration.seconds(1), parent);
-        fadeOut.setFromValue(1.0);
-        fadeOut.setToValue(0.0);
-
-        pauseBeforeFade.setOnFinished(event -> {
-            if (parent.getParent() != null) {
-                fadeOut.play();
-            }
-        });
-
-        pauseBeforeFade.play();
-
-        fadeOut.setOnFinished(actionEvent -> removeMessage(message));
-
-        parent.setOnMouseEntered(event -> {
-            pauseBeforeFade.pause();
-            fadeOut.pause();
-            parent.setOpacity(1.0);
-        });
-
-        parent.setOnMouseExited(event -> {
-            if (parent.getParent() != null) {
-                pauseBeforeFade.play();
-            }
-        });
+//        Parent parent = message.getParent();
+//        if (parent == null) {
+//            return;
+//        }
+//
+//        int fadeStartTime = message.getDuration() - 1;
+//
+//        PauseTransition pauseBeforeFade = new PauseTransition(Duration.seconds(fadeStartTime));
+//
+//        FadeTransition fadeOut = new FadeTransition(Duration.seconds(1), parent);
+//        fadeOut.setFromValue(1.0);
+//        fadeOut.setToValue(0.0);
+//
+//        pauseBeforeFade.setOnFinished(event -> {
+//            if (parent.getParent() != null) {
+//                fadeOut.play();
+//            }
+//        });
+//
+//        pauseBeforeFade.play();
+//
+//        fadeOut.setOnFinished(actionEvent -> removeMessage(message));
+//
+//        parent.setOnMouseEntered(event -> {
+//            pauseBeforeFade.pause();
+//            fadeOut.pause();
+//            parent.setOpacity(1.0);
+//        });
+//
+//        parent.setOnMouseExited(event -> {
+//            if (parent.getParent() != null) {
+//                pauseBeforeFade.play();
+//            }
+//        });
     }
 
     /**
@@ -107,18 +109,18 @@ public class MessagePopupUtil {
      * @param posMessage the position of the message
      */
     public static void setTranslateTransition(Message message, Pos posMessage) {
-        TranslateTransition translate = new TranslateTransition(Duration.seconds(0.2), message.getParent());
-
-        if (posMessage.equals(Pos.CENTER_LEFT) || posMessage.equals(Pos.TOP_LEFT) || posMessage.equals(Pos.BOTTOM_LEFT)) {
-            translate.setFromX(-FxPopupConfig.maxWidth);
-            translate.setToX(0);
-        }
-        else {
-            translate.setFromX(FxPopupConfig.maxWidth);
-            translate.setToX(0);
-        }
-
-        translate.play();
+//        TranslateTransition translate = new TranslateTransition(Duration.seconds(0.2), message.getParent());
+//
+//        if (posMessage.equals(Pos.CENTER_LEFT) || posMessage.equals(Pos.TOP_LEFT) || posMessage.equals(Pos.BOTTOM_LEFT)) {
+//            translate.setFromX(-FxPopupConfig.maxWidth);
+//            translate.setToX(0);
+//        }
+//        else {
+//            translate.setFromX(FxPopupConfig.maxWidth);
+//            translate.setToX(0);
+//        }
+//
+//        translate.play();
     }
 
     /**
@@ -159,7 +161,7 @@ public class MessagePopupUtil {
      */
     public static Parent createMessageManager(Pos posMessageManager, Pos posMessage) {
         Parent root = MasterUtils.getRoot();
-        FlowPane parent = new FlowPane();
+        VBox parent = new VBox();
 
         parent.setId(FxPopupConfig.messageManagerId + posMessageManager + posMessage);
         parent.setAlignment(posMessage);
@@ -170,8 +172,8 @@ public class MessagePopupUtil {
         parent.setMaxWidth(FxPopupConfig.maxWidth);
         parent.setMinWidth(FxPopupConfig.maxWidth);
 
-        parent.setVgap(FxPopupConfig.insetsMessageManager);
         parent.setPadding(new Insets(FxPopupConfig.messageContainerPadding));
+        parent.setSpacing(20);
 
         addChildListener(parent);
 
@@ -189,7 +191,7 @@ public class MessagePopupUtil {
      * @param messageType the type of the message
      */
     public static void injectTheme(Message message, Theme theme, MessageType messageType) {
-        message.getParent().getStylesheets().add(
+        message.getStylesheets().add(
                 MessageFormUtil.class.getResource(
                         getStylePath(theme, messageType)).toExternalForm()
         );

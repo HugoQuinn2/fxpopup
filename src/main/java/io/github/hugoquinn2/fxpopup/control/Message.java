@@ -1,16 +1,20 @@
 package io.github.hugoquinn2.fxpopup.control;
 
 import io.github.hugoquinn2.fxpopup.config.FxPopupConfig;
+import io.github.hugoquinn2.fxpopup.constants.FxPopIcon;
 import io.github.hugoquinn2.fxpopup.constants.MessageType;
+import io.github.hugoquinn2.fxpopup.model.Icon;
+import io.github.hugoquinn2.fxpopup.utils.MasterUtils;
+import io.github.hugoquinn2.fxpopup.utils.StyleUtil;
 import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
 import javafx.animation.Transition;
 import javafx.animation.TranslateTransition;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
 import javafx.util.Duration;
 
 
@@ -19,7 +23,7 @@ public class Message extends HBox {
     private Pane messageIndicator;
     private Label title;
     private Label context;
-    private HBox containerContext;
+    private VBox containerContext;
     private Button closeButton;
 
     // Message params
@@ -40,9 +44,17 @@ public class Message extends HBox {
     private String MESSAGE_LABELS_CONTAINER = "message-container-context";
     private String MESSAGE_CLOSE_BUTTON = "message-close-button";
 
-    public Message(String title, MessageType messageType, int duration, Pos posMessage) {
-        this(title, "", messageType, duration, posMessage);
-    }
+    // Constructor with context
+    public Message(String title, String context, MessageType messageType) {this(title, context, messageType, 0, Pos.BOTTOM_RIGHT);}
+    public Message(String title, String context, MessageType messageType, Pos posMessage) {this(title, context, messageType, 0, posMessage);}
+    public Message(String title, String context, MessageType messageType, int duration) {this(title, context, messageType, duration, Pos.BOTTOM_RIGHT);}
+    public Message(String title, String context, MessageType messageType, Pos posMessage,int duration) {this(title, context, messageType, duration, posMessage);}
+
+    // Constructor without context
+    public Message(String title, MessageType messageType) {this(title, "", messageType, 0, Pos.BOTTOM_RIGHT);}
+    public Message(String title, MessageType messageType, Pos posMessage) {this(title, "", messageType, 0, posMessage);}
+    public Message(String title, MessageType messageType, Pos posMessage, int duration) {this(title, "", messageType, duration, posMessage);}
+    public Message(String title, MessageType messageType, int duration) {this(title, "", messageType, duration, Pos.BOTTOM_RIGHT);}
 
     public Message(String title, String context, MessageType messageType, int duration, Pos posMessage) {
         this.title = new Label(title);
@@ -51,20 +63,33 @@ public class Message extends HBox {
         this.duration = duration;
         this.messageIndicator = new Pane();
         this.posMessage = posMessage;
-        this.containerContext = new HBox();
+        this.containerContext = new VBox();
         this.closeButton = new Button();
 
         // Set responsive
         this.title.setWrapText(true);
         this.context.setWrapText(true);
         this.setAlignment(Pos.TOP_CENTER);
-        this.containerContext.setAlignment(Pos.TOP_LEFT);
+        this.containerContext.setAlignment(Pos.CENTER_LEFT);
+
+        HBox.setHgrow(this.containerContext, Priority.ALWAYS);
+        VBox.setVgrow(this.context, Priority.ALWAYS);
+
+        this.setMinSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
+        this.setPrefSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
+        this.setMaxSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
+
+        this.containerContext.setMinSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
+        this.containerContext.setPrefSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
+        this.containerContext.setMaxSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
 
         // Create Message structure
-        this.containerContext.getChildren().addAll(
-                this.title,
-                !context.isEmpty() ? this.context : null
-        );
+        this.closeButton.setGraphic(new Icon(FxPopIcon.CLOSE, 0.5));
+        StyleUtil.setTransparent(this.closeButton);
+
+        this.containerContext.getChildren().add(this.title);
+        if (!context.isEmpty())
+            this.containerContext.getChildren().add(this.context);
 
         this.getChildren().addAll(
           this.messageIndicator,
@@ -83,12 +108,19 @@ public class Message extends HBox {
         // Define times to effects
         setShowEffect(Duration.seconds(0.2));
         setRemoveEffect(Duration.seconds(1));
-        setPauseBeforeRemove(Duration.seconds(this.duration - 1));
+        setPauseBeforeRemove(Duration.seconds(this.duration > 0 ? this.duration - 1 : 1));
 
         // Play effect when message is on scene
         this.sceneProperty().addListener((observable, oldScene, newScene) -> {
             showTransition.play();
-            pauseBeforeRemove.play();
+            if (this.duration != 0)
+                pauseBeforeRemove.play();
+        });
+
+        // Set Action to CloseButton
+        closeButton.setCursor(Cursor.HAND);
+        closeButton.setOnAction(event -> {
+            MasterUtils.remove(this);
         });
     }
 
@@ -130,8 +162,7 @@ public class Message extends HBox {
 
         // Play remove effect when pause finished
         pauseBeforeRemove.setOnFinished(event -> {
-            if (this.duration != 0)
-                removeTransition.play();
+            removeTransition.play();
         });
     }
 
@@ -159,11 +190,11 @@ public class Message extends HBox {
         this.context = context;
     }
 
-    public HBox getContainerContext() {
+    public VBox getContainerContext() {
         return containerContext;
     }
 
-    public void setContainerContext(HBox containerContext) {
+    public void setContainerContext(VBox containerContext) {
         this.containerContext = containerContext;
     }
 
