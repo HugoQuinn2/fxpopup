@@ -41,7 +41,7 @@ public class Message extends HBox {
     private String MESSAGE_TITLE_CLASS = "message-title";
     private String MESSAGE_CONTEXT_CLASS = "message-context";
     private String MESSAGE_INDICATOR_CLASS = "message-indicator";
-    private String MESSAGE_LABELS_CONTAINER = "message-container-context";
+    private String MESSAGE_LABELS_CONTAINER = "message-content-container";
     private String MESSAGE_CLOSE_BUTTON = "message-close-button";
 
     // Constructor with context
@@ -252,5 +252,14 @@ public class Message extends HBox {
 
     public void setPauseBeforeRemove(PauseTransition pauseBeforeRemove) {
         this.pauseBeforeRemove = pauseBeforeRemove;
+    }
+
+    private boolean isValid() {
+        if (posMessage.equals(Pos.CENTER) || posMessage.equals(Pos.TOP_CENTER) || posMessage.equals(Pos.BOTTOM_CENTER))
+            throw new IllegalArgumentException("Unsupported Pos " + posMessage + " to message.");
+        if (duration >= 0)
+            throw new IllegalArgumentException("Duration message can't be negative.");
+
+        return true;
     }
 }

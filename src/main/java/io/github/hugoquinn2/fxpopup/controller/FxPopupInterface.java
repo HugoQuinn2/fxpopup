@@ -1,6 +1,7 @@
 package io.github.hugoquinn2.fxpopup.controller;
 
 import io.github.hugoquinn2.fxpopup.control.Message;
+import io.github.hugoquinn2.fxpopup.control.ToolTip;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
@@ -24,4 +25,7 @@ public interface FxPopupInterface {
     void removeToolTip(Node node);
     Node getToolTip(Node node);
     void remove();
+
+    // New features to controls
+    void show(ToolTip toolTip);
 }

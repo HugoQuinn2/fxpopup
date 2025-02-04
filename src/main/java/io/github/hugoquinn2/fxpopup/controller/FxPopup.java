@@ -3,22 +3,20 @@ package io.github.hugoquinn2.fxpopup.controller;
 import io.github.hugoquinn2.fxpopup.config.FxPopupConfig;
 import io.github.hugoquinn2.fxpopup.constants.Theme;
 import io.github.hugoquinn2.fxpopup.control.Message;
+import io.github.hugoquinn2.fxpopup.control.ToolTip;
 import io.github.hugoquinn2.fxpopup.utils.MasterUtils;
 import io.github.hugoquinn2.fxpopup.utils.MessageFormUtil;
 import io.github.hugoquinn2.fxpopup.utils.MessagePopupUtil;
 import io.github.hugoquinn2.fxpopup.utils.ToolTipUtils;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
-import javafx.geometry.Bounds;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
-import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.util.Objects;
@@ -298,6 +296,12 @@ public class FxPopup implements FxPopupInterface {
     @Override
     public void remove() {
         MessageFormUtil.removeMessageForm();
+    }
+
+    @Override
+    public void show(ToolTip toolTip) {
+        ToolTipUtils.injectTheme(toolTip, theme);
+        show(((Pane) toolTip));
     }
 
     /**
