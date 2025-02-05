@@ -9,6 +9,7 @@ import io.github.hugoquinn2.fxpopup.model.Icon;
 import io.github.hugoquinn2.fxpopup.service.ThemeDetector;
 import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
+import javafx.animation.Transition;
 import javafx.animation.TranslateTransition;
 import javafx.collections.ListChangeListener;
 import javafx.fxml.FXMLLoader;
@@ -190,10 +191,10 @@ public class MessagePopupUtil {
      * @param theme       the theme to apply
      * @param messageType the type of the message
      */
-    public static void injectTheme(Message message, Theme theme, MessageType messageType) {
+    public static void injectTheme(Message message, Theme theme) {
         message.getStylesheets().add(
                 MessageFormUtil.class.getResource(
-                        getStylePath(theme, messageType)).toExternalForm()
+                        getStylePath(theme, message.getMessageType())).toExternalForm()
         );
     }
 
@@ -273,5 +274,30 @@ public class MessagePopupUtil {
             return Pos.CENTER_RIGHT;
 
         throw new IllegalArgumentException("Unsupported Pos " + pos + " to message popup.");
+    }
+
+    public static Transition createShowEffect(Pos pos, Duration duration, Node node) {
+        TranslateTransition showTransition = new TranslateTransition(duration, node);
+
+        if (pos.equals(Pos.CENTER_LEFT) || pos.equals(Pos.TOP_LEFT) || pos.equals(Pos.BOTTOM_LEFT)) {
+            showTransition.setFromX(-FxPopupConfig.maxWidth);
+            showTransition.setToX(0);
+        }
+        else {
+            showTransition.setFromX(FxPopupConfig.maxWidth);
+            showTransition.setToX(0);
+        }
+
+        return showTransition;
+    }
+
+    public static Transition createRemoveEffect(Duration duration, Node node) {
+        FadeTransition removeTransition = new FadeTransition(duration, node);
+
+        // Fade effect, opacity from 1 to 0
+        removeTransition.setFromValue(1.0);
+        removeTransition.setToValue(0.0);
+
+        return removeTransition;
     }
 }

@@ -8,7 +8,10 @@ import io.github.hugoquinn2.fxpopup.utils.MasterUtils;
 import io.github.hugoquinn2.fxpopup.utils.MessageFormUtil;
 import io.github.hugoquinn2.fxpopup.utils.MessagePopupUtil;
 import io.github.hugoquinn2.fxpopup.utils.ToolTipUtils;
+import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
+import javafx.animation.Transition;
+import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
@@ -53,12 +56,39 @@ public class FxPopup implements FxPopupInterface {
      */
     @Override
     public void add(Message message) {
-        MessagePopupUtil.injectTheme(message, theme, message.getMessageType());
-        MessagePopupUtil.injectFxml(
-                message,
-                MessagePopupUtil.parsePosByPosMessage(message.getPosMessage()),
-                message.getPosMessage()
-        );
+        add(Pos.BOTTOM_RIGHT, message);
+    }
+
+    @Override
+    public void add(Message... messages) {
+        for (Message message : messages)
+            add(message);
+    }
+
+    @Override
+    public void add(Pos pos, Message message) {
+        Platform.runLater(() -> {
+            // Generate Transition effects
+            Transition show = MessagePopupUtil.createShowEffect(pos, Duration.seconds(1), message);
+            Transition remove = MessagePopupUtil.createRemoveEffect(Duration.seconds(1), message);
+
+            message.setShowTransition(show);
+            message.setRemoveTransition(remove);
+
+            message.setTheme(theme);
+
+            MessagePopupUtil.injectFxml(
+                    message,
+                    MessagePopupUtil.parsePosByPosMessage(pos),
+                    pos
+            );
+        });
+    }
+
+    @Override
+    public void add(Pos pos, Message... messages) {
+        for (Message message : messages)
+            add(pos, message);
     }
 
     /**

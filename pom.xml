@@ -52,6 +52,7 @@
     </scm>
 
     <dependencies>
+        <!-- JavaFx -->
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
@@ -67,10 +68,23 @@
             <artifactId>json</artifactId>
             <version>20231013</version>
         </dependency>
+        <!-- Unit Tests -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
             <version>5.10.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testfx</groupId>
+            <artifactId>testfx-core</artifactId>
+            <version>4.0.18</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testfx</groupId>
+            <artifactId>testfx-junit</artifactId>
+            <version>4.0.18</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

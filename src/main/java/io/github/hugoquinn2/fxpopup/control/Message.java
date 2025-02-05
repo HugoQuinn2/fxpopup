@@ -3,8 +3,10 @@ package io.github.hugoquinn2.fxpopup.control;
 import io.github.hugoquinn2.fxpopup.config.FxPopupConfig;
 import io.github.hugoquinn2.fxpopup.constants.FxPopIcon;
 import io.github.hugoquinn2.fxpopup.constants.MessageType;
+import io.github.hugoquinn2.fxpopup.constants.Theme;
 import io.github.hugoquinn2.fxpopup.model.Icon;
 import io.github.hugoquinn2.fxpopup.utils.MasterUtils;
+import io.github.hugoquinn2.fxpopup.utils.MessagePopupUtil;
 import io.github.hugoquinn2.fxpopup.utils.StyleUtil;
 import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
@@ -29,12 +31,12 @@ public class Message extends HBox {
     // Message params
     private MessageType messageType;
     private int duration;
-    private Pos posMessage;
+    private Theme theme = Theme.SYSTEM;
 
     // Effects
     private Transition showTransition;
     private Transition removeTransition;
-    private PauseTransition pauseBeforeRemove;
+    private Transition pauseBeforeRemove;
 
     // Styles class for CSS
     private String MESSAGE_CLASS = "message";
@@ -45,24 +47,18 @@ public class Message extends HBox {
     private String MESSAGE_CLOSE_BUTTON = "message-close-button";
 
     // Constructor with context
-    public Message(String title, String context, MessageType messageType) {this(title, context, messageType, 0, Pos.BOTTOM_RIGHT);}
-    public Message(String title, String context, MessageType messageType, Pos posMessage) {this(title, context, messageType, 0, posMessage);}
-    public Message(String title, String context, MessageType messageType, int duration) {this(title, context, messageType, duration, Pos.BOTTOM_RIGHT);}
-    public Message(String title, String context, MessageType messageType, Pos posMessage,int duration) {this(title, context, messageType, duration, posMessage);}
+    public Message(String title, String context, MessageType messageType) {this(title, context, messageType, 0);}
 
     // Constructor without context
-    public Message(String title, MessageType messageType) {this(title, "", messageType, 0, Pos.BOTTOM_RIGHT);}
-    public Message(String title, MessageType messageType, Pos posMessage) {this(title, "", messageType, 0, posMessage);}
-    public Message(String title, MessageType messageType, Pos posMessage, int duration) {this(title, "", messageType, duration, posMessage);}
-    public Message(String title, MessageType messageType, int duration) {this(title, "", messageType, duration, Pos.BOTTOM_RIGHT);}
+    public Message(String title, MessageType messageType) {this(title, "", messageType, 0);}
+    public Message(String title, MessageType messageType, int duration) {this(title, "", messageType, duration);}
 
-    public Message(String title, String context, MessageType messageType, int duration, Pos posMessage) {
+    public Message(String title, String context, MessageType messageType, int duration) {
         this.title = new Label(title);
         this.context = new Label(context);
         this.messageType = messageType;
         this.duration = duration;
         this.messageIndicator = new Pane();
-        this.posMessage = posMessage;
         this.containerContext = new VBox();
         this.closeButton = new Button();
 
@@ -105,10 +101,8 @@ public class Message extends HBox {
         this.containerContext.getStyleClass().add(MESSAGE_LABELS_CONTAINER);
         this.closeButton.getStyleClass().add(MESSAGE_CLOSE_BUTTON);
 
-        // Define times to effects
-        setShowEffect(Duration.seconds(0.2));
-        setRemoveEffect(Duration.seconds(1));
-        setPauseBeforeRemove(Duration.seconds(this.duration > 0 ? this.duration - 1 : 1));
+        // Define basic effect
+        defineEffects();
 
         // Play effect when message is on scene
         this.sceneProperty().addListener((observable, oldScene, newScene) -> {
@@ -122,47 +116,31 @@ public class Message extends HBox {
         closeButton.setOnAction(event -> {
             MasterUtils.remove(this);
         });
+
+        // Inject theme
+        MessagePopupUtil.injectTheme(this, theme);
     }
 
-    private void setShowEffect(Duration duration) {
-        showTransition = new TranslateTransition(duration, this);
+    private void defineEffects() {
+        showTransition = new TranslateTransition(Duration.ZERO, this);
+        removeTransition = new FadeTransition(Duration.ZERO, this);
+        pauseBeforeRemove = new PauseTransition(Duration.seconds(duration));
 
-        if (posMessage.equals(Pos.CENTER_LEFT) || posMessage.equals(Pos.TOP_LEFT) || posMessage.equals(Pos.BOTTOM_LEFT)) {
-            ((TranslateTransition) showTransition).setFromX(-FxPopupConfig.maxWidth);
-            ((TranslateTransition) showTransition).setToX(0);
-        }
-        else {
-            ((TranslateTransition) showTransition).setFromX(FxPopupConfig.maxWidth);
-            ((TranslateTransition) showTransition).setToX(0);
-        }
-    }
+        // Remove Message
+        removeTransition.setOnFinished(event -> MasterUtils.remove(this));
 
-    private void setRemoveEffect(Duration duration) {
-        removeTransition = new FadeTransition(duration, this);
-        ((FadeTransition) removeTransition).setFromValue(1.0);
-        ((FadeTransition) removeTransition).setToValue(0.0);
-
-        removeTransition.setOnFinished(actionEvent -> ((Pane) this.getParent()).getChildren().remove(this));
+        // Start remove effect when pause finished
+        pauseBeforeRemove.setOnFinished(event -> removeTransition.play());
 
         // Pause Transition when mouse is on message
         this.setOnMouseEntered(event -> {
             pauseBeforeRemove.pause();
             removeTransition.pause();
-            this.setOpacity(1.0);
         });
 
-        // Play Transition when mouse is existed from message
+        // Play Transition when mouse is exited from message
         this.setOnMouseExited(event -> {
             pauseBeforeRemove.play();
-        });
-    }
-
-    private void setPauseBeforeRemove(Duration duration) {
-        pauseBeforeRemove = new PauseTransition(duration);
-
-        // Play remove effect when pause finished
-        pauseBeforeRemove.setOnFinished(event -> {
-            removeTransition.play();
         });
     }
 
@@ -222,14 +200,6 @@ public class Message extends HBox {
         this.duration = duration;
     }
 
-    public Pos getPosMessage() {
-        return posMessage;
-    }
-
-    public void setPosMessage(Pos posMessage) {
-        this.posMessage = posMessage;
-    }
-
     public Transition getShowTransition() {
         return showTransition;
     }
@@ -246,20 +216,20 @@ public class Message extends HBox {
         this.removeTransition = removeTransition;
     }
 
-    public PauseTransition getPauseBeforeRemove() {
+    public Transition getPauseBeforeRemove() {
         return pauseBeforeRemove;
     }
 
-    public void setPauseBeforeRemove(PauseTransition pauseBeforeRemove) {
+    public void setPauseBeforeRemove(Transition pauseBeforeRemove) {
         this.pauseBeforeRemove = pauseBeforeRemove;
     }
 
-    private boolean isValid() {
-        if (posMessage.equals(Pos.CENTER) || posMessage.equals(Pos.TOP_CENTER) || posMessage.equals(Pos.BOTTOM_CENTER))
-            throw new IllegalArgumentException("Unsupported Pos " + posMessage + " to message.");
-        if (duration >= 0)
-            throw new IllegalArgumentException("Duration message can't be negative.");
+    public Theme getTheme() {
+        return theme;
+    }
 
-        return true;
+    public void setTheme(Theme theme) {
+        this.theme = theme;
+        MessagePopupUtil.injectTheme(this, this.theme);
     }
 }
