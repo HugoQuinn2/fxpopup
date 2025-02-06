@@ -9,10 +9,15 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 
 public interface FxPopupInterface {
-    void add(Message message);
-    void add(Message... messages);
-    void add(Pos pos, Message... messages);
-    void add(Pos pos, Message message);
+    // Add functions this function are placed one on top of the other so that they do not block each other.
+    void add(Node node);
+    void add(Pos pos, Node node);
+
+    // Add All functions
+    void addAll(Node... nodes);
+    void addAll(Pos pos, Node... nodes);
+
+
 //    void add(Message message, Pos posMessage);
     void remove(Message message);
     void show(Object model);

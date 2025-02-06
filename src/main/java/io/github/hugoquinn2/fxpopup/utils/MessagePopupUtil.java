@@ -40,7 +40,7 @@ public class MessagePopupUtil {
      * @param posMessageManager the position of the message manager
      * @param posMessage       the position of the message
      */
-    public static void injectFxml(Message message, Pos posMessageManager, Pos posMessage) {
+    public static void injectFxml(Node node, Pos posMessageManager, Pos posMessage) {
         Parent root = MasterUtils.wrapInStackPane(MasterUtils.getRoot());
         Parent messageManager = !isMessageManager(posMessageManager, posMessage) ?
                 createMessageManager(posMessageManager, posMessage) :
@@ -48,7 +48,7 @@ public class MessagePopupUtil {
 
 //        setFadeTransition(message);
 //        setTranslateTransition(message, posMessage);
-        ((Pane) messageManager).getChildren().add(message);
+        ((Pane) messageManager).getChildren().add(node);
     }
 
     /**

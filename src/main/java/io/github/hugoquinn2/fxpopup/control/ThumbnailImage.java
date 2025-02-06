@@ -44,7 +44,6 @@ public class ThumbnailImage extends ImageView {
         }
 
         setPreserveRatio(true);
-        setFitWidth(200);
         setThumbnail();
     }
 

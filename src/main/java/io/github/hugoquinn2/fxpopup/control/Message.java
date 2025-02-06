@@ -50,10 +50,13 @@ public class Message extends HBox {
     public Message(String title, String context, MessageType messageType) {this(title, context, messageType, 0);}
 
     // Constructor without context
-    public Message(String title, MessageType messageType) {this(title, "", messageType, 0);}
-    public Message(String title, MessageType messageType, int duration) {this(title, "", messageType, duration);}
+    public Message(String title, MessageType messageType) {this(title, null, messageType, 0);}
+    public Message(String title, MessageType messageType, int duration) {this(title, null, messageType, duration);}
 
     public Message(String title, String context, MessageType messageType, int duration) {
+        if (duration < 0)
+            throw new IllegalArgumentException("The duration cannot be less than 1");
+
         this.title = new Label(title);
         this.context = new Label(context);
         this.messageType = messageType;
@@ -73,7 +76,7 @@ public class Message extends HBox {
 
         this.setMinSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
         this.setPrefSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
-        this.setMaxSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
+        this.setMaxSize(400, Region.USE_COMPUTED_SIZE);
 
         this.containerContext.setMinSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
         this.containerContext.setPrefSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
@@ -83,9 +86,8 @@ public class Message extends HBox {
         this.closeButton.setGraphic(new Icon(FxPopIcon.CLOSE, 0.5));
         StyleUtil.setTransparent(this.closeButton);
 
-        this.containerContext.getChildren().add(this.title);
-        if (!context.isEmpty())
-            this.containerContext.getChildren().add(this.context);
+        if (title != null) this.containerContext.getChildren().add(this.title);
+        if (context != null) this.containerContext.getChildren().add(this.context);
 
         this.getChildren().addAll(
           this.messageIndicator,
@@ -122,25 +124,22 @@ public class Message extends HBox {
     }
 
     private void defineEffects() {
-        showTransition = new TranslateTransition(Duration.ZERO, this);
-        removeTransition = new FadeTransition(Duration.ZERO, this);
-        pauseBeforeRemove = new PauseTransition(Duration.seconds(duration));
-
-        // Remove Message
-        removeTransition.setOnFinished(event -> MasterUtils.remove(this));
-
-        // Start remove effect when pause finished
-        pauseBeforeRemove.setOnFinished(event -> removeTransition.play());
+        setShowTransition(new TranslateTransition(Duration.ZERO, this));
+        setRemoveTransition(new FadeTransition(Duration.ZERO, this));
+        setPauseBeforeRemove(new PauseTransition(Duration.seconds(duration)));
 
         // Pause Transition when mouse is on message
         this.setOnMouseEntered(event -> {
-            pauseBeforeRemove.pause();
-            removeTransition.pause();
+            if (duration != 0) {
+                pauseBeforeRemove.pause();
+                removeTransition.pause();
+            }
         });
 
         // Play Transition when mouse is exited from message
         this.setOnMouseExited(event -> {
-            pauseBeforeRemove.play();
+            if (duration != 0)
+                pauseBeforeRemove.play();
         });
     }
 
@@ -214,6 +213,7 @@ public class Message extends HBox {
 
     public void setRemoveTransition(Transition removeTransition) {
         this.removeTransition = removeTransition;
+        this.removeTransition.setOnFinished(event -> MasterUtils.remove(this));
     }
 
     public Transition getPauseBeforeRemove() {
@@ -222,6 +222,7 @@ public class Message extends HBox {
 
     public void setPauseBeforeRemove(Transition pauseBeforeRemove) {
         this.pauseBeforeRemove = pauseBeforeRemove;
+        this.pauseBeforeRemove.setOnFinished(event -> removeTransition.play());
     }
 
     public Theme getTheme() {

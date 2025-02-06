@@ -39,56 +39,31 @@ public class FxPopup implements FxPopupInterface {
         theme = FxPopupConfig.defaultTheme;
     }
 
-    /**
-     * Adds a message to the popup system, use default Pos (bottom left).
-     *
-     * @param message the message to be added. Must contain valid properties.
-     */
-//    @Override
-//    public void add(Message message) {
-//        add(message, pos);
-//    }
-
-    /**
-     * Adds a message to the popup system.
-     *
-     * @param message the message to be added. Must contain valid properties.
-     */
     @Override
-    public void add(Message message) {
-        add(Pos.BOTTOM_RIGHT, message);
+    public void add(Node node) {
+        add(Pos.BOTTOM_RIGHT, node);
     }
 
     @Override
-    public void add(Message... messages) {
-        for (Message message : messages)
-            add(message);
-    }
-
-    @Override
-    public void add(Pos pos, Message message) {
+    public void add(Pos pos, Node node) {
         Platform.runLater(() -> {
-            // Generate Transition effects
-            Transition show = MessagePopupUtil.createShowEffect(pos, Duration.seconds(1), message);
-            Transition remove = MessagePopupUtil.createRemoveEffect(Duration.seconds(1), message);
+            if (node instanceof Message)
+                ((Message) node).setTheme(theme);
 
-            message.setShowTransition(show);
-            message.setRemoveTransition(remove);
-
-            message.setTheme(theme);
-
-            MessagePopupUtil.injectFxml(
-                    message,
-                    MessagePopupUtil.parsePosByPosMessage(pos),
-                    pos
-            );
+            MessagePopupUtil.injectFxml(node, MessagePopupUtil.parsePosByPosMessage(pos), pos);
         });
     }
 
     @Override
-    public void add(Pos pos, Message... messages) {
-        for (Message message : messages)
-            add(pos, message);
+    public void addAll(Node... nodes) {
+        for (Node node : nodes)
+            add(node);
+    }
+
+    @Override
+    public void addAll(Pos pos, Node... nodes) {
+        for (Node node : nodes)
+            add(pos, node);
     }
 
     /**
