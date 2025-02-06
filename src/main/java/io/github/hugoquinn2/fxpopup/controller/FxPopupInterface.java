@@ -17,7 +17,6 @@ public interface FxPopupInterface {
     void addAll(Node... nodes);
     void addAll(Pos pos, Node... nodes);
 
-
 //    void add(Message message, Pos posMessage);
     void remove(Message message);
     void show(Object model);

@@ -282,4 +282,20 @@ public class MessageFormUtil {
     private static boolean isAllRequired(Parent form) {
         return MasterUtils.searchNodesWithClass(form, StyleConfig.REQUIRED).isEmpty();
     }
+
+    public static boolean isValidObjectForm(Object object) {
+        Class<?> clazz = object.getClass();
+        MessageForm annotation = clazz.getAnnotation(MessageForm.class);
+
+        if (!clazz.isAnnotationPresent(MessageForm.class))
+            throw new NullPointerException(String.format("Object <%s> required annotation @MessageForm", clazz.getName()));
+
+        if (annotation.validator() == null)
+            throw new NullPointerException(String.format("Object <%s> required param validator.", clazz.getName()));
+
+        if (annotation.name() == null)
+            throw new NullPointerException(String.format("Object <%s> required param name.", clazz.getName()));
+
+        return true;
+    }
 }
