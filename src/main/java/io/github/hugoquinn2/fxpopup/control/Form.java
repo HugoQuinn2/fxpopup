@@ -1,24 +1,25 @@
 package io.github.hugoquinn2.fxpopup.control;
 
-import io.github.hugoquinn2.fxpopup.config.FxPopupConfig;
+import io.github.hugoquinn2.fxpopup.constants.FxPopIcon;
 import io.github.hugoquinn2.fxpopup.constants.Theme;
+import io.github.hugoquinn2.fxpopup.controller.MessageField;
 import io.github.hugoquinn2.fxpopup.controller.MessageForm;
-import io.github.hugoquinn2.fxpopup.utils.MasterUtils;
+import io.github.hugoquinn2.fxpopup.model.Icon;
 import io.github.hugoquinn2.fxpopup.utils.MessageFormUtil;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 
-import java.util.List;
+import java.util.Arrays;
 
+import static io.github.hugoquinn2.fxpopup.utils.MessageFormUtil.createField;
 import static io.github.hugoquinn2.fxpopup.utils.MessageFormUtil.isValidObjectForm;
 
 public class Form extends VBox {
     // Form structure
-    private Overlay overlay;
     private HBox header;
     private HBox footer;
     private Label title;
@@ -52,14 +53,38 @@ public class Form extends VBox {
     public Form(Object referenceObject, boolean isClosable) {
         isValidObjectForm(referenceObject);
 
+        this.isClosable = isClosable;
+        this.referenceObject = referenceObject;
+
+        this.close =  new Button();
+        close.setGraphic(new Icon(FxPopIcon.CLOSE, 0.5));
+
+        this.send = new Button("Send");
+        this.fieldsContainer =  new VBox();
+        this.error = new Label();
+        this.footer = new HBox();
+
         referenceObjectClazz = referenceObject.getClass();
         messageForm = referenceObjectClazz.getAnnotation(MessageForm.class);
         nameForm = messageForm.name();
 
-        setClosable(isClosable);
-        setReferenceObject(referenceObject);
-        setOverlay(new Overlay());
-        setTitle(new Label(nameForm));
+        this.title = new Label(nameForm);
+
+        // Form structure
+        Region region =  new Region();
+        HBox.setHgrow(region, Priority.ALWAYS);
+
+        header = new HBox(
+                title, region, close
+        );
+
+        footer = new HBox(
+                region, send
+        );
+
+        getChildren().addAll(
+                header, fieldsContainer, error, footer
+        );
 
         // Define style classes
         getStyleClass().add(FORM_CLASS);
@@ -71,31 +96,17 @@ public class Form extends VBox {
         close.getStyleClass().add(CLOSE_BUTTON_CLASS);
         send.getStyleClass().add(SEND_BUTTON_CLASS);
 
-        // Form structure
-        header.getChildren().addAll(
-          title, new Region(), close
-        );
+        // Inject style by theme
+        MessageFormUtil.injectTheme(this, theme);
 
-        footer.getChildren().addAll(
-          new Region(), send
-        );
-
-        getChildren().addAll(
-                header, fieldsContainer, error, footer
-        );
+        // Generate Fields
+        generateFields();
     }
 
     public void generateFields() {
-//            MessageFormUtil.generateFieldsForm(parent, model, theme);
-//            MessageFormUtil.injectTheme(parent, theme);
-//
-//            MasterUtils.findAndEditText(parent, FxPopupConfig.titleFormId, clazz.getAnnotation(MessageForm.class).name());
-//
-//            // Set actions to close and submit buttons.
-//            MessageFormUtil.setClose(parent);
-//            MessageFormUtil.setSubmit(model, parent);
-//
-//            MessageFormUtil.injectFxml(parent, pos);
+        Arrays.stream(referenceObjectClazz.getDeclaredFields())
+                .filter(field -> field.isAnnotationPresent(MessageField.class))
+                .forEach(field -> createField(field, referenceObject, fieldsContainer, theme));
     }
 
     public boolean isClosable() {
@@ -154,11 +165,12 @@ public class Form extends VBox {
         this.title = title;
     }
 
-    public Overlay getOverlay() {
-        return overlay;
+    public Theme getTheme() {
+        return theme;
     }
 
-    public void setOverlay(Overlay overlay) {
-        this.overlay = overlay;
+    public void setTheme(Theme theme) {
+        this.theme = theme;
+        MessageFormUtil.injectTheme(this, this.theme);
     }
 }

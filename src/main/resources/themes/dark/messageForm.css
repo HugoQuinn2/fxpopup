@@ -1,7 +1,19 @@
-.root, #buttonClose, .text-field, .check-box, .icon, .label {
+.form-header, form-footer {
+    -fx-padding: 10px;
+}
+
+.form-label-field,
+.form-title {
+    -fx-padding: 3px 10px 3px 10px;
     -fx-font: 14px sans-serif;
-    -fx-text-fill: #F3F9F5; /* Texto claro */
-    -fx-fill: #F3F9F5;
+    -fx-text-fill: #F3F9F5;
+}
+
+.form {
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-background-color: #2F3032; /* Fondo oscuro */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.6), 10, 0.1, 0, 5);
 }
 
 .button {
@@ -9,19 +21,11 @@
     -fx-text-fill: #F3F9F5; /* Texto claro para botones */
 }
 
-#messageFormBody {
-    -fx-border-radius: 8px;
-    -fx-background-radius: 8px;
-    -fx-background-color: #2F3032; /* Fondo oscuro */
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.6), 10, 0.1, 0, 5);
-}
-
-#titleForm {
+.form-title {
     -fx-font-size: 22px;
-    -fx-text-fill: #F3F9F5; /* Texto claro */
 }
 
-#buttonClose {
+.form-close-button {
     -fx-background-color: transparent;
     -fx-padding: 0px;
     -fx-margin: 0px;
@@ -29,14 +33,14 @@
     -fx-text-fill: #F3F9F5; /* Texto claro */
 }
 
-#successButton {
+.form-send-button {
     -fx-background-color: #3A6F41; /* Verde oscuro */
     -fx-text-fill: #F3F9F5; /* Texto claro */
     -fx-border-radius: 8px;
     -fx-background-radius: 8px;
 }
 
-.field {
+.form-custom-field {
     -fx-background-color: #404040; /* Fondo oscuro */
     -fx-border-radius: 8px;
     -fx-background-radius: 8px;
@@ -47,7 +51,7 @@
     -fx-text-fill: #F3F9F5; /* Texto claro */
 }
 
-.text-required {
+.form-text-required {
     -fx-fill: #FF6F6F; /* Rojo brillante */
     -fx-text-fill: #FF6F6F; /* Rojo brillante */
 }
@@ -61,14 +65,9 @@
     -fx-text-fill: #FF6F6F; /* Rojo vibrante para resaltar */
 }
 
-.context {
+.form-context-field {
     -fx-fill: #A0A0A0; /* Texto contextual más claro */
     -fx-font-size: 12px;
-}
-
-.label {
-    -fx-fill: #F3F9F5; /* Texto claro */
-    -fx-font-size: 14px;
 }
 
 .icon {

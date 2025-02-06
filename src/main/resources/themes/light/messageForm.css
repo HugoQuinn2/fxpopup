@@ -1,38 +1,115 @@
-.root, #buttonClose, .text-field, .check-box, .icon, .label {
+.form {
     -fx-font: 14px sans-serif;
-    -fx-text-fill: #363636;
-    -fx-fill: #363636;
+    -fx-text-fill: #F3F9F5; /* Texto claro */
+    -fx-fill: #F3F9F5;
+
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-background-color: #2F3032; /* Fondo oscuro */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.6), 10, 0.1, 0, 5);
 }
 
 .button {
     -fx-font: 16px sans-serif;
+    -fx-text-fill: #F3F9F5; /* Texto claro para botones */
 }
 
-#messageFormBody {
-    -fx-border-radius: 8px;
-    -fx-background-radius: 8px;
-
-    -fx-background-color: #FFFFFF; /* Fondo claro */
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.15), 10, 0.1, 0, 5);
-}
-
-#titleForm {
+.form-title {
     -fx-font-size: 22px;
+    -fx-text-fill: #F3F9F5; /* Texto claro */
 }
 
-#buttonClose {
+.form-close-button {
     -fx-background-color: transparent;
     -fx-padding: 0px;
     -fx-margin: 0px;
-    -fx-text-fill: #363636; /* Texto oscuro para contraste */
+    -fx-font-size: 8px;
+    -fx-text-fill: #F3F9F5; /* Texto claro */
 }
 
-#successButton {
-    -fx-background-color: #4CAF50; /* Verde claro para éxito */
-    -fx-text-fill: #FFFFFF; /* Texto blanco para contraste */
+.form-send-button {
+    -fx-background-color: #3A6F41; /* Verde oscuro */
+    -fx-text-fill: #F3F9F5; /* Texto claro */
     -fx-border-radius: 8px;
     -fx-background-radius: 8px;
 }
+
+.field {
+    -fx-background-color: #404040; /* Fondo oscuro */
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-pref-height: 33px;
+    -fx-min-height: 33px;
+    -fx-max-height: 33px;
+    -fx-padding: 3px 10px 3px 10px; /* Espaciado uniforme */
+    -fx-text-fill: #F3F9F5; /* Texto claro */
+}
+
+.text-required {
+    -fx-fill: #FF6F6F; /* Rojo brillante */
+    -fx-text-fill: #FF6F6F; /* Rojo brillante */
+}
+
+.required {
+    -fx-border-color: #FF6F6F; /* Bordes en rojo brillante */
+}
+
+.required > .icon{
+    -fx-fill: #FF6F6F; /* Rojo vibrante para resaltar */
+    -fx-text-fill: #FF6F6F; /* Rojo vibrante para resaltar */
+}
+
+.context {
+    -fx-fill: #A0A0A0; /* Texto contextual más claro */
+    -fx-font-size: 12px;
+}
+
+.label {
+    -fx-fill: #F3F9F5; /* Texto claro */
+    -fx-font-size: 14px;
+}
+
+.icon {
+    -fx-fill: #F3F9F5; /* Iconos claros */
+}
+
+.combo-box .list-view, .combo-box .list-cell {
+    -fx-font: 12px sans-serif;
+    -fx-text-fill: #F3F9F5; /* Texto claro */
+    -fx-fill: #F3F9F5;
+    -fx-background-color: #404040; /* Fondo oscuro */
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+}
+
+.scroll-bar .track {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar .increment-button,
+.scroll-bar .decrement-button {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar .thumb {
+    -fx-background-color: #F3F9F5; /* Color claro */
+    -fx-background-insets: 2;
+}
+
+.scroll-bar {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.scroll-bar .increment-arrow,
+.scroll-bar .decrement-arrow {
+    -fx-background-color: #F3F9F5; /* Color claro */
+}
+
+.focused .icon {
+    -fx-fill: #3A6F41; /* Verde oscuro para íconos enfocados */
+}
+
 
 .field {
     -fx-background-color: #F5F5F5; /* Fondo ligeramente gris para contraste suave */

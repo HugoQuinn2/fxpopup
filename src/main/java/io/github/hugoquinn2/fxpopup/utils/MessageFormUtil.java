@@ -138,7 +138,7 @@ public class MessageFormUtil {
         return true;
     }
 
-    private static void createField(Field field, Object model, Parent parent, Theme theme) {
+    public static void createField(Field field, Object model, Parent parent, Theme theme) {
         MessageField annotation = field.getAnnotation(MessageField.class);
 
         // Header

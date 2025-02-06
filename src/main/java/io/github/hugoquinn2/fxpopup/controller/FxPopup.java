@@ -2,6 +2,7 @@ package io.github.hugoquinn2.fxpopup.controller;
 
 import io.github.hugoquinn2.fxpopup.config.FxPopupConfig;
 import io.github.hugoquinn2.fxpopup.constants.Theme;
+import io.github.hugoquinn2.fxpopup.control.Form;
 import io.github.hugoquinn2.fxpopup.control.Message;
 import io.github.hugoquinn2.fxpopup.control.ToolTip;
 import io.github.hugoquinn2.fxpopup.utils.MasterUtils;
@@ -49,6 +50,8 @@ public class FxPopup implements FxPopupInterface {
         Platform.runLater(() -> {
             if (node instanceof Message)
                 ((Message) node).setTheme(theme);
+            else if (node instanceof Form)
+                ((Form) node).setTheme(theme);
 
             MessagePopupUtil.injectFxml(node, MessagePopupUtil.parsePosByPosMessage(pos), pos);
         });

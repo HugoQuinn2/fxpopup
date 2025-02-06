@@ -28,7 +28,7 @@ public class StyleConfig {
     /**
      * CSS class name for the form field itself.
      */
-    public static final String FIELD = "field";
+    public static final String FIELD = "form-custom-field";
 
 
     // ==============================
@@ -38,17 +38,17 @@ public class StyleConfig {
     /**
      * CSS class name for indicating a required text input field.
      */
-    public static final String TEXT_REQUIRED = "text-required";
+    public static final String TEXT_REQUIRED = "form-text-required-field";
 
     /**
      * CSS class name for the context (description) area of the form.
      */
-    public static final String CONTEXT = "context";
+    public static final String CONTEXT = "form-context-field";
 
     /**
      * CSS class name for the label of a form field.
      */
-    public static final String LABEL = "label";
+    public static final String LABEL = "form-label-field";
 
     /**
      * CSS class name for tool tip parent

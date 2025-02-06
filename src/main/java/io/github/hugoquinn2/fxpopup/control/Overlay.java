@@ -2,6 +2,7 @@ package io.github.hugoquinn2.fxpopup.control;
 
 import io.github.hugoquinn2.fxpopup.utils.MasterUtils;
 import javafx.application.Platform;
+import javafx.scene.Parent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -15,14 +16,19 @@ public class Overlay extends Rectangle {
     public Overlay(double opacity){this(Color.BLACK, opacity);}
 
     public Overlay(Color color, double opacity) {
-        Platform.runLater(() -> {
-            this.setFill(color);
-            this.setOpacity(opacity);
+        this.setFill(color);
+        this.setOpacity(opacity);
 
-            this.widthProperty().bind(((Pane) MasterUtils.getRoot()).widthProperty());
-            this.heightProperty().bind(((Pane) MasterUtils.getRoot()).heightProperty());
+        // Bind width and height when overlay is on scene
+        this.sceneProperty().addListener((observable, oldScene, newScene) -> {
+            Parent root = getParent();
 
-            this.getStyleClass().add(OVERLAY_CLASS);
+            if (root != null) {
+                this.widthProperty().bind(((Pane) root).widthProperty());
+                this.heightProperty().bind(((Pane) root).heightProperty());
+            }
         });
+
+        this.getStyleClass().add(OVERLAY_CLASS);
     }
 }
