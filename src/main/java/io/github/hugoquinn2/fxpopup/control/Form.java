@@ -2,26 +2,28 @@ package io.github.hugoquinn2.fxpopup.control;
 
 import io.github.hugoquinn2.fxpopup.constants.FxPopIcon;
 import io.github.hugoquinn2.fxpopup.constants.Theme;
+import io.github.hugoquinn2.fxpopup.controller.FxPopupForm;
 import io.github.hugoquinn2.fxpopup.controller.MessageField;
 import io.github.hugoquinn2.fxpopup.controller.MessageForm;
 import io.github.hugoquinn2.fxpopup.model.Icon;
+import io.github.hugoquinn2.fxpopup.utils.MasterUtils;
 import io.github.hugoquinn2.fxpopup.utils.MessageFormUtil;
+import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 
 import java.util.Arrays;
 
-import static io.github.hugoquinn2.fxpopup.utils.MessageFormUtil.createField;
-import static io.github.hugoquinn2.fxpopup.utils.MessageFormUtil.isValidObjectForm;
+import static io.github.hugoquinn2.fxpopup.utils.MessageFormUtil.*;
 
 public class Form extends VBox {
     // Form structure
     private HBox header;
+    private VBox body;
     private HBox footer;
+
     private Label title;
     private VBox fieldsContainer;
     private Label error;
@@ -40,6 +42,7 @@ public class Form extends VBox {
     // Style class for CSS
     private String FORM_CLASS = "form";
     private String HEADER_CLASS = "form-header";
+    private String BODY_CLASS = "form-body";
     private String FOOTER_CLASS = "form-footer";
     private String TITLE_CLASS = "form-title";
     private String FIELD_CONTAINER_CLASS = "form-fields-container";
@@ -57,7 +60,7 @@ public class Form extends VBox {
         this.referenceObject = referenceObject;
 
         this.close =  new Button();
-        close.setGraphic(new Icon(FxPopIcon.CLOSE, 0.5));
+        close.setGraphic(new Icon(FxPopIcon.CLOSE, 0.6));
 
         this.send = new Button("Send");
         this.fieldsContainer =  new VBox();
@@ -77,18 +80,22 @@ public class Form extends VBox {
         header = new HBox(
                 title, region, close
         );
+        header.setAlignment(Pos.CENTER_LEFT);
 
-        footer = new HBox(
-                region, send
+        body = new VBox(
+                fieldsContainer, error, send
         );
 
+        footer = new HBox();
+
         getChildren().addAll(
-                header, fieldsContainer, error, footer
+                header, body, footer
         );
 
         // Define style classes
         getStyleClass().add(FORM_CLASS);
         header.getStyleClass().add(HEADER_CLASS);
+        body.getStyleClass().add(BODY_CLASS);
         footer.getStyleClass().add(FOOTER_CLASS);
         title.getStyleClass().add(TITLE_CLASS);
         fieldsContainer.getStyleClass().add(FIELD_CONTAINER_CLASS);
@@ -101,12 +108,52 @@ public class Form extends VBox {
 
         // Generate Fields
         generateFields();
+
+        // Set actions Form
+        setSendActions();
+        setCloseActions();
     }
 
     public void generateFields() {
         Arrays.stream(referenceObjectClazz.getDeclaredFields())
                 .filter(field -> field.isAnnotationPresent(MessageField.class))
                 .forEach(field -> createField(field, referenceObject, fieldsContainer, theme));
+    }
+
+    private void setSendActions() {
+        try {
+            Class<? extends FxPopupForm<?>> validatorClass = messageForm.validator();
+
+            FxPopupForm<Object> validator = (FxPopupForm<Object>) validatorClass.getDeclaredConstructor().newInstance();
+
+            send.setOnAction(e -> {
+                send.setDisable(true);
+                MasterUtils.requestFocusOnAllFields(this);
+                try {
+                    if (isAllRequired(this) && validator.validate(referenceObject)) {
+                        validator.isValidForm(referenceObject);
+                        error.setText("");
+                    } else {
+                        send.setDisable(false);
+                    }
+                } catch (Exception ex) {
+                    error.setText(ex.getMessage());
+                    send.setDisable(false);
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    private void setCloseActions() {
+        if (isClosable)
+            this.getChildren().remove(close);
+        else
+            close.setOnAction(event -> {
+                Parent parent = getParent();
+                if (parent != null)
+                    ((Pane) parent).getChildren().remove(this);
+            });
     }
 
     public boolean isClosable() {

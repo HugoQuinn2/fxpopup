@@ -142,8 +142,8 @@ public class MessageFormUtil {
         MessageField annotation = field.getAnnotation(MessageField.class);
 
         // Header
-        Text textRequired = new Text(annotation.required() && !annotation.label().isEmpty() ? "*" : null);
-        Text label = new Text(!annotation.label().isEmpty() ? annotation.label() : null);
+        Label textRequired = new Label(annotation.required() && !annotation.label().isEmpty() ? "*" : null);
+        Label label = new Label(!annotation.label().isEmpty() ? annotation.label() : null);
         TextFlow header = new TextFlow(
                 label.getText() != null ?
                         label : null,
@@ -156,7 +156,7 @@ public class MessageFormUtil {
 
         // Field
         Parent fieldContainer = createFieldByType(field, model);
-        Text context = new Text(annotation.context());
+        Label context = new Label(annotation.context());
 
         fieldContainer.setId(field.getName() + "FieldContainer");
         context.setId(field.getName() + "ContextField");
@@ -279,7 +279,7 @@ public class MessageFormUtil {
      * @param form Parent where nodes with class REQUIRED will be searched.
      * @return True if no Node was found.
      */
-    private static boolean isAllRequired(Parent form) {
+    public static boolean isAllRequired(Parent form) {
         return MasterUtils.searchNodesWithClass(form, StyleConfig.REQUIRED).isEmpty();
     }
 
