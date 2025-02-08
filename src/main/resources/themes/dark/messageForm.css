@@ -40,7 +40,6 @@
 /* ---------------- Header, Body & Footer -------------------------- */
 .form-header, .form-footer, .form-body {
     -fx-padding: 5px 15px 5px 15px;
-    -fx-spacing: 5px;
 }
 
 /* ----------------- Buttons ---------------------------------- */
@@ -72,16 +71,21 @@
     -fx-background-radius: 8px;
 }
 
+/* -------------------- Fields ---------------------------*/
+
 .form-custom-field {
-    -fx-background-color: #404040; /* Fondo oscuro */
+    -fx-background-color: #404040;
     -fx-border-radius: 8px;
     -fx-background-radius: 8px;
     -fx-pref-height: 33px;
     -fx-min-height: 33px;
     -fx-max-height: 33px;
-    -fx-padding: 3px 10px 3px 10px;
+    -fx-padding: 3px;
     -fx-text-fill: #F3F9F5;
-    -fx-margin: 0px 0px 5px 0px;
+}
+
+.form-custom-field .text-field {
+    -fx-text-fill: #F3F9F5;
 }
 
 .required {
