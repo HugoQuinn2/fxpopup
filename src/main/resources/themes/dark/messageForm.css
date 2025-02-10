@@ -14,18 +14,6 @@
     -fx-padding: 0px 0px 5px 0px;
 }
 
-.form-error {
-    -fx-font: 14px sans-serif;
-    -fx-text-fill: #FF6F6F;
-    -fx-wrap: true;
-    -fx-padding: 0px 0px 5px 0px;
-}
-
-.form-title {
-    -fx-font: 22px sans-serif;
-     -fx-text-fill: #F3F9F5;
-}
-
 .form-context-field {
     -fx-font: 14px sans-serif;
     -fx-text-fill: #a3a3a3;
@@ -35,6 +23,18 @@
 .form-text-required-field {
     -fx-font: 14px sans-serif;
     -fx-text-fill: #FF6F6F;
+}
+
+.form-error {
+    -fx-font: 14px sans-serif;
+    -fx-text-fill: #FF6F6F;
+    -fx-wrap: true;
+    -fx-padding: 0px 0px 5px 0px;
+}
+
+.form-title {
+    -fx-font: 22px sans-serif;
+    -fx-text-fill: #F3F9F5;
 }
 
 /* ---------------- Header, Body & Footer -------------------------- */
@@ -72,20 +72,29 @@
 }
 
 /* -------------------- Fields ---------------------------*/
-
-.form-custom-field {
+.custom-field {
     -fx-background-color: #404040;
+    -fx-border-width: 1px;
+
     -fx-border-radius: 8px;
     -fx-background-radius: 8px;
+
     -fx-pref-height: 33px;
     -fx-min-height: 33px;
-    -fx-max-height: 33px;
-    -fx-padding: 3px;
+
+    -fx-padding: 5px 10px 5px 10px;
     -fx-text-fill: #F3F9F5;
 }
 
-.form-custom-field .text-field {
+.form-field-container {
+    -fx-padding: 0px 0px 8px 0px;
+}
+
+.text-field,
+.check-box,
+.combo-box{
     -fx-text-fill: #F3F9F5;
+    -fx-font: 14px sans-serif;
 }
 
 .required {
@@ -95,11 +104,6 @@
 .required > .icon{
     -fx-fill: #FF6F6F; /* Rojo vibrante para resaltar */
     -fx-text-fill: #FF6F6F; /* Rojo vibrante para resaltar */
-}
-
-.form-context-field {
-    -fx-fill: #A0A0A0; /* Texto contextual más claro */
-    -fx-font-size: 12px;
 }
 
 .icon {
@@ -121,11 +125,13 @@
 
 .scroll-bar .increment-button,
 .scroll-bar .decrement-button {
+    -fx-min-height: 0px;
+    -fx-max-height: 0px;
     -fx-background-color: transparent;
 }
 
 .scroll-bar .thumb {
-    -fx-background-color: #F3F9F5; /* Color claro */
+    -fx-background-color: #a3a3a3;
     -fx-background-insets: 2;
 }
 
@@ -136,7 +142,8 @@
 
 .scroll-bar .increment-arrow,
 .scroll-bar .decrement-arrow {
-    -fx-background-color: #F3F9F5; /* Color claro */
+    -fx-shape: none;
+    -fx-background-color: transparent; /* Color claro */
 }
 
 .focused .icon {

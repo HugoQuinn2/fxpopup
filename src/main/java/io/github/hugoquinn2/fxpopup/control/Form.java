@@ -60,7 +60,7 @@ public class Form extends VBox {
         this.referenceObject = referenceObject;
 
         this.close =  new Button();
-        close.setGraphic(new Icon(FxPopIcon.CLOSE, 0.6));
+        close.setGraphic(new Icon(FxPopIcon.CLOSE, 0.7));
 
         this.send = new Button("Send");
         this.fieldsContainer =  new VBox();
@@ -72,6 +72,13 @@ public class Form extends VBox {
         nameForm = messageForm.name();
 
         this.title = new Label(nameForm);
+
+        // Make responsive
+        setMinSize(USE_PREF_SIZE, USE_PREF_SIZE);
+        setPrefSize(450, USE_COMPUTED_SIZE);
+        setMaxSize(USE_PREF_SIZE, USE_PREF_SIZE);
+
+        error.setWrapText(true);
 
         // Form structure
         Region region =  new Region();

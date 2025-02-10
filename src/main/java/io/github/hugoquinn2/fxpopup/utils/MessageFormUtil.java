@@ -1,5 +1,6 @@
 package io.github.hugoquinn2.fxpopup.utils;
 
+import io.github.hugoquinn2.fxpopup.control.ToolTip;
 import io.github.hugoquinn2.fxpopup.controller.FxPopup;
 import io.github.hugoquinn2.fxpopup.model.Icon;
 import io.github.hugoquinn2.fxpopup.config.FieldData;
@@ -16,6 +17,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -142,14 +144,12 @@ public class MessageFormUtil {
         MessageField annotation = field.getAnnotation(MessageField.class);
 
         // Header
-        Label textRequired = new Label(annotation.required() && !annotation.label().isEmpty() ? "*" : null);
-        Label label = new Label(!annotation.label().isEmpty() ? annotation.label() : null);
-        TextFlow header = new TextFlow(
-                label.getText() != null ?
-                        label : null,
-                textRequired.getText() != null ?
-                        textRequired : null
-        );
+        Label textRequired = new Label("*");
+        Label label = new Label(annotation.label());
+        TextFlow header = new TextFlow();
+
+        if (!label.getText().isEmpty()) header.getChildren().add(label);
+        if (annotation.required()) header.getChildren().add(textRequired);
 
         label.setId(field.getName() + "Label");
         textRequired.setId(field.getName() + "TextRequired");
@@ -168,19 +168,25 @@ public class MessageFormUtil {
         context.getStyleClass().add(StyleConfig.CONTEXT);
         label.getStyleClass().add(StyleConfig.LABEL);
 
+        VBox fieldBody = new VBox();
+        fieldBody.getStyleClass().add("form-field-container");
+
+        label.setWrapText(true);
+        context.setWrapText(true);
+
         // Tool Tip
         if (!annotation.toolTip().isEmpty()) {
-            FxPopup fxPopup = new FxPopup();
-            fxPopup.setTheme(theme);
-            fxPopup.toolTip(fieldContainer, annotation.toolTip());
+            ToolTip toolTip = new ToolTip(annotation.toolTip(),fieldContainer);
         }
 
         if (!annotation.label().isEmpty())
-            ((Pane) parent).getChildren().add(header);
+            fieldBody.getChildren().add(header);
         if (!fieldContainer.getChildrenUnmodifiable().isEmpty())
-            ((Pane) parent).getChildren().add(fieldContainer);
+            fieldBody.getChildren().add(fieldContainer);
         if (!context.getText().isEmpty() || !context.getText().isBlank())
-            ((Pane) parent).getChildren().add(context);
+            fieldBody.getChildren().add(context);
+
+        ((Pane) parent).getChildren().add(fieldBody);
     }
 
     private static Parent createFieldByType(Field field, Object model) {

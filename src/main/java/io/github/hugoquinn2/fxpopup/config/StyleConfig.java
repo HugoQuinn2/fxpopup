@@ -28,7 +28,7 @@ public class StyleConfig {
     /**
      * CSS class name for the form field itself.
      */
-    public static final String FIELD = "form-custom-field";
+    public static final String FIELD = "custom-field";
 
 
     // ==============================

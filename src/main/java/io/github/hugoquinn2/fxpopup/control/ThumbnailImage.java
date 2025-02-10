@@ -61,15 +61,16 @@ public class ThumbnailImage extends ImageView {
             double screenWidth = screenBounds.getWidth();
             double thumbImageWidth = screenWidth * scaleThumbImage;
 
-            // Show overlay before image
-            fxPopup.show(overlay, Pos.CENTER);
-
             // Resize image to 80% size windows and preserve ratio
             thumbImage.setFitWidth(thumbImageWidth);
             thumbImage.setPreserveRatio(true);
 
             // Show image above Overlay
-            fxPopup.show(thumbImage, Pos.CENTER);
+            fxPopup.showAll(
+                    Pos.CENTER,
+                    overlay,
+                    thumbImage
+            );
         });
     }
 

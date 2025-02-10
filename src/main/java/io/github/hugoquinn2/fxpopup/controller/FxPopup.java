@@ -57,7 +57,7 @@ public class FxPopup implements FxPopupInterface {
 
     @Override
     public void show(Node node) {
-
+        show(Pos.CENTER, node);
     }
 
     @Override
@@ -80,17 +80,20 @@ public class FxPopup implements FxPopupInterface {
 
     @Override
     public void showAll(Node... nodes) {
-
+        for (Node node : nodes)
+            show(node);
     }
 
     @Override
     public void showAll(Pos pos, Node... nodes) {
-
+        for (Node node : nodes)
+            show(pos, node);
     }
 
     @Override
     public void showAll(double x, double y, Node... nodes) {
-
+        for (Node node : nodes)
+            show(x, y, node);
     }
 
     /**

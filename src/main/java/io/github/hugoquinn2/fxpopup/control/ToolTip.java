@@ -73,7 +73,7 @@ public class ToolTip extends VBox {
             });
         });
 
-        Platform.runLater(() -> this.fxPopup.show(this));
+        Platform.runLater(() -> this.fxPopup.show(Pos.TOP_LEFT, this));
     }
 
     private void setResponsive() {
