@@ -5,7 +5,9 @@ import io.github.hugoquinn2.fxpopup.constants.FxPopIcon;
 import io.github.hugoquinn2.fxpopup.constants.MessageType;
 import io.github.hugoquinn2.fxpopup.constants.Theme;
 import io.github.hugoquinn2.fxpopup.model.Icon;
+import io.github.hugoquinn2.fxpopup.service.ThemeDetector;
 import io.github.hugoquinn2.fxpopup.utils.MasterUtils;
+import io.github.hugoquinn2.fxpopup.utils.MessageFormUtil;
 import io.github.hugoquinn2.fxpopup.utils.MessagePopupUtil;
 import io.github.hugoquinn2.fxpopup.utils.StyleUtil;
 import javafx.animation.FadeTransition;
@@ -59,7 +61,7 @@ public class Message extends HBox {
 
         this.title = new Label(title);
         this.context = new Label(context);
-        this.messageType = messageType;
+        setMessageType(messageType);
         this.duration = duration;
         this.messageIndicator = new Pane();
         this.containerContext = new VBox();
@@ -120,7 +122,7 @@ public class Message extends HBox {
         });
 
         // Inject theme
-        MessagePopupUtil.injectTheme(this, theme);
+        loadStyle(theme);
     }
 
     private void defineEffects() {
@@ -189,6 +191,19 @@ public class Message extends HBox {
 
     public void setMessageType(MessageType messageType) {
         this.messageType = messageType;
+
+        // Remove all style class
+        getStyleClass().remove("info");
+        getStyleClass().remove("success");
+        getStyleClass().remove("warning");
+        getStyleClass().remove("error");
+
+        switch (messageType) {
+            case INFO -> getStyleClass().add("info");
+            case ERROR -> getStyleClass().add("error");
+            case SUCCESS -> getStyleClass().add("success");
+            case WARNING -> getStyleClass().add("warning");
+        }
     }
 
     public int getDuration() {
@@ -231,6 +246,20 @@ public class Message extends HBox {
 
     public void setTheme(Theme theme) {
         this.theme = theme;
-        MessagePopupUtil.injectTheme(this, this.theme);
+        loadStyle(theme);
+    }
+
+    public void loadStyle(Theme theme) {
+        getStylesheets().removeAll();
+
+        getStylesheets().add(
+                Message.class.getResource(
+                        switch (theme) {
+                            case SYSTEM -> ThemeDetector.isDarkTheme() ? "/themes/dark/message.css" : "/themes/light/message.css";
+                            case DARK -> "/themes/dark/message.css";
+                            case LIGHT -> "/themes/light/message.css";
+                        }
+                ).toExternalForm()
+        );
     }
 }
