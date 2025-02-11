@@ -32,6 +32,10 @@ public class FieldUtil {
      */
     public static Parent createTextField(Field field, Object model, FxPopIcon icon) {
         field.setAccessible(true);
+
+        if (!MasterUtils.isString(field))
+            throw new IllegalArgumentException(String.format("Invalid field type for @%s. Required String, managed: <%s>", field.getName(), field.getType()));
+
         try {
             // Field information
             MessageField annotation = field.getAnnotation(MessageField.class);
@@ -68,6 +72,10 @@ public class FieldUtil {
      */
     public static Parent createTextField(Field field ,Object model, FxPopIcon icon, String match) {
         field.setAccessible(true);
+
+        if (!MasterUtils.isString(field))
+            throw new IllegalArgumentException(String.format("Invalid field type for @%s. Required String, managed: <%s>", field.getName(), field.getType()));
+
         try {
             // Field information
             MessageField annotation = field.getAnnotation(MessageField.class);
@@ -103,6 +111,10 @@ public class FieldUtil {
      */
     public static Parent createPasswordField(Field field, Object model, FxPopIcon icon) {
         field.setAccessible(true);
+
+        if (!MasterUtils.isString(field))
+            throw new IllegalArgumentException(String.format("Invalid field type for @%s. Required String, managed: <%s>", field.getName(), field.getType()));
+
         try {
             // Field Information
             MessageField annotation = field.getAnnotation(MessageField.class);
@@ -163,7 +175,7 @@ public class FieldUtil {
         field.setAccessible(true);
 
         if (MasterUtils.isString(field))
-            throw new IllegalArgumentException(String.format("Invalid field type for @%s. Required Integer, Double or Long", field.getName()));
+            throw new IllegalArgumentException(String.format("Invalid field type for @%s. Required Integer, Double or Long, managed: <%s>", field.getName(), field.getType()));
 
         try {
             // Field information.
@@ -247,6 +259,10 @@ public class FieldUtil {
      */
     public static Parent createPhoneField(Field field ,Object model, FxPopIcon icon) {
         field.setAccessible(true);
+
+        if (!MasterUtils.isString(field))
+            throw new IllegalArgumentException(String.format("Invalid field type for @%s. Required String, managed: <%s>", field.getName(), field.getType()));
+
         try {
             // Field Information
             MessageField annotation = field.getAnnotation(MessageField.class);
@@ -303,6 +319,10 @@ public class FieldUtil {
      */
     public static Parent createCountryField(Field field, Object model, FxPopIcon icon) {
         field.setAccessible(true);
+
+        if (!MasterUtils.isString(field))
+            throw new IllegalArgumentException(String.format("Invalid field type for @%s. Required String, managed: <%s>", field.getName(), field.getType()));
+
         try {
             // Field data.
             MessageField annotation = field.getAnnotation(MessageField.class);
@@ -348,6 +368,10 @@ public class FieldUtil {
      */
     public static Parent createCheckBoxField(Field field ,Object model, FxPopIcon icon){
         field.setAccessible(true);
+
+        if (!MasterUtils.isBoolean(field))
+            throw new IllegalArgumentException(String.format("Invalid field type for @%s. Required Boolean, managed: <%s>", field.getName(), field.getType()));
+
         try {
             // Field data.
             MessageField annotation = field.getAnnotation(MessageField.class);
@@ -469,20 +493,6 @@ public class FieldUtil {
             }
         } catch (Exception e) {
             e.printStackTrace();
-        }
-    }
-
-    /**
-     * Parses a string to a double, defaulting to 0.0 if the string is empty or invalid.
-     * @param text the string to parse
-     * @param defaultValue the default value to return in case of error
-     * @return the parsed double value
-     */
-    private static double parseDoubleOrDefault(String text, double defaultValue) {
-        try {
-            return Double.parseDouble(text);
-        } catch (NumberFormatException e) {
-            return defaultValue;
         }
     }
 
