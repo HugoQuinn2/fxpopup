@@ -1,6 +1,6 @@
 /* --------------------- General Style --------------------- */
 .message {
-    -fx-background-color: #2F3032;
+    -fx-background-color: #FFFFFF;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 20, 0.3, 0, 5);
     -fx-border-radius: 8px;
     -fx-background-radius: 8px;
@@ -26,81 +26,81 @@
 .message-context,
 .message-title{
     -fx-font: 14px sans-serif;
-    -fx-text-fill: #E9E9E9;
+    -fx-text-fill: #000000;
 }
 
 .message-close-button .icon {
-     -fx-fill: #E9E9E9;
+     -fx-fill: #000000;
 }
 
 /* --------------------- ERROR --------------------- */
 .message.error {
-    -fx-background-color: #221D1D;
+    -fx-background-color: #FFB4B4;
 }
 
 .message.error .message-context,
 .message.error .message-title {
-    -fx-text-fill: #E9E9E9;
+    -fx-text-fill: #920000;
 }
 
 .message.error .message-close-button .icon {
-    -fx-fill: #E9E9E9;
+    -fx-fill: #920000;
 }
 
 .message.error .message-indicator {
-    -fx-background-color: #831C1C;
+    -fx-background-color: #ED5151;
 }
 
 /* --------------------- SUCCESS --------------------- */
 .message.success {
-    -fx-background-color: #1D221F;
+    -fx-background-color: #B4FFC8;
 }
 
 .message.success .message-context,
 .message.success .message-title {
-    -fx-text-fill: #E9E9E9;
+    -fx-text-fill: #00780E;
 }
 
 .message.success .message-close-button .icon {
-    -fx-fill: #E9E9E9;
+    -fx-fill: #00780E;
 }
 
 .message.success .message-indicator {
-    -fx-background-color: #1C8350;
+    -fx-background-color: #51ED63;
 }
 
 /* --------------------- WARNING --------------------- */
 .message.warning {
-    -fx-background-color: #21221D;
+    -fx-background-color: #F6FFB4;
 }
 
 .message.warning .message-context,
 .message.warning .message-title {
-    -fx-text-fill: #E9E9E9;
+    -fx-text-fill: #696C01;
 }
 
 .message.warning .message-close-button .icon {
-    -fx-fill: #E9E9E9;
+    -fx-fill: #696C01;
 }
 
 .message.warning .message-indicator {
-    -fx-background-color: #70831C;
+    -fx-background-color: #E3ED51;
 }
 
 /* --------------------- INFO --------------------- */
 .message.info {
-    -fx-background-color: #1D1E22;
+    -fx-background-color: #B4E4FF;
 }
 
 .message.info .message-context,
 .message.info .message-title {
-    -fx-text-fill: #E9E9E9;
+    -fx-text-fill: #005C8F;
 }
 
 .message.info .message-close-button .icon {
-    -fx-fill: #E9E9E9;
+    -fx-fill: #005C8F;
 }
 
 .message.info .message-indicator {
-    -fx-background-color: #1C4B83;
+    -fx-background-color: #51B0ED;
 }

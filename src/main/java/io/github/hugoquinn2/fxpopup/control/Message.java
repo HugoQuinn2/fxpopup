@@ -49,9 +49,11 @@ public class Message extends HBox {
     private String MESSAGE_CLOSE_BUTTON = "message-close-button";
 
     // Constructor with context
+    public Message(String title, String context) {this(title, context, MessageType.NONE, 0);}
     public Message(String title, String context, MessageType messageType) {this(title, context, messageType, 0);}
 
     // Constructor without context
+    public Message(String title) {this(title, null, MessageType.NONE, 0);}
     public Message(String title, MessageType messageType) {this(title, null, messageType, 0);}
     public Message(String title, MessageType messageType, int duration) {this(title, null, messageType, duration);}
 

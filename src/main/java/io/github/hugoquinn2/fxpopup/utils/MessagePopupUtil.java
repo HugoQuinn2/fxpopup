@@ -207,26 +207,27 @@ public class MessagePopupUtil {
      */
     public static String getStylePath(Theme theme, MessageType messageType) {
 
-        return switch (theme) {
-            case SYSTEM -> switch (messageType) {
-                case INFO -> ThemeDetector.isDarkTheme() ? FxPopupConfig.pathDarkInfo : FxPopupConfig.pathLightInfo;
-                case ERROR -> ThemeDetector.isDarkTheme() ? FxPopupConfig.pathDarkError : FxPopupConfig.pathLightError;
-                case SUCCESS -> ThemeDetector.isDarkTheme() ? FxPopupConfig.pathDarkSuccess : FxPopupConfig.pathLightSuccess;
-                case WARNING -> ThemeDetector.isDarkTheme() ? FxPopupConfig.pathDarkWarning : FxPopupConfig.pathLightWarning;
-            };
-            case LIGHT -> switch (messageType) {
-                case INFO -> FxPopupConfig.pathLightInfo;
-                case ERROR -> FxPopupConfig.pathLightError;
-                case SUCCESS -> FxPopupConfig.pathLightSuccess;
-                case WARNING -> FxPopupConfig.pathLightWarning;
-            };
-            case DARK -> switch (messageType) {
-                case INFO -> FxPopupConfig.pathDarkInfo;
-                case ERROR -> FxPopupConfig.pathDarkError;
-                case SUCCESS -> FxPopupConfig.pathDarkSuccess;
-                case WARNING -> FxPopupConfig.pathDarkWarning;
-            };
-        };
+//        return switch (theme) {
+//            case SYSTEM -> switch (messageType) {
+//                case INFO -> ThemeDetector.isDarkTheme() ? FxPopupConfig.pathDarkInfo : FxPopupConfig.pathLightInfo;
+//                case ERROR -> ThemeDetector.isDarkTheme() ? FxPopupConfig.pathDarkError : FxPopupConfig.pathLightError;
+//                case SUCCESS -> ThemeDetector.isDarkTheme() ? FxPopupConfig.pathDarkSuccess : FxPopupConfig.pathLightSuccess;
+//                case WARNING -> ThemeDetector.isDarkTheme() ? FxPopupConfig.pathDarkWarning : FxPopupConfig.pathLightWarning;
+//            };
+//            case LIGHT -> switch (messageType) {
+//                case INFO -> FxPopupConfig.pathLightInfo;
+//                case ERROR -> FxPopupConfig.pathLightError;
+//                case SUCCESS -> FxPopupConfig.pathLightSuccess;
+//                case WARNING -> FxPopupConfig.pathLightWarning;
+//            };
+//            case DARK -> switch (messageType) {
+//                case INFO -> FxPopupConfig.pathDarkInfo;
+//                case ERROR -> FxPopupConfig.pathDarkError;
+//                case SUCCESS -> FxPopupConfig.pathDarkSuccess;
+//                case WARNING -> FxPopupConfig.pathDarkWarning;
+//            };
+//        };
+        return "";
     }
 
     /**
