@@ -6,6 +6,7 @@ import io.github.hugoquinn2.fxpopup.controller.FxPopupForm;
 import io.github.hugoquinn2.fxpopup.controller.MessageField;
 import io.github.hugoquinn2.fxpopup.controller.MessageForm;
 import io.github.hugoquinn2.fxpopup.model.Icon;
+import io.github.hugoquinn2.fxpopup.service.ThemeDetector;
 import io.github.hugoquinn2.fxpopup.utils.MasterUtils;
 import io.github.hugoquinn2.fxpopup.utils.MessageFormUtil;
 import javafx.geometry.Pos;
@@ -33,7 +34,7 @@ public class Form extends VBox {
     // Form Params
     private Object referenceObject;
     private boolean isClosable;
-    private Theme theme = Theme.SYSTEM;
+    private Theme theme;
 
     private MessageForm messageForm;
     private Class<?> referenceObjectClazz;
@@ -66,6 +67,7 @@ public class Form extends VBox {
         this.fieldsContainer =  new VBox();
         this.error = new Label();
         this.footer = new HBox();
+        setTheme(Theme.SYSTEM);
 
         referenceObjectClazz = referenceObject.getClass();
         messageForm = referenceObjectClazz.getAnnotation(MessageForm.class);
@@ -225,6 +227,20 @@ public class Form extends VBox {
 
     public void setTheme(Theme theme) {
         this.theme = theme;
-        MessageFormUtil.injectTheme(this, this.theme);
+        loadStyle(theme);
+    }
+
+    public void loadStyle(Theme theme) {
+        getStylesheets().removeAll();
+
+        getStylesheets().add(
+                Message.class.getResource(
+                        switch (theme) {
+                            case SYSTEM -> ThemeDetector.isDarkTheme() ? "/themes/dark/form.css" : "/themes/light/form.css";
+                            case DARK -> "/themes/dark/form.css";
+                            case LIGHT -> "/themes/light/form.css";
+                        }
+                ).toExternalForm()
+        );
     }
 }

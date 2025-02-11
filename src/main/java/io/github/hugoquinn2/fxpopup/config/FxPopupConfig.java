@@ -126,18 +126,10 @@ public class FxPopupConfig {
     public static final Theme defaultTheme = Theme.SYSTEM;
 
     // Paths to the dark theme CSS files for different message types
-    public static final String pathDarkError = "/themes/dark/error.css";
-    public static final String pathDarkInfo = "/themes/dark/info.css";
-    public static final String pathDarkWarning = "/themes/dark/warning.css";
-    public static final String pathDarkSuccess = "/themes/dark/success.css";
-    public static final String pathDarkMessageForm = "/themes/dark/messageForm.css";
+    public static final String pathDarkMessageForm = "/themes/dark/form.css";
     public static final String pathDarkToolTip = "/themes/dark/tool-tip.css";
 
     // Paths to the light theme CSS files for different message types
-    public static final String pathLightError = "/themes/light/error.css";
-    public static final String pathLightInfo = "/themes/light/info.css";
-    public static final String pathLightWarning = "/themes/light/warning.css";
-    public static final String pathLightSuccess = "/themes/light/success.css";
-    public static final String pathLightMessageForm = "/themes/light/messageForm.css";
+    public static final String pathLightMessageForm = "/themes/light/form.css";
     public static final String pathLightToolTip = "/themes/light/tool-tip.css";
 }
