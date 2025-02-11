@@ -501,11 +501,32 @@ public class FieldUtil {
         filter = change -> change;
 
         if (MasterUtils.isInteger(field))
-            filter = change -> change.getControlNewText().matches("-?\\d*") ? change : null;
-        if (MasterUtils.isDouble(field))
-            filter = change -> change.getControlNewText().matches("-?\\d*(\\.\\d*)?") ? change : null;
-        if (MasterUtils.isLong(field))
-            filter = change -> change.getControlNewText().matches("-?\\d*") ? change : null;
+            filter = change -> {
+                String newText = change.getControlNewText();
+                if (newText.matches("-?\\d*") && MasterUtils.isParseInteger(newText)) {
+                    return change;
+                } else {
+                    return null;
+                }
+            };
+        else if (MasterUtils.isDouble(field))
+            filter = change -> {
+                String newText = change.getControlNewText();
+                if (newText.matches("-?\\d*(\\.\\d*)?") && MasterUtils.isParseDouble(newText)) {
+                    return change;
+                } else {
+                    return null;
+                }
+            };
+        else if (MasterUtils.isLong(field))
+            filter = change -> {
+                String newText = change.getControlNewText();
+                if (newText.matches("-?\\d*") && MasterUtils.isParseLong(newText)) {
+                    return change;
+                } else {
+                    return null;
+                }
+            };
 
         return new TextFormatter<>(filter);
     }
