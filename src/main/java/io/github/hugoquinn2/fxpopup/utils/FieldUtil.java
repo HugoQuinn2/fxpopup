@@ -14,6 +14,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 
 import java.lang.reflect.Field;
+import java.util.function.UnaryOperator;
 
 /**
  * Utility class to handle creation and styling of various field types.
@@ -160,6 +161,10 @@ public class FieldUtil {
      */
     public static Parent createNumberField(Field field, Object model, FxPopIcon icon){
         field.setAccessible(true);
+
+        if (MasterUtils.isString(field))
+            throw new IllegalArgumentException(String.format("Invalid field type for @%s. Required Integer, Double or Long", field.getName()));
+
         try {
             // Field information.
             MessageField annotation = field.getAnnotation(MessageField.class);
@@ -172,7 +177,7 @@ public class FieldUtil {
             TextField textField = new TextField(
                     data != null ?
                             data.toString() :
-                            null
+                            "0"
             );
             HBox container = new HBox(iconLabel, textField, less, plus);
 
@@ -193,14 +198,36 @@ public class FieldUtil {
             container.setAlignment(Pos.CENTER);
 
             // Special features to number field.
+            textField.setTextFormatter(getNumberFormater(field));
+
             less.setOnAction(event -> {
-                double value = parseDoubleOrDefault(textField.getText(), 0);
-                textField.setText(String.valueOf(value - 1.0));
+                if (MasterUtils.isInteger(field)) {
+                    int value = Integer.parseInt(textField.getText());
+                    textField.setText(String.valueOf(value - 1));
+                }
+                else if (MasterUtils.isDouble(field)) {
+                    double value = Double.parseDouble(textField.getText());
+                    textField.setText(String.valueOf(value - 1));
+                }
+                else if (MasterUtils.isLong(field)) {
+                    long value = Long.parseLong(textField.getText());
+                    textField.setText(String.valueOf(value - 1));
+                }
             });
 
             plus.setOnAction(event -> {
-                double value = parseDoubleOrDefault(textField.getText(), 0);
-                textField.setText(String.valueOf(value + 1.0));
+                if (MasterUtils.isInteger(field)) {
+                    int value = Integer.parseInt(textField.getText());
+                    textField.setText(String.valueOf(value + 1));
+                }
+                else if (MasterUtils.isDouble(field)) {
+                    double value = Double.parseDouble(textField.getText());
+                    textField.setText(String.valueOf(value + 1));
+                }
+                else if (MasterUtils.isLong(field)) {
+                    long value = Long.parseLong(textField.getText());
+                    textField.setText(String.valueOf(value + 1));
+                }
             });
 
             setAutoUpdateModel(textField, field, model);
@@ -457,5 +484,19 @@ public class FieldUtil {
         } catch (NumberFormatException e) {
             return defaultValue;
         }
+    }
+
+    private static TextFormatter<String> getNumberFormater(Field field) {
+        UnaryOperator<TextFormatter.Change> filter;
+        filter = change -> change;
+
+        if (MasterUtils.isInteger(field))
+            filter = change -> change.getControlNewText().matches("-?\\d*") ? change : null;
+        if (MasterUtils.isDouble(field))
+            filter = change -> change.getControlNewText().matches("-?\\d*(\\.\\d*)?") ? change : null;
+        if (MasterUtils.isLong(field))
+            filter = change -> change.getControlNewText().matches("-?\\d*") ? change : null;
+
+        return new TextFormatter<>(filter);
     }
 }

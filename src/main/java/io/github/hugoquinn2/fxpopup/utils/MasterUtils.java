@@ -12,6 +12,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Window;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -280,5 +281,52 @@ public class MasterUtils {
         }
 
         return nodes;
+    }
+
+    public static boolean isInteger(Field field) {
+        return field.getType() == int.class || field.getType() == Integer.class;
+    }
+
+    public static boolean isDouble(Field field) {
+        return field.getType() == double.class || field.getType() == Double.class;
+    }
+
+    public static boolean isLong(Field field) {
+        return field.getType() == long.class || field.getType() == Long.class;
+    }
+
+    public static boolean isString(Field field) {
+        return field.getType() == String.class;
+    }
+
+    public static boolean isBoolean(Field field) {
+        return field.getType() == boolean.class || field.getType() == Boolean.class;
+    }
+
+    public static boolean isParseInteger(String s) {
+        try {
+            Integer.parseInt(s);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+    public static boolean isParseDouble(String s) {
+        try {
+            Double.parseDouble(s);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+    public static boolean isParseLong(String s) {
+        try {
+            Long.parseLong(s);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 }
