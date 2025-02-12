@@ -5,10 +5,10 @@ import io.github.hugoquinn2.fxpopup.constants.Theme;
 import io.github.hugoquinn2.fxpopup.controller.FxPopupForm;
 import io.github.hugoquinn2.fxpopup.controller.MessageField;
 import io.github.hugoquinn2.fxpopup.controller.MessageForm;
+import io.github.hugoquinn2.fxpopup.controller.ThemeManager;
 import io.github.hugoquinn2.fxpopup.model.Icon;
 import io.github.hugoquinn2.fxpopup.service.ThemeDetector;
 import io.github.hugoquinn2.fxpopup.utils.MasterUtils;
-import io.github.hugoquinn2.fxpopup.utils.MessageFormUtil;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
@@ -19,14 +19,15 @@ import java.util.Arrays;
 
 import static io.github.hugoquinn2.fxpopup.utils.MessageFormUtil.*;
 
+
 public class Form extends VBox {
     // Form structure
     private Pane headerContainer;
     private Pane bodyContainer;
+    private Pane fieldsContainer;
     private Pane footerContainer;
 
     private Label titleLabel;
-    private Pane fieldsContainer;
     private Label errorLabel;
     private Button closeButton;
     private Button sendButton;
@@ -57,6 +58,11 @@ public class Form extends VBox {
     public Form(Object referenceObject, boolean isClosable) {
         isValidObjectForm(referenceObject);
 
+        // Global Theme
+        theme = ThemeManager.getGlobalTheme();
+        loadStyle(theme);
+        ThemeManager.globalTheme().addListener((obs, oldTheme, newTheme) -> loadStyle(newTheme));
+
         this.isClosable = isClosable;
         this.referenceObject = referenceObject;
 
@@ -67,7 +73,6 @@ public class Form extends VBox {
         this.fieldsContainer =  new VBox();
         this.errorLabel = new Label();
         this.footerContainer = new HBox();
-        setTheme(Theme.SYSTEM);
 
         referenceObjectClazz = referenceObject.getClass();
         messageForm = referenceObjectClazz.getAnnotation(MessageForm.class);
@@ -111,9 +116,6 @@ public class Form extends VBox {
         errorLabel.getStyleClass().add(ERROR_LABEL_CLASS);
         closeButton.getStyleClass().add(CLOSE_BUTTON_CLASS);
         sendButton.getStyleClass().add(SEND_BUTTON_CLASS);
-
-        // Inject style by theme
-        MessageFormUtil.injectTheme(this, theme);
 
         // Generate Fields
         generateFields();
@@ -255,7 +257,7 @@ public class Form extends VBox {
     }
 
     public void loadStyle(Theme theme) {
-        getStylesheets().removeAll();
+        getStylesheets().clear();
 
         getStylesheets().add(
                 Message.class.getResource(

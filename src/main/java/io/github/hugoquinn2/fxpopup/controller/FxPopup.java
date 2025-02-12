@@ -7,6 +7,7 @@ import io.github.hugoquinn2.fxpopup.control.Message;
 import io.github.hugoquinn2.fxpopup.utils.MasterUtils;
 import io.github.hugoquinn2.fxpopup.utils.MessagePopupUtil;
 import javafx.application.Platform;
+import javafx.beans.property.ObjectProperty;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -17,14 +18,10 @@ import javafx.scene.layout.StackPane;
  * Controller for managing FxPopup messages and forms.
  */
 public class FxPopup implements FxPopupInterface {
-    private Theme theme;
-
     /**
      * Default constructor initializing default position and theme.
      */
-    public FxPopup() {
-        theme = FxPopupConfig.defaultTheme;
-    }
+    public FxPopup() {}
 
     @Override
     public void add(Node node) {
@@ -34,11 +31,6 @@ public class FxPopup implements FxPopupInterface {
     @Override
     public void add(Pos pos, Node node) {
         Platform.runLater(() -> {
-            if (node instanceof Message)
-                ((Message) node).setTheme(theme);
-            else if (node instanceof Form)
-                ((Form) node).setTheme(theme);
-
             MessagePopupUtil.injectFxml(node, MessagePopupUtil.parsePosByPosMessage(pos), pos);
         });
     }
@@ -96,12 +88,18 @@ public class FxPopup implements FxPopupInterface {
             show(x, y, node);
     }
 
-    /**
-     * Sets the theme for the popup system.
-     *
-     * @param theme the new theme to be applied.
-     */
-    public void setTheme(Theme theme) {
-        this.theme = theme;
+    @Override
+    public ObjectProperty<Theme> themeManager() {
+        return ThemeManager.globalTheme();
+    }
+
+    @Override
+    public void setGlobalTheme(Theme theme) {
+       ThemeManager.setGlobalTheme(theme);
+    }
+
+    @Override
+    public Theme getGlobalTheme() {
+        return ThemeManager.getGlobalTheme();
     }
 }

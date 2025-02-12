@@ -4,6 +4,7 @@ import io.github.hugoquinn2.fxpopup.config.FxPopupConfig;
 import io.github.hugoquinn2.fxpopup.constants.FxPopIcon;
 import io.github.hugoquinn2.fxpopup.constants.MessageType;
 import io.github.hugoquinn2.fxpopup.constants.Theme;
+import io.github.hugoquinn2.fxpopup.controller.ThemeManager;
 import io.github.hugoquinn2.fxpopup.model.Icon;
 import io.github.hugoquinn2.fxpopup.service.ThemeDetector;
 import io.github.hugoquinn2.fxpopup.utils.MasterUtils;
@@ -123,8 +124,10 @@ public class Message extends HBox {
             MasterUtils.remove(this);
         });
 
-        // Inject theme
+        // Global Theme
+        theme = ThemeManager.getGlobalTheme();
         loadStyle(theme);
+        ThemeManager.globalTheme().addListener((obs, oldTheme, newTheme) -> loadStyle(newTheme));
     }
 
     private void defineEffects() {
@@ -252,7 +255,7 @@ public class Message extends HBox {
     }
 
     public void loadStyle(Theme theme) {
-        getStylesheets().removeAll();
+        getStylesheets().clear();
 
         getStylesheets().add(
                 Message.class.getResource(

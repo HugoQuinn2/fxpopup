@@ -1,98 +1,133 @@
 .form {
-    -fx-font: 14px sans-serif;
-    -fx-text-fill: #F3F9F5; /* Texto claro */
-    -fx-fill: #F3F9F5;
-
     -fx-border-radius: 8px;
     -fx-background-radius: 8px;
-    -fx-background-color: #2F3032; /* Fondo oscuro */
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.6), 10, 0.1, 0, 5);
+    -fx-background-color: #FFFFFF;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.1, 0, 5);
 }
 
-.button {
-    -fx-font: 16px sans-serif;
-    -fx-text-fill: #F3F9F5; /* Texto claro para botones */
+/* ----- Labels Styles --------------------------*/
+.form-label-field {
+    -fx-font: 14px sans-serif;
+    -fx-text-fill: #333333;
+    -fx-wrap: true;
+    -fx-padding: 0px 0px 5px 0px;
+}
+
+.form-context-field {
+    -fx-font: 14px sans-serif;
+    -fx-text-fill: #666666;
+    -fx-padding: 0px 0px 5px 10px;
+}
+
+.form-text-required-field {
+    -fx-font: 14px sans-serif;
+    -fx-text-fill: #D32F2F;
+}
+
+.form-error {
+    -fx-font: 14px sans-serif;
+    -fx-text-fill: #D32F2F;
+    -fx-wrap: true;
+    -fx-padding: 0px 0px 5px 0px;
 }
 
 .form-title {
-    -fx-font-size: 22px;
-    -fx-text-fill: #F3F9F5; /* Texto claro */
+    -fx-font: 22px sans-serif;
+    -fx-text-fill: #333333;
+}
+
+/* ---------------- Header, Body & Footer -------------------------- */
+.form-header, .form-footer, .form-body {
+    -fx-padding: 5px 15px 5px 15px;
+}
+
+/* ----------------- Buttons ---------------------------------- */
+.button {
+    -fx-font: 16px sans-serif;
+    -fx-text-fill: #333333;
 }
 
 .form-close-button {
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
     -fx-background-color: transparent;
     -fx-padding: 0px;
     -fx-margin: 0px;
     -fx-font-size: 8px;
-    -fx-text-fill: #F3F9F5; /* Texto claro */
+    -fx-text-fill: #333333;
+}
+
+.form-close-button:hover {
+    -fx-background-color: red;
+    -fx-cursor: hand;
 }
 
 .form-send-button {
-    -fx-background-color: #3A6F41; /* Verde oscuro */
-    -fx-text-fill: #F3F9F5; /* Texto claro */
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: #FFFFFF;
     -fx-border-radius: 8px;
     -fx-background-radius: 8px;
 }
 
-.field {
-    -fx-background-color: #404040; /* Fondo oscuro */
+/* -------------------- Fields ---------------------------*/
+.custom-field {
+    -fx-background-color: #F5F5F5;
+    -fx-border-width: 1px;
+    -fx-border-color: #CCCCCC;
     -fx-border-radius: 8px;
     -fx-background-radius: 8px;
     -fx-pref-height: 33px;
     -fx-min-height: 33px;
-    -fx-max-height: 33px;
-    -fx-padding: 3px 10px 3px 10px; /* Espaciado uniforme */
-    -fx-text-fill: #F3F9F5; /* Texto claro */
+    -fx-padding: 5px 10px 5px 10px;
+    -fx-text-fill: #333333;
 }
 
-.text-required {
-    -fx-fill: #FF6F6F; /* Rojo brillante */
-    -fx-text-fill: #FF6F6F; /* Rojo brillante */
+.form-field-container {
+    -fx-padding: 0px 0px 8px 0px;
+}
+
+.text-field,
+.check-box,
+.combo-box{
+    -fx-text-fill: #333333;
+    -fx-font: 14px sans-serif;
 }
 
 .required {
-    -fx-border-color: #FF6F6F; /* Bordes en rojo brillante */
+    -fx-border-color: #D32F2F;
 }
 
 .required > .icon{
-    -fx-fill: #FF6F6F; /* Rojo vibrante para resaltar */
-    -fx-text-fill: #FF6F6F; /* Rojo vibrante para resaltar */
-}
-
-.context {
-    -fx-fill: #A0A0A0; /* Texto contextual más claro */
-    -fx-font-size: 12px;
-}
-
-.label {
-    -fx-fill: #F3F9F5; /* Texto claro */
-    -fx-font-size: 14px;
+    -fx-fill: #D32F2F;
+    -fx-text-fill: #D32F2F;
 }
 
 .icon {
-    -fx-fill: #F3F9F5; /* Iconos claros */
+    -fx-fill: #333333;
 }
 
 .combo-box .list-view, .combo-box .list-cell {
     -fx-font: 12px sans-serif;
-    -fx-text-fill: #F3F9F5; /* Texto claro */
-    -fx-fill: #F3F9F5;
-    -fx-background-color: #404040; /* Fondo oscuro */
+    -fx-text-fill: #333333;
+    -fx-fill: #333333;
+    -fx-background-color: #FFFFFF;
     -fx-border-radius: 8px;
     -fx-background-radius: 8px;
 }
 
 .scroll-bar .track {
-    -fx-background-color: transparent;
+    -fx-background-color: #E0E0E0;
 }
 
 .scroll-bar .increment-button,
 .scroll-bar .decrement-button {
+    -fx-min-height: 0px;
+    -fx-max-height: 0px;
     -fx-background-color: transparent;
 }
 
 .scroll-bar .thumb {
-    -fx-background-color: #F3F9F5; /* Color claro */
+    -fx-background-color: #A0A0A0;
     -fx-background-insets: 2;
 }
 
@@ -103,76 +138,10 @@
 
 .scroll-bar .increment-arrow,
 .scroll-bar .decrement-arrow {
-    -fx-background-color: #F3F9F5; /* Color claro */
+    -fx-shape: none;
+    -fx-background-color: transparent;
 }
 
 .focused .icon {
-    -fx-fill: #3A6F41; /* Verde oscuro para íconos enfocados */
-}
-
-
-.field {
-    -fx-background-color: #F5F5F5; /* Fondo ligeramente gris para contraste suave */
-    -fx-border-radius: 8px;
-    -fx-background-radius: 8px;
-    -fx-pref-height: 33px;
-    -fx-min-height: 33px;
-    -fx-max-height: 33px;
-    -fx-padding: 3px 3px 3px 10px;
-}
-
-.text-required {
-    -fx-fill: #D32F2F; /* Rojo vibrante para resaltar */
-    -fx-text-fill: #D32F2F; /* Rojo vibrante para resaltar */
-}
-
-.required {
-    -fx-border-color: #D32F2F; /* Rojo vibrante para bordes */
-}
-
-.required > .icon{
-    -fx-fill: #D32F2F; /* Rojo vibrante para resaltar */
-    -fx-text-fill: #D32F2F; /* Rojo vibrante para resaltar */
-}
-
-.context {
-    -fx-fill: #757575; /* Texto contextual gris medio */
-    -fx-font-size: 12px;
-}
-
-.combo-box .list-view, .combo-box .list-cell {
-    -fx-font: 12px sans-serif;
-    -fx-text-fill: #363636;
-    -fx-fill: #363636;
-    -fx-background-color: #F5F5F5;
-    -fx-border-radius: 8px;
-    -fx-background-radius: 8px;
-}
-
-.scroll-bar .track {
-    -fx-background-color: transparent;
-}
-
-.scroll-bar .increment-button,
-.scroll-bar .decrement-button {
-    -fx-background-color: transparent;
-}
-
-.scroll-bar .thumb {
-    -fx-background-color: #363636;
-    -fx-background-insets: 2;
-}
-
-.scroll-bar {
-    -fx-background-color: transparent;
-    -fx-border-color: transparent;
-}
-
-.scroll-bar .increment-arrow,
-.scroll-bar .decrement-arrow {
-    -fx-background-color: #363636;
-}
-
-.focused .icon{
-    -fx-fill: blue;
+    -fx-fill: #4CAF50;
 }

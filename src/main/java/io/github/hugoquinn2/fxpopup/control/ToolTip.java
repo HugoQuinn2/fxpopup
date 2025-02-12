@@ -2,6 +2,7 @@ package io.github.hugoquinn2.fxpopup.control;
 
 import io.github.hugoquinn2.fxpopup.constants.Theme;
 import io.github.hugoquinn2.fxpopup.controller.FxPopup;
+import io.github.hugoquinn2.fxpopup.controller.ThemeManager;
 import io.github.hugoquinn2.fxpopup.service.ThemeDetector;
 import io.github.hugoquinn2.fxpopup.utils.ToolTipUtils;
 import javafx.application.Platform;
@@ -28,7 +29,7 @@ public class ToolTip extends VBox {
     private VPos vPosDisplay;
     private HPos hPosDisplay;
 
-    private Theme theme = Theme.SYSTEM;
+    private Theme theme;
 
     // Classes for CSS
     private String TOOL_TIP_CLASS = "tool-tip";
@@ -46,6 +47,11 @@ public class ToolTip extends VBox {
         this.vPosDisplay = vPosDisplay;
         this.hPosDisplay = hPosDisplay;
         fxPopup = new FxPopup();
+
+        // Global Theme
+        theme = ThemeManager.getGlobalTheme();
+        loadStyle(theme);
+        ThemeManager.globalTheme().addListener((obs, oldTheme, newTheme) -> loadStyle(newTheme));
 
         // Define tool tip structure
         this.getChildren().add(this.text);
@@ -78,9 +84,6 @@ public class ToolTip extends VBox {
         });
 
         Platform.runLater(() -> this.fxPopup.show(Pos.TOP_LEFT, this));
-
-        // Load style
-        loadStyle();
     }
 
     private void setResponsive() {
@@ -135,7 +138,7 @@ public class ToolTip extends VBox {
 
     public void setTheme(Theme theme) {
         this.theme = theme;
-        loadStyle();
+        loadStyle(theme);
     }
 
     public HPos gethPosDisplay() {
@@ -154,8 +157,8 @@ public class ToolTip extends VBox {
         this.vPosDisplay = vPosDisplay;
     }
 
-    private void loadStyle() {
-        getStylesheets().removeAll();
+    private void loadStyle(Theme theme) {
+        getStylesheets().clear();
 
         getStylesheets().add(
                 Message.class.getResource(

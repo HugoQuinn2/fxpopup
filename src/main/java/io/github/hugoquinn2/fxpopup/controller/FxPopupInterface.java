@@ -1,7 +1,9 @@
 package io.github.hugoquinn2.fxpopup.controller;
 
+import io.github.hugoquinn2.fxpopup.constants.Theme;
 import io.github.hugoquinn2.fxpopup.control.Message;
 import io.github.hugoquinn2.fxpopup.control.ToolTip;
+import javafx.beans.property.ObjectProperty;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
@@ -20,4 +22,8 @@ public interface FxPopupInterface {
     void showAll(Node... nodes);
     void showAll(Pos pos, Node... nodes);
     void showAll(double x, double y, Node... nodes);
+
+    ObjectProperty<Theme> themeManager();
+    void setGlobalTheme(Theme theme);
+    Theme getGlobalTheme();
 }
