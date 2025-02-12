@@ -177,6 +177,7 @@ public class MessageFormUtil {
         // Tool Tip
         if (!annotation.toolTip().isEmpty()) {
             ToolTip toolTip = new ToolTip(annotation.toolTip(),fieldContainer);
+            toolTip.setTheme(theme);
         }
 
         if (!annotation.label().isEmpty())

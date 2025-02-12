@@ -1,6 +1,8 @@
 package io.github.hugoquinn2.fxpopup.control;
 
+import io.github.hugoquinn2.fxpopup.constants.Theme;
 import io.github.hugoquinn2.fxpopup.controller.FxPopup;
+import io.github.hugoquinn2.fxpopup.service.ThemeDetector;
 import io.github.hugoquinn2.fxpopup.utils.ToolTipUtils;
 import javafx.application.Platform;
 import javafx.geometry.HPos;
@@ -25,6 +27,8 @@ public class ToolTip extends VBox {
     private Node nodeFather;
     private VPos vPosDisplay;
     private HPos hPosDisplay;
+
+    private Theme theme = Theme.SYSTEM;
 
     // Classes for CSS
     private String TOOL_TIP_CLASS = "tool-tip";
@@ -74,6 +78,9 @@ public class ToolTip extends VBox {
         });
 
         Platform.runLater(() -> this.fxPopup.show(Pos.TOP_LEFT, this));
+
+        // Load style
+        loadStyle();
     }
 
     private void setResponsive() {
@@ -90,7 +97,7 @@ public class ToolTip extends VBox {
 
         this.setMinSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
         this.setPrefSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
-        this.setMaxSize(200, Region.USE_PREF_SIZE);
+        this.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
     }
 
     public void show() {
@@ -104,5 +111,60 @@ public class ToolTip extends VBox {
 
     public void hide() {
         setVisible(false);
+    }
+
+    public Label getText() {
+        return text;
+    }
+
+    public void setText(Label text) {
+        this.text = text;
+    }
+
+    public Node getNodeFather() {
+        return nodeFather;
+    }
+
+    public void setNodeFather(Node nodeFather) {
+        this.nodeFather = nodeFather;
+    }
+
+    public Theme getTheme() {
+        return theme;
+    }
+
+    public void setTheme(Theme theme) {
+        this.theme = theme;
+        loadStyle();
+    }
+
+    public HPos gethPosDisplay() {
+        return hPosDisplay;
+    }
+
+    public void sethPosDisplay(HPos hPosDisplay) {
+        this.hPosDisplay = hPosDisplay;
+    }
+
+    public VPos getvPosDisplay() {
+        return vPosDisplay;
+    }
+
+    public void setvPosDisplay(VPos vPosDisplay) {
+        this.vPosDisplay = vPosDisplay;
+    }
+
+    private void loadStyle() {
+        getStylesheets().removeAll();
+
+        getStylesheets().add(
+                Message.class.getResource(
+                        switch (theme) {
+                            case SYSTEM -> ThemeDetector.isDarkTheme() ? "/themes/dark/tool-tip.css" : "/themes/light/tool-tip.css";
+                            case DARK -> "/themes/dark/tool-tip.css";
+                            case LIGHT -> "/themes/light/tool-tip.css";
+                        }
+                ).toExternalForm()
+        );
     }
 }

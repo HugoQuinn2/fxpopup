@@ -1,8 +1,10 @@
-.tooltip {
+.tool-tip {
     -fx-background-color: #FFFFFF;
-    -fx-padding: 5px;
+    -fx-padding: 10px;
     -fx-border-radius: 8px;
     -fx-background-radius: 8px;
+
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.6), 10, 0.1, 0, 5);
 }
 
 .tool-tip-text {
