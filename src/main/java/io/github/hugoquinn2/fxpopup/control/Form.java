@@ -21,23 +21,23 @@ import static io.github.hugoquinn2.fxpopup.utils.MessageFormUtil.*;
 
 public class Form extends VBox {
     // Form structure
-    private HBox header;
-    private VBox body;
-    private HBox footer;
+    private Pane headerContainer;
+    private Pane bodyContainer;
+    private Pane footerContainer;
 
-    private Label title;
-    private VBox fieldsContainer;
-    private Label error;
-    private Button close;
-    private Button send;
+    private Label titleLabel;
+    private Pane fieldsContainer;
+    private Label errorLabel;
+    private Button closeButton;
+    private Button sendButton;
 
     // Form Params
     private Object referenceObject;
     private boolean isClosable;
     private Theme theme;
 
-    private MessageForm messageForm;
-    private Class<?> referenceObjectClazz;
+    private final MessageForm messageForm;
+    private final Class<?> referenceObjectClazz;
     private String nameForm;
 
     // Style class for CSS
@@ -60,57 +60,57 @@ public class Form extends VBox {
         this.isClosable = isClosable;
         this.referenceObject = referenceObject;
 
-        this.close =  new Button();
-        close.setGraphic(new Icon(FxPopIcon.CLOSE, 0.7));
+        this.closeButton =  new Button();
+        closeButton.setGraphic(new Icon(FxPopIcon.CLOSE, 0.7));
 
-        this.send = new Button("Send");
+        this.sendButton = new Button("Send");
         this.fieldsContainer =  new VBox();
-        this.error = new Label();
-        this.footer = new HBox();
+        this.errorLabel = new Label();
+        this.footerContainer = new HBox();
         setTheme(Theme.SYSTEM);
 
         referenceObjectClazz = referenceObject.getClass();
         messageForm = referenceObjectClazz.getAnnotation(MessageForm.class);
         nameForm = messageForm.name();
 
-        this.title = new Label(nameForm);
+        this.titleLabel = new Label(nameForm);
 
         // Make responsive
         setMinSize(USE_PREF_SIZE, USE_PREF_SIZE);
         setPrefSize(450, USE_COMPUTED_SIZE);
         setMaxSize(USE_PREF_SIZE, USE_PREF_SIZE);
 
-        error.setWrapText(true);
+        errorLabel.setWrapText(true);
 
         // Form structure
         Region region =  new Region();
         HBox.setHgrow(region, Priority.ALWAYS);
 
-        header = new HBox(
-                title, region, close
+        headerContainer = new HBox(
+                titleLabel, region, closeButton
         );
-        header.setAlignment(Pos.CENTER_LEFT);
+        ((HBox) headerContainer).setAlignment(Pos.CENTER_LEFT);
 
-        body = new VBox(
-                fieldsContainer, error, send
+        bodyContainer = new VBox(
+                fieldsContainer, errorLabel, sendButton
         );
 
-        footer = new HBox();
+        footerContainer = new HBox();
 
         getChildren().addAll(
-                header, body, footer
+                headerContainer, bodyContainer, footerContainer
         );
 
         // Define style classes
         getStyleClass().add(FORM_CLASS);
-        header.getStyleClass().add(HEADER_CLASS);
-        body.getStyleClass().add(BODY_CLASS);
-        footer.getStyleClass().add(FOOTER_CLASS);
-        title.getStyleClass().add(TITLE_CLASS);
+        headerContainer.getStyleClass().add(HEADER_CLASS);
+        bodyContainer.getStyleClass().add(BODY_CLASS);
+        footerContainer.getStyleClass().add(FOOTER_CLASS);
+        titleLabel.getStyleClass().add(TITLE_CLASS);
         fieldsContainer.getStyleClass().add(FIELD_CONTAINER_CLASS);
-        error.getStyleClass().add(ERROR_LABEL_CLASS);
-        close.getStyleClass().add(CLOSE_BUTTON_CLASS);
-        send.getStyleClass().add(SEND_BUTTON_CLASS);
+        errorLabel.getStyleClass().add(ERROR_LABEL_CLASS);
+        closeButton.getStyleClass().add(CLOSE_BUTTON_CLASS);
+        sendButton.getStyleClass().add(SEND_BUTTON_CLASS);
 
         // Inject style by theme
         MessageFormUtil.injectTheme(this, theme);
@@ -135,19 +135,19 @@ public class Form extends VBox {
 
             FxPopupForm<Object> validator = (FxPopupForm<Object>) validatorClass.getDeclaredConstructor().newInstance();
 
-            send.setOnAction(e -> {
-                send.setDisable(true);
+            sendButton.setOnAction(e -> {
+                sendButton.setDisable(true);
                 MasterUtils.requestFocusOnAllFields(this);
                 try {
                     if (isAllRequired(this) && validator.validate(referenceObject)) {
                         validator.isValidForm(referenceObject);
-                        error.setText("");
+                        errorLabel.setText("");
                     } else {
-                        send.setDisable(false);
+                        sendButton.setDisable(false);
                     }
                 } catch (Exception ex) {
-                    error.setText(ex.getMessage());
-                    send.setDisable(false);
+                    errorLabel.setText(ex.getMessage());
+                    sendButton.setDisable(false);
                 }
             });
         } catch (Exception e) {
@@ -156,9 +156,9 @@ public class Form extends VBox {
     }
     private void setCloseActions() {
         if (isClosable)
-            this.getChildren().remove(close);
+            this.getChildren().remove(closeButton);
         else
-            close.setOnAction(event -> {
+            closeButton.setOnAction(event -> {
                 Parent parent = getParent();
                 if (parent != null)
                     ((Pane) parent).getChildren().remove(this);
@@ -181,31 +181,31 @@ public class Form extends VBox {
         this.referenceObject = referenceObject;
     }
 
-    public Button getSend() {
-        return send;
+    public Button getSendButton() {
+        return sendButton;
     }
 
-    public void setSend(Button send) {
-        this.send = send;
+    public void setSendButton(Button sendButton) {
+        this.sendButton = sendButton;
     }
 
-    public Button getClose() {
-        return close;
+    public Button getCloseButton() {
+        return closeButton;
     }
 
-    public void setClose(Button close) {
-        this.close = close;
+    public void setCloseButton(Button closeButton) {
+        this.closeButton = closeButton;
     }
 
-    public Label getError() {
-        return error;
+    public Label getErrorLabel() {
+        return errorLabel;
     }
 
-    public void setError(Label error) {
-        this.error = error;
+    public void setErrorLabel(Label errorLabel) {
+        this.errorLabel = errorLabel;
     }
 
-    public VBox getFieldsContainer() {
+    public Parent getFieldsContainer() {
         return fieldsContainer;
     }
 
@@ -213,12 +213,12 @@ public class Form extends VBox {
         this.fieldsContainer = fieldsContainer;
     }
 
-    public Label getTitle() {
-        return title;
+    public Label getTitleLabel() {
+        return titleLabel;
     }
 
-    public void setTitle(Label title) {
-        this.title = title;
+    public void setTitleLabel(Label titleLabel) {
+        this.titleLabel = titleLabel;
     }
 
     public Theme getTheme() {
@@ -228,6 +228,30 @@ public class Form extends VBox {
     public void setTheme(Theme theme) {
         this.theme = theme;
         loadStyle(theme);
+    }
+
+    public Pane getHeaderContainer() {
+        return headerContainer;
+    }
+
+    public void setHeaderContainer(Pane headerContainer) {
+        this.headerContainer = headerContainer;
+    }
+
+    public Pane getBodyContainer() {
+        return bodyContainer;
+    }
+
+    public void setBodyContainer(Pane bodyContainer) {
+        this.bodyContainer = bodyContainer;
+    }
+
+    public Pane getFooterContainer() {
+        return footerContainer;
+    }
+
+    public void setFooterContainer(Pane footerContainer) {
+        this.footerContainer = footerContainer;
     }
 
     public void loadStyle(Theme theme) {
