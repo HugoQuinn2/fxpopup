@@ -16,6 +16,7 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 
 import javax.swing.*;
+import java.util.Objects;
 
 
 public class ToolTip extends VBox {
@@ -158,16 +159,17 @@ public class ToolTip extends VBox {
     }
 
     private void loadStyle(Theme theme) {
-        getStylesheets().clear();
+        getStylesheets().removeIf(sheet -> sheet.contains("/themes/"));
 
         getStylesheets().add(
-                Message.class.getResource(
+                Objects.requireNonNull(Message.class.getResource(
                         switch (theme) {
-                            case SYSTEM -> ThemeDetector.isDarkTheme() ? "/themes/dark/tool-tip.css" : "/themes/light/tool-tip.css";
+                            case SYSTEM ->
+                                    ThemeDetector.isDarkTheme() ? "/themes/dark/tool-tip.css" : "/themes/light/tool-tip.css";
                             case DARK -> "/themes/dark/tool-tip.css";
                             case LIGHT -> "/themes/light/tool-tip.css";
                         }
-                ).toExternalForm()
+                )).toExternalForm()
         );
     }
 }

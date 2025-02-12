@@ -255,7 +255,7 @@ public class Message extends HBox {
     }
 
     public void loadStyle(Theme theme) {
-        getStylesheets().clear();
+        getStylesheets().removeIf(sheet -> sheet.contains("/themes/"));
 
         getStylesheets().add(
                 Message.class.getResource(

@@ -257,10 +257,10 @@ public class Form extends VBox {
     }
 
     public void loadStyle(Theme theme) {
-        getStylesheets().clear();
+        getStylesheets().removeIf(sheet -> sheet.contains("/themes/"));
 
         getStylesheets().add(
-                Message.class.getResource(
+                Form.class.getResource(
                         switch (theme) {
                             case SYSTEM -> ThemeDetector.isDarkTheme() ? "/themes/dark/form.css" : "/themes/light/form.css";
                             case DARK -> "/themes/dark/form.css";
