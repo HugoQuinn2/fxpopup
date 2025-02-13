@@ -20,7 +20,13 @@ public class CssClasses {
     public static final String MESSAGE_CLOSE_BUTTON_CLASS = "message-close-button";
 
     // Form classes
-//    public static final String FORM_CLASS;
-//    public static final String FORM_HEADER_LABEL;
-//    public static final String FOMR
+    public static final String FORM_CLASS = "form";
+    public static final String FORM_HEADER_CONTAINER_CLASS = "form-header";
+    public static final String FORM_BODY_CONTAINER_CLASS = "form-body";
+    public static final String FORM_FOOTER_CONTAINER_CLASS = "form-footer";
+    public static final String FORM_TITLE_LABEL_CLASS = "form-title";
+    public static final String FORM_FIELD_CONTAINER_CLASS = "form-fields-container";
+    public static final String FORM_CLOSE_BUTTON_CLASS = "form-close-button";
+    public static final String FORM_SEND_BUTTON_CLASS = "form-send-button";
+    public static final String FORM_ERROR_LABEL_CLASS = "form-error";
 }

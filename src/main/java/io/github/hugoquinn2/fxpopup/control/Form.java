@@ -18,6 +18,7 @@ import javafx.scene.layout.*;
 import java.util.Arrays;
 import java.util.Objects;
 
+import static io.github.hugoquinn2.fxpopup.config.CssClasses.*;
 import static io.github.hugoquinn2.fxpopup.utils.MessageFormUtil.*;
 
 
@@ -41,17 +42,6 @@ public class Form extends VBox {
     private final MessageForm messageForm;
     private final Class<?> referenceObjectClazz;
     private String nameForm;
-
-    // Style class for CSS
-    private String FORM_CLASS = "form";
-    private String HEADER_CLASS = "form-header";
-    private String BODY_CLASS = "form-body";
-    private String FOOTER_CLASS = "form-footer";
-    private String TITLE_CLASS = "form-title";
-    private String FIELD_CONTAINER_CLASS = "form-fields-container";
-    private String CLOSE_BUTTON_CLASS = "form-close-button";
-    private String SEND_BUTTON_CLASS = "form-send-button";
-    private String ERROR_LABEL_CLASS = "form-error";
 
     // Constructors
     public Form(Object referenceObject){this(referenceObject, false);}
@@ -109,14 +99,14 @@ public class Form extends VBox {
 
         // Define style classes
         getStyleClass().add(FORM_CLASS);
-        headerContainer.getStyleClass().add(HEADER_CLASS);
-        bodyContainer.getStyleClass().add(BODY_CLASS);
-        footerContainer.getStyleClass().add(FOOTER_CLASS);
-        titleLabel.getStyleClass().add(TITLE_CLASS);
-        fieldsContainer.getStyleClass().add(FIELD_CONTAINER_CLASS);
-        errorLabel.getStyleClass().add(ERROR_LABEL_CLASS);
-        closeButton.getStyleClass().add(CLOSE_BUTTON_CLASS);
-        sendButton.getStyleClass().add(SEND_BUTTON_CLASS);
+        headerContainer.getStyleClass().add(FORM_HEADER_CONTAINER_CLASS);
+        bodyContainer.getStyleClass().add(FORM_BODY_CONTAINER_CLASS);
+        footerContainer.getStyleClass().add(FORM_FOOTER_CONTAINER_CLASS);
+        titleLabel.getStyleClass().add(FORM_TITLE_LABEL_CLASS);
+        fieldsContainer.getStyleClass().add(FORM_FIELD_CONTAINER_CLASS);
+        errorLabel.getStyleClass().add(FORM_ERROR_LABEL_CLASS);
+        closeButton.getStyleClass().add(FORM_CLOSE_BUTTON_CLASS);
+        sendButton.getStyleClass().add(FORM_SEND_BUTTON_CLASS);
 
         // Generate Fields
         generateFields();
