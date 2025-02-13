@@ -125,7 +125,7 @@ public class ToolTipUtils {
      * @param toolTip The Tool Tip to move.
      * @param pos The HPos to calc translate.
      */
-    public static void positionToolTip(Node node, Node toolTip, HPos pos) {
+    public static void positionToolTip(Node node, Node toolTip, HPos pos, double space) {
         Bounds parentBoundsInRoot = node.localToScene(node.getLayoutBounds());
         Bounds toolTipBoundsInRoot = toolTip.localToScene(toolTip.getLayoutBounds());
 
@@ -137,8 +137,6 @@ public class ToolTipUtils {
 
         double toolTipWidth = toolTipBoundsInRoot.getWidth();
         double toolTipHeight = toolTipBoundsInRoot.getHeight();
-
-        int space = 5;
 
         double translateX = pos.equals(HPos.RIGHT) ?
                 parentX + nodeWidth + space :
@@ -156,7 +154,7 @@ public class ToolTipUtils {
      * @param toolTip The Tool Tip to move.
      * @param pos The VPos to calc translate.
      */
-    public static void positionToolTip(Node node, Node toolTip, VPos pos) {
+    public static void positionToolTip(Node node, Node toolTip, VPos pos, double space) {
         Bounds parentBoundsInRoot = node.localToScene(node.getLayoutBounds());
         Bounds toolTipBoundsInRoot = toolTip.localToScene(toolTip.getLayoutBounds());
 
@@ -168,8 +166,6 @@ public class ToolTipUtils {
 
         double toolTipWidth = toolTipBoundsInRoot.getWidth();
         double toolTipHeight = toolTipBoundsInRoot.getHeight();
-
-        int space = 5;
 
         double translateX = parentX + (nodeWidth / 2) - (toolTipWidth / 2);
         double translateY = pos.equals(VPos.BOTTOM) ?

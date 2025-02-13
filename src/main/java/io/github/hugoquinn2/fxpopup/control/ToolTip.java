@@ -10,13 +10,15 @@ import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 
-import javax.swing.*;
 import java.util.Objects;
+
+import static io.github.hugoquinn2.fxpopup.config.CssClasses.TOOL_TIP_CLASS;
+import static io.github.hugoquinn2.fxpopup.config.CssClasses.TOOL_TIP_LABEL_CLASS;
 
 
 public class ToolTip extends VBox {
@@ -29,24 +31,66 @@ public class ToolTip extends VBox {
     private Node nodeFather;
     private VPos vPosDisplay;
     private HPos hPosDisplay;
+    private double space;
 
     private Theme theme;
 
-    // Classes for CSS
-    private String TOOL_TIP_CLASS = "tool-tip";
-    private String TOOL_TIP_TEXT_CLASS = "tool-tip-text";
-
     // Customs constuctors
-    public ToolTip(String text, Node nodeFather) {this(text, nodeFather, VPos.BOTTOM, null);}
-    public ToolTip(String text, Node nodeFather, VPos vPosDisplay) {this(text, nodeFather, vPosDisplay, null);}
-    public ToolTip(String text, Node nodeFather, HPos hPosDisplay) {this(text, nodeFather, null, hPosDisplay);}
+    /**
+     * Create a Tool Tip with a <code>text</code> and bound with a <code>Node</code>,
+     * by default it is displayed with <code>VPos.BOTTOM</code> and a space between
+     * the node bound of <code>10px</code>
+     * @param text to show into tool tip.
+     * @param nodeFather to bound.
+     * */
+    public ToolTip(String text, Node nodeFather) {
+        this(text, nodeFather, VPos.BOTTOM, null, 10);
+    }
+
+    /**
+     * Create a Tool Tip with a <code>text</code> and bound with a <code>Node</code>,
+     * by default it is displayed with <code>VPos.BOTTOM</code> and a custom space between
+     * the node bound.
+     * @param text to show into tool tip.
+     * @param nodeFather to bound.
+     * @param space between <code>nodeFather</code> and Tool Tip.
+     * */
+    public ToolTip(String text, Node nodeFather, double space) {
+        this(text, nodeFather, VPos.BOTTOM, null, space);
+    }
+
+    /**
+     * Create a Tool Tip with a <code>text</code> and bound with a <code>Node</code>,
+     * with custom <code>VPos</code> and a <code>space</code> between the node bound of <code>10px</code>
+     * @param text to show into tool tip.
+     * @param nodeFather to bound.
+     * @param vPosDisplay to displayed.
+     * */
+    public ToolTip(String text, Node nodeFather, VPos vPosDisplay) {
+        this(text, nodeFather, vPosDisplay, null, 10);
+    }
+
+    /**
+     * Create a Tool Tip with a <code>text</code> and bound with a <code>Node</code>,
+     * with custom <code>VPos</code> and a custom space between the ode bound.
+     * @param text to show into tool tip.
+     * @param nodeFather to bound.
+     * @param vPosDisplay to displayed.
+     * @param space between <code>nodeFather</code> and Tool Tip.
+     * */
+    public ToolTip(String text, Node nodeFather, VPos vPosDisplay, double space) {
+        this(text, nodeFather, vPosDisplay, null, space);
+    }
+
+    public ToolTip(String text, Node nodeFather, HPos hPosDisplay) {this(text, nodeFather, null, hPosDisplay, 10);}
 
     // General constructor
-    private ToolTip(String text, Node nodeFather, VPos vPosDisplay, HPos hPosDisplay) {
+    private ToolTip(String text, Node nodeFather, VPos vPosDisplay, HPos hPosDisplay, double space) {
         this.text = new Label(text);
         this.nodeFather = nodeFather;
         this.vPosDisplay = vPosDisplay;
         this.hPosDisplay = hPosDisplay;
+        this.space = space;
         fxPopup = new FxPopup();
 
         // Global Theme
@@ -59,7 +103,7 @@ public class ToolTip extends VBox {
 
         // Apply styles class for CSS.
         this.getStyleClass().add(TOOL_TIP_CLASS);
-        this.text.getStyleClass().add(TOOL_TIP_TEXT_CLASS);
+        this.text.getStyleClass().add(TOOL_TIP_LABEL_CLASS);
 
         // Setting responsive
         setResponsive();
@@ -106,9 +150,9 @@ public class ToolTip extends VBox {
 
     public void show() {
         if (hPosDisplay != null)
-            ToolTipUtils.positionToolTip(nodeFather, this, this.hPosDisplay);
+            ToolTipUtils.positionToolTip(nodeFather, this, this.hPosDisplay, space);
         else if (vPosDisplay != null)
-            ToolTipUtils.positionToolTip(nodeFather, this, this.vPosDisplay);
+            ToolTipUtils.positionToolTip(nodeFather, this, this.vPosDisplay, space);
 
         setVisible(true);
     }
