@@ -8,6 +8,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Screen;
 
+import static io.github.hugoquinn2.fxpopup.config.CssClasses.THUMBNAIL_IMAGE_CLASS;
+
 public class ThumbnailImage extends ImageView {
     FxPopup fxPopup;
     ImageView thumbImage;
@@ -16,9 +18,6 @@ public class ThumbnailImage extends ImageView {
     // Thumbnail config
     double scaleThumbImage = 0.6;
     boolean showThumbnail = true;
-
-    // Thumbnail classes for CSS styles
-    String DEFAULT_THUMB_IMAGE = "thumbnail-image";
 
     // Constructor null, path and Image, for customization
     public ThumbnailImage() {this(null, null);}
@@ -32,7 +31,7 @@ public class ThumbnailImage extends ImageView {
         overlay = new Overlay();
 
         // Set classes
-        thumbImage.getStyleClass().add(DEFAULT_THUMB_IMAGE);
+        thumbImage.getStyleClass().add(THUMBNAIL_IMAGE_CLASS);
 
         if (s != null) {
             this.setImage(new Image(s));

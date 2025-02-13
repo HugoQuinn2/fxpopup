@@ -8,6 +8,9 @@ public class CssClasses {
     // Overlay
     public static final String OVERLAY_CLASS = "overlay";
 
+    // Thumbnail Image
+    public static final String THUMBNAIL_IMAGE_CLASS = "thumbnail-image";
+
     // Form classes
 //    public static final String FORM_CLASS;
 //    public static final String FORM_HEADER_LABEL;
