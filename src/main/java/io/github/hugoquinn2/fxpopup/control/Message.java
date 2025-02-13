@@ -24,6 +24,8 @@ import javafx.util.Duration;
 
 import java.util.Objects;
 
+import static io.github.hugoquinn2.fxpopup.config.CssClasses.*;
+
 
 public class Message extends HBox {
     // Message Structure
@@ -42,14 +44,6 @@ public class Message extends HBox {
     private Transition showTransition;
     private Transition removeTransition;
     private Transition pauseBeforeRemove;
-
-    // Styles class for CSS
-    private String MESSAGE_CLASS = "message";
-    private String MESSAGE_TITLE_CLASS = "message-title";
-    private String MESSAGE_CONTEXT_CLASS = "message-context";
-    private String MESSAGE_INDICATOR_CLASS = "message-indicator";
-    private String MESSAGE_LABELS_CONTAINER = "message-content-container";
-    private String MESSAGE_CLOSE_BUTTON = "message-close-button";
 
     // Constructor with context
     public Message(String title, String context) {this(title, context, MessageType.NONE, 0);}
@@ -104,11 +98,11 @@ public class Message extends HBox {
 
         // Define Styles classes
         this.getStyleClass().add(MESSAGE_CLASS);
-        this.title.getStyleClass().add(MESSAGE_TITLE_CLASS);
-        this.context.getStyleClass().add(MESSAGE_CONTEXT_CLASS);
+        this.title.getStyleClass().add(MESSAGE_TITLE_LABEL_CLASS);
+        this.context.getStyleClass().add(MESSAGE_CONTEXT_LABEL_CLASS);
         this.messageIndicator.getStyleClass().add(MESSAGE_INDICATOR_CLASS);
-        this.containerContext.getStyleClass().add(MESSAGE_LABELS_CONTAINER);
-        this.closeButton.getStyleClass().add(MESSAGE_CLOSE_BUTTON);
+        this.containerContext.getStyleClass().add(MESSAGE_CONTENT_CONTAINER_CLASS);
+        this.closeButton.getStyleClass().add(MESSAGE_CLOSE_BUTTON_CLASS);
 
         // Define basic effect
         defineEffects();
