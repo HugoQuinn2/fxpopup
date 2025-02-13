@@ -16,6 +16,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 import static io.github.hugoquinn2.fxpopup.utils.MessageFormUtil.*;
 
@@ -257,16 +258,17 @@ public class Form extends VBox {
     }
 
     public void loadStyle(Theme theme) {
-        getStylesheets().removeIf(sheet -> sheet.contains("/themes/"));
+        getStylesheets().clear();
 
         getStylesheets().add(
-                Form.class.getResource(
+                Objects.requireNonNull(Form.class.getResource(
                         switch (theme) {
-                            case SYSTEM -> ThemeDetector.isDarkTheme() ? "/themes/dark/form.css" : "/themes/light/form.css";
+                            case SYSTEM ->
+                                    ThemeDetector.isDarkTheme() ? "/themes/dark/form.css" : "/themes/light/form.css";
                             case DARK -> "/themes/dark/form.css";
                             case LIGHT -> "/themes/light/form.css";
                         }
-                ).toExternalForm()
+                )).toExternalForm()
         );
     }
 }

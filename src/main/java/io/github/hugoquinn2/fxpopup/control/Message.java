@@ -22,6 +22,8 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.util.Duration;
 
+import java.util.Objects;
+
 
 public class Message extends HBox {
     // Message Structure
@@ -255,16 +257,17 @@ public class Message extends HBox {
     }
 
     public void loadStyle(Theme theme) {
-        getStylesheets().removeIf(sheet -> sheet.contains("/themes/"));
+        getStylesheets().clear();
 
         getStylesheets().add(
-                Message.class.getResource(
+                Objects.requireNonNull(Message.class.getResource(
                         switch (theme) {
-                            case SYSTEM -> ThemeDetector.isDarkTheme() ? "/themes/dark/message.css" : "/themes/light/message.css";
+                            case SYSTEM ->
+                                    ThemeDetector.isDarkTheme() ? "/themes/dark/message.css" : "/themes/light/message.css";
                             case DARK -> "/themes/dark/message.css";
                             case LIGHT -> "/themes/light/message.css";
                         }
-                ).toExternalForm()
+                )).toExternalForm()
         );
     }
 }

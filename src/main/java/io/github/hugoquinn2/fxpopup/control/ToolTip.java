@@ -159,7 +159,7 @@ public class ToolTip extends VBox {
     }
 
     private void loadStyle(Theme theme) {
-        getStylesheets().removeIf(sheet -> sheet.contains("/themes/"));
+        getStylesheets().clear();
 
         getStylesheets().add(
                 Objects.requireNonNull(Message.class.getResource(
