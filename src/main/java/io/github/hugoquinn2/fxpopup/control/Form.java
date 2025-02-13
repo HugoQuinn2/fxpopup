@@ -154,7 +154,7 @@ public class Form extends VBox {
                 }
             });
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException(String.format("Error setting actions to Send Button: %s", e.getMessage()));
         }
     }
     private void setCloseActions() {
