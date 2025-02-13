@@ -5,6 +5,9 @@ public class CssClasses {
     public static final String TOOL_TIP_CLASS = "tool-tip";
     public static final String TOOL_TIP_LABEL_CLASS = "tool-tip-label";
 
+    // Overlay
+    public static final String OVERLAY_CLASS = "overlay";
+
     // Form classes
 //    public static final String FORM_CLASS;
 //    public static final String FORM_HEADER_LABEL;

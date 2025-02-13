@@ -7,10 +7,9 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
-public class Overlay extends Rectangle {
-    // Confing Overlay
-    private final String OVERLAY_CLASS = "overlay";
+import static io.github.hugoquinn2.fxpopup.config.CssClasses.OVERLAY_CLASS;
 
+public class Overlay extends Rectangle {
     public Overlay(){this(Color.BLACK, 0.3);}
     public Overlay(Color color){this(color, 0.3);}
     public Overlay(double opacity){this(Color.BLACK, opacity);}
