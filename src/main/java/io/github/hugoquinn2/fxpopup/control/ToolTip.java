@@ -72,7 +72,7 @@ public class ToolTip extends VBox {
 
     /**
      * Create a Tool Tip with a <code>text</code> and bound with a <code>Node</code>,
-     * with custom <code>VPos</code> and a custom space between the ode bound.
+     * with custom <code>VPos</code> and a custom space between the node bound.
      * @param text to show into tool tip.
      * @param nodeFather to bound.
      * @param vPosDisplay to displayed.
@@ -82,7 +82,28 @@ public class ToolTip extends VBox {
         this(text, nodeFather, vPosDisplay, null, space);
     }
 
-    public ToolTip(String text, Node nodeFather, HPos hPosDisplay) {this(text, nodeFather, null, hPosDisplay, 10);}
+    /**
+     * Create a Tool Tip with a <code>text</code> and bound with a <code>Node</code>,
+     * with custom <code>HPos</code> and a <code>space</code> between the node bound of <code>10px</code>
+     * @param text to show into tool tip.
+     * @param nodeFather to bound.
+     * @param hPosDisplay to displayed.
+     * */
+    public ToolTip(String text, Node nodeFather, HPos hPosDisplay) {
+        this(text, nodeFather, null, hPosDisplay, 10);
+    }
+
+    /**
+     * Create a Tool Tip with a <code>text</code> and bound with a <code>Node</code>,
+     * with custom <code>HPos</code> and a custom space between the node bound.
+     * @param text to show into tool tip.
+     * @param nodeFather to bound.
+     * @param hPosDisplay to displayed.
+     * @param space between <code>nodeFather</code> and Tool Tip.
+     * */
+    public ToolTip(String text, Node nodeFather, HPos hPosDisplay, double space) {
+        this(text, nodeFather, null, hPosDisplay, space);
+    }
 
     // General constructor
     private ToolTip(String text, Node nodeFather, VPos vPosDisplay, HPos hPosDisplay, double space) {
