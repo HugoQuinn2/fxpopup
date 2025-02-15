@@ -1,6 +1,7 @@
 package io.github.hugoquinn2.fxpopup.control;
 
 import io.github.hugoquinn2.fxpopup.utils.MasterUtils;
+import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
@@ -67,18 +68,14 @@ public class ThumbnailImage extends ImageView {
         setThumbnail();
     }
 
-    private void setThumbnail() {
-        overlay.setOnMouseClicked(event -> {
-            MasterUtils.remove(thumbImage);
-            MasterUtils.remove(overlay);
-        });
+    /**
+     * Force to show thumbnail image
+     */
+    public void show() {
+        Platform.runLater(() -> {
+            Parent root = MasterUtils.wrapInStackPane(MasterUtils.getRoot());
 
-        setOnMouseClicked(event3 -> {
-            if (!showThumbnail)
-                return;
-
-            Rectangle2D screenBounds = Screen.getPrimary().getBounds();
-            double screenWidth = screenBounds.getWidth();
+            double screenWidth = root.getBoundsInParent().getWidth();
             double thumbImageWidth = screenWidth * scaleThumbImage;
 
             // Resize image to 80% size windows and preserve ratio
@@ -86,7 +83,6 @@ public class ThumbnailImage extends ImageView {
             thumbImage.setPreserveRatio(true);
 
             // Show image above Overlay
-            Parent root = MasterUtils.wrapInStackPane(MasterUtils.getRoot());
             StackPane.setAlignment(overlay, Pos.CENTER);
             StackPane.setAlignment(thumbImage, Pos.CENTER);
             ((Pane) root).getChildren().addAll(
@@ -95,12 +91,33 @@ public class ThumbnailImage extends ImageView {
         });
     }
 
+    /**
+     * Remove thumbnail image.
+     */
+    public void remove() {
+        MasterUtils.remove(thumbImage);
+        MasterUtils.remove(overlay);
+    }
+
+    private void setThumbnail() {
+        overlay.setOnMouseClicked(event -> {
+            remove();
+        });
+
+        setOnMouseClicked(event3 -> {
+            if (!showThumbnail )
+                return;
+
+            show();
+        });
+    }
+
     public ImageView getThumbImage() {
         return thumbImage;
     }
 
-    public void setThumbImage(ImageView thumbImage) {
-        this.thumbImage = thumbImage;
+    public void setThumbImage(Image image) {
+        this.thumbImage.setImage(image);
     }
 
     public Overlay getOverlay() {
