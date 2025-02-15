@@ -48,14 +48,68 @@ public class Message extends HBox {
     private Transition pauseBeforeRemove;
 
     // Constructor with context
-    public Message(String title, String context) {this(title, context, MessageType.NONE, 0);}
-    public Message(String title, String context, MessageType messageType) {this(title, context, messageType, 0);}
+    /**
+     * Create a message with custom title, empty context and default message type <code>MessageType.NONE</code>, the message
+     * will not be deleted by itself.
+     * @param title the title to displayed.
+     */
+    public Message(String title) {
+        this(title, null, MessageType.NONE, 0);
+    }
 
-    // Constructor without context
-    public Message(String title) {this(title, null, MessageType.NONE, 0);}
-    public Message(String title, MessageType messageType) {this(title, null, messageType, 0);}
-    public Message(String title, MessageType messageType, int duration) {this(title, null, messageType, duration);}
+    /**
+     * Create a message with custom title, context and default message type <code>MessageType.NONE</code>, the message
+     * will not be deleted by itself.
+     * @param title the title to displayed.
+     * @param context the context to displayed.
+     */
+    public Message(String title, String context) {
+        this(title, context, MessageType.NONE, 0);
+    }
 
+    /**
+     * Create a message with custom title, context and message type, the message will not be deleted by itself.
+     * @param title the title to displayed.
+     * @param context the context to displayed.
+     * @param messageType the message type to displayed: <code>.info</code>, <code>.success</code>, <code>.warning</code>
+     *                    and <code>.error</code>.
+     */
+    public Message(String title, String context, MessageType messageType) {
+        this(title, context, messageType, 0);
+    }
+
+    /**
+     * Create a message with custom title, empty context and custom message type, the message
+     * will not be deleted by itself.
+     * @param title the title to displayed.
+     * @param messageType the message type to displayed: <code>.info</code>, <code>.success</code>, <code>.warning</code>
+     *                    and <code>.error</code>.
+     */
+    public Message(String title, MessageType messageType) {
+        this(title, null, messageType, 0);
+    }
+
+    /**
+     * Create a message with custom title, empty context and custom message type. The message wil be deleted by itself
+     * after <code>duration</code>.
+     * @param title the title to displayed.
+     * @param messageType the message type to displayed: <code>.info</code>, <code>.success</code>, <code>.warning</code>
+     *                    and <code>.error</code>.
+     * @param duration the duration before the message is deleted by itself.
+     */
+    public Message(String title, MessageType messageType, int duration) {
+        this(title, null, messageType, duration);
+    }
+
+    /**
+     * Create a message with custom title, context, message type and duration. The message wil be deleted by itself
+     * after <code>duration</code>.
+     * @param title the title to displayed.
+     * @param context the context to displayed.
+     * @param messageType the message type to displayed: <code>.info</code>, <code>.success</code>, <code>.warning</code>
+     *                    and <code>.error</code>.
+     * @param duration the duration before the message is deleted by itself.
+     */
     public Message(String title, String context, MessageType messageType, int duration) {
         if (duration < 0)
             throw new IllegalArgumentException("The duration cannot be less than 1");
