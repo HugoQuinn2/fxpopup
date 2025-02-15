@@ -23,7 +23,6 @@ public interface FxPopupInterface {
     void showAll(Pos pos, Node... nodes);
     void showAll(double x, double y, Node... nodes);
 
-    ObjectProperty<Theme> themeManager();
     void setGlobalTheme(Theme theme);
     Theme getGlobalTheme();
 }
