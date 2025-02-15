@@ -4,7 +4,7 @@ import io.github.hugoquinn2.fxpopup.model.Icon;
 import io.github.hugoquinn2.fxpopup.config.FieldData;
 import io.github.hugoquinn2.fxpopup.config.StyleConfig;
 import io.github.hugoquinn2.fxpopup.constants.FxPopIcon;
-import io.github.hugoquinn2.fxpopup.controller.MessageField;
+import io.github.hugoquinn2.fxpopup.controller.FormField;
 import javafx.collections.FXCollections;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
@@ -38,7 +38,7 @@ public class FieldUtil {
 
         try {
             // Field information
-            MessageField annotation = field.getAnnotation(MessageField.class);
+            FormField annotation = field.getAnnotation(FormField.class);
             Object data = field.get(model);
 
             // Field structure
@@ -78,7 +78,7 @@ public class FieldUtil {
 
         try {
             // Field information
-            MessageField annotation = field.getAnnotation(MessageField.class);
+            FormField annotation = field.getAnnotation(FormField.class);
             Object data = field.get(model);
 
             // Field structure
@@ -117,7 +117,7 @@ public class FieldUtil {
 
         try {
             // Field Information
-            MessageField annotation = field.getAnnotation(MessageField.class);
+            FormField annotation = field.getAnnotation(FormField.class);
             Object data = field.get(model);
 
             // Field Structure
@@ -179,7 +179,7 @@ public class FieldUtil {
 
         try {
             // Field information.
-            MessageField annotation = field.getAnnotation(MessageField.class);
+            FormField annotation = field.getAnnotation(FormField.class);
             Object data = field.get(model);
 
             // Field structure.
@@ -265,7 +265,7 @@ public class FieldUtil {
 
         try {
             // Field Information
-            MessageField annotation = field.getAnnotation(MessageField.class);
+            FormField annotation = field.getAnnotation(FormField.class);
             Object data = field.get(model);
             String lada = null;
             String phone = null;
@@ -325,7 +325,7 @@ public class FieldUtil {
 
         try {
             // Field data.
-            MessageField annotation = field.getAnnotation(MessageField.class);
+            FormField annotation = field.getAnnotation(FormField.class);
             Object data = field.get(model);
 
             // Field structure
@@ -374,7 +374,7 @@ public class FieldUtil {
 
         try {
             // Field data.
-            MessageField annotation = field.getAnnotation(MessageField.class);
+            FormField annotation = field.getAnnotation(FormField.class);
             Object data = field.get(model);
 
             // Field structure.

@@ -5,7 +5,7 @@ import io.github.hugoquinn2.fxpopup.config.FieldData;
 import io.github.hugoquinn2.fxpopup.config.FxPopupConfig;
 import io.github.hugoquinn2.fxpopup.config.StyleConfig;
 import io.github.hugoquinn2.fxpopup.constants.Theme;
-import io.github.hugoquinn2.fxpopup.controller.MessageField;
+import io.github.hugoquinn2.fxpopup.controller.FormField;
 import io.github.hugoquinn2.fxpopup.controller.Form;
 import io.github.hugoquinn2.fxpopup.service.ThemeDetector;
 import javafx.scene.Parent;
@@ -55,7 +55,7 @@ public class MessageFormUtil {
     }
 
     public static void createField(Field field, Object model, Parent parent, Theme theme) {
-        MessageField annotation = field.getAnnotation(MessageField.class);
+        FormField annotation = field.getAnnotation(FormField.class);
 
         // Header
         Label textRequired = new Label("*");
@@ -105,7 +105,7 @@ public class MessageFormUtil {
     }
 
     private static Parent createFieldByType(Field field, Object model) {
-        MessageField annotation = field.getAnnotation(MessageField.class);
+        FormField annotation = field.getAnnotation(FormField.class);
 
         return switch (annotation.type()) {
             case TEXT -> FieldUtil.createTextField(field, model, annotation.icon());

@@ -120,7 +120,7 @@ public class Form extends VBox {
 
     public void generateFields() {
         Arrays.stream(referenceObjectClazz.getDeclaredFields())
-                .filter(field -> field.isAnnotationPresent(MessageField.class))
+                .filter(field -> field.isAnnotationPresent(FormField.class))
                 .forEach(field -> createField(field, referenceObject, fieldsContainer, theme));
     }
 

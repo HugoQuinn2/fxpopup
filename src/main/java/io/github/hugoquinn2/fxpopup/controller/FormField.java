@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface MessageField {
+public @interface FormField {
 
     /**
      * Label for the field, typically displayed next to the input field.
