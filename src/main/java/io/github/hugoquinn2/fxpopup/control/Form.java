@@ -41,8 +41,20 @@ public class Form extends VBox {
     private String nameForm;
 
     // Constructors
-    public Form(Object referenceObject){this(referenceObject, false);}
+    /**
+     * Create a form with a reference model, this most <code>@MessageForm</code>. By default, the form could be closed
+     * <code>False</code>
+     * @param referenceObject the reference object.
+     */
+    public Form(Object referenceObject){
+        this(referenceObject, false);
+    }
 
+    /**
+     * Create a form with a reference model, this most <code>@MessageForm</code> with custom closable status.
+     * @param referenceObject the reference object.
+     * @param isClosable the closable state.
+     */
     public Form(Object referenceObject, boolean isClosable) {
         isValidObjectForm(referenceObject);
 
