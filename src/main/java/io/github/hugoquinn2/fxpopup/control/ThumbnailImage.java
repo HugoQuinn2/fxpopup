@@ -1,17 +1,18 @@
 package io.github.hugoquinn2.fxpopup.control;
 
-import io.github.hugoquinn2.fxpopup.controller.FxPopup;
 import io.github.hugoquinn2.fxpopup.utils.MasterUtils;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.Parent;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Screen;
 
 import static io.github.hugoquinn2.fxpopup.config.CssClasses.THUMBNAIL_IMAGE_CLASS;
 
 public class ThumbnailImage extends ImageView {
-    FxPopup fxPopup;
     ImageView thumbImage;
     Overlay overlay;
 
@@ -47,7 +48,6 @@ public class ThumbnailImage extends ImageView {
 
     // General constructor class
     private ThumbnailImage(String s, Image image) {
-        fxPopup = new FxPopup();
         thumbImage = new ImageView();
         overlay = new Overlay();
 
@@ -86,10 +86,11 @@ public class ThumbnailImage extends ImageView {
             thumbImage.setPreserveRatio(true);
 
             // Show image above Overlay
-            fxPopup.showAll(
-                    Pos.CENTER,
-                    overlay,
-                    thumbImage
+            Parent root = MasterUtils.wrapInStackPane(MasterUtils.getRoot());
+            StackPane.setAlignment(overlay, Pos.CENTER);
+            StackPane.setAlignment(thumbImage, Pos.CENTER);
+            ((Pane) root).getChildren().addAll(
+                    overlay, thumbImage
             );
         });
     }

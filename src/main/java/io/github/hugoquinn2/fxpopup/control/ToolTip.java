@@ -1,30 +1,25 @@
 package io.github.hugoquinn2.fxpopup.control;
 
 import io.github.hugoquinn2.fxpopup.constants.Theme;
-import io.github.hugoquinn2.fxpopup.controller.FxPopup;
-import io.github.hugoquinn2.fxpopup.controller.StyleManager;
-import io.github.hugoquinn2.fxpopup.controller.ThemeManager;
-import io.github.hugoquinn2.fxpopup.service.ThemeDetector;
+import io.github.hugoquinn2.fxpopup.utils.MasterUtils;
 import io.github.hugoquinn2.fxpopup.utils.ToolTipUtils;
 import javafx.application.Platform;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
+import javafx.scene.Parent;
 import javafx.scene.control.Label;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-
-import java.util.Objects;
 
 import static io.github.hugoquinn2.fxpopup.config.CssClasses.TOOL_TIP_CLASS;
 import static io.github.hugoquinn2.fxpopup.config.CssClasses.TOOL_TIP_LABEL_CLASS;
 
 
 public class ToolTip extends VBox {
-    private FxPopup fxPopup;
-
     // Tool tip structure
     private Label text;
 
@@ -113,7 +108,6 @@ public class ToolTip extends VBox {
         this.vPosDisplay = vPosDisplay;
         this.hPosDisplay = hPosDisplay;
         this.space = space;
-        fxPopup = new FxPopup();
 
         // Define tool tip structure
         this.getChildren().add(this.text);
@@ -145,7 +139,11 @@ public class ToolTip extends VBox {
             });
         });
 
-        Platform.runLater(() -> this.fxPopup.show(Pos.TOP_LEFT, this));
+        Platform.runLater(() -> {
+            Parent root = MasterUtils.wrapInStackPane(MasterUtils.getRoot());
+            StackPane.setAlignment(this, Pos.TOP_LEFT);
+            ((Pane) root).getChildren().add(this);
+        });
     }
 
     private void setResponsive() {
