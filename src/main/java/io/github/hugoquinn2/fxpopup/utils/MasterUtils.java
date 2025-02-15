@@ -1,6 +1,7 @@
 package io.github.hugoquinn2.fxpopup.utils;
 
 import io.github.hugoquinn2.fxpopup.config.StyleConfig;
+import javafx.application.Platform;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -15,6 +16,7 @@ import javafx.stage.Window;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class MasterUtils {
 
@@ -328,5 +330,39 @@ public class MasterUtils {
         } catch (NumberFormatException e) {
             return false;
         }
+    }
+
+    public static void loadStyleOnScene(String s) {
+        Platform.runLater(() -> {
+            Scene scene = MasterUtils.getPrimaryScene();
+
+            if (scene != null) {
+                String style = Objects.requireNonNull(MasterUtils.class.getResource(s)).toExternalForm();
+
+                if (isStyleOn(scene, style))
+                    return;
+
+                scene.getStylesheets().add(0, style);
+            }
+        });
+    }
+
+    public static void removeStyleOnScene(String s) {
+        Platform.runLater(() -> {
+            Scene scene = MasterUtils.getPrimaryScene();
+
+            if (scene != null) {
+                String style = Objects.requireNonNull(MasterUtils.class.getResource(s)).toExternalForm();
+                scene.getStylesheets().remove(style);
+            }
+        });
+    }
+
+    public static boolean isStyleOn(Scene scene, String style) {
+        if (scene != null) {
+            return scene.getStylesheets().contains(style);
+        }
+
+        return false;
     }
 }

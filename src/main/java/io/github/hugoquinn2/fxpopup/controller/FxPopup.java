@@ -21,7 +21,7 @@ public class FxPopup implements FxPopupInterface {
     /**
      * Default constructor initializing default position and theme.
      */
-    public FxPopup() {}
+    public FxPopup() {StyleManager.applyAutoStyle();}
 
     @Override
     public void add(Node node) {

@@ -2,6 +2,7 @@ package io.github.hugoquinn2.fxpopup.control;
 
 import io.github.hugoquinn2.fxpopup.constants.Theme;
 import io.github.hugoquinn2.fxpopup.controller.FxPopup;
+import io.github.hugoquinn2.fxpopup.controller.StyleManager;
 import io.github.hugoquinn2.fxpopup.controller.ThemeManager;
 import io.github.hugoquinn2.fxpopup.service.ThemeDetector;
 import io.github.hugoquinn2.fxpopup.utils.ToolTipUtils;
@@ -114,11 +115,6 @@ public class ToolTip extends VBox {
         this.space = space;
         fxPopup = new FxPopup();
 
-        // Global Theme
-        theme = ThemeManager.getGlobalTheme();
-        loadStyle(theme);
-        ThemeManager.globalTheme().addListener((obs, oldTheme, newTheme) -> loadStyle(newTheme));
-
         // Define tool tip structure
         this.getChildren().add(this.text);
 
@@ -204,7 +200,6 @@ public class ToolTip extends VBox {
 
     public void setTheme(Theme theme) {
         this.theme = theme;
-        loadStyle(theme);
     }
 
     public HPos gethPosDisplay() {
@@ -221,20 +216,5 @@ public class ToolTip extends VBox {
 
     public void setvPosDisplay(VPos vPosDisplay) {
         this.vPosDisplay = vPosDisplay;
-    }
-
-    private void loadStyle(Theme theme) {
-        getStylesheets().clear();
-
-        getStylesheets().add(
-                Objects.requireNonNull(Message.class.getResource(
-                        switch (theme) {
-                            case SYSTEM ->
-                                    ThemeDetector.isDarkTheme() ? "/themes/dark/tool-tip.css" : "/themes/light/tool-tip.css";
-                            case DARK -> "/themes/dark/tool-tip.css";
-                            case LIGHT -> "/themes/light/tool-tip.css";
-                        }
-                )).toExternalForm()
-        );
     }
 }

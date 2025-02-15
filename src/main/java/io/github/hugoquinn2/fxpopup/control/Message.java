@@ -4,6 +4,7 @@ import io.github.hugoquinn2.fxpopup.config.FxPopupConfig;
 import io.github.hugoquinn2.fxpopup.constants.FxPopIcon;
 import io.github.hugoquinn2.fxpopup.constants.MessageType;
 import io.github.hugoquinn2.fxpopup.constants.Theme;
+import io.github.hugoquinn2.fxpopup.controller.StyleManager;
 import io.github.hugoquinn2.fxpopup.controller.ThemeManager;
 import io.github.hugoquinn2.fxpopup.model.Icon;
 import io.github.hugoquinn2.fxpopup.service.ThemeDetector;
@@ -39,6 +40,7 @@ public class Message extends HBox {
     private MessageType messageType;
     private int duration;
     private Theme theme = Theme.SYSTEM;
+    private Theme oldTheme;
 
     // Effects
     private Transition showTransition;
@@ -119,11 +121,6 @@ public class Message extends HBox {
         closeButton.setOnAction(event -> {
             MasterUtils.remove(this);
         });
-
-        // Global Theme
-        theme = ThemeManager.getGlobalTheme();
-        loadStyle(theme);
-        ThemeManager.globalTheme().addListener((obs, oldTheme, newTheme) -> loadStyle(newTheme));
     }
 
     private void defineEffects() {
@@ -247,21 +244,5 @@ public class Message extends HBox {
 
     public void setTheme(Theme theme) {
         this.theme = theme;
-        loadStyle(theme);
-    }
-
-    public void loadStyle(Theme theme) {
-        getStylesheets().clear();
-
-        getStylesheets().add(
-                Objects.requireNonNull(Message.class.getResource(
-                        switch (theme) {
-                            case SYSTEM ->
-                                    ThemeDetector.isDarkTheme() ? "/themes/dark/message.css" : "/themes/light/message.css";
-                            case DARK -> "/themes/dark/message.css";
-                            case LIGHT -> "/themes/light/message.css";
-                        }
-                )).toExternalForm()
-        );
     }
 }

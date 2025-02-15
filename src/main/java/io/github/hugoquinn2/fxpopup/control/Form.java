@@ -2,10 +2,7 @@ package io.github.hugoquinn2.fxpopup.control;
 
 import io.github.hugoquinn2.fxpopup.constants.FxPopIcon;
 import io.github.hugoquinn2.fxpopup.constants.Theme;
-import io.github.hugoquinn2.fxpopup.controller.FxPopupForm;
-import io.github.hugoquinn2.fxpopup.controller.MessageField;
-import io.github.hugoquinn2.fxpopup.controller.MessageForm;
-import io.github.hugoquinn2.fxpopup.controller.ThemeManager;
+import io.github.hugoquinn2.fxpopup.controller.*;
 import io.github.hugoquinn2.fxpopup.model.Icon;
 import io.github.hugoquinn2.fxpopup.service.ThemeDetector;
 import io.github.hugoquinn2.fxpopup.utils.MasterUtils;
@@ -48,11 +45,6 @@ public class Form extends VBox {
 
     public Form(Object referenceObject, boolean isClosable) {
         isValidObjectForm(referenceObject);
-
-        // Global Theme
-        theme = ThemeManager.getGlobalTheme();
-        loadStyle(theme);
-        ThemeManager.globalTheme().addListener((obs, oldTheme, newTheme) -> loadStyle(newTheme));
 
         this.isClosable = isClosable;
         this.referenceObject = referenceObject;
@@ -220,7 +212,6 @@ public class Form extends VBox {
 
     public void setTheme(Theme theme) {
         this.theme = theme;
-        loadStyle(theme);
     }
 
     public Pane getHeaderContainer() {
@@ -245,20 +236,5 @@ public class Form extends VBox {
 
     public void setFooterContainer(Pane footerContainer) {
         this.footerContainer = footerContainer;
-    }
-
-    public void loadStyle(Theme theme) {
-        getStylesheets().clear();
-
-        getStylesheets().add(
-                Objects.requireNonNull(Form.class.getResource(
-                        switch (theme) {
-                            case SYSTEM ->
-                                    ThemeDetector.isDarkTheme() ? "/themes/dark/form.css" : "/themes/light/form.css";
-                            case DARK -> "/themes/dark/form.css";
-                            case LIGHT -> "/themes/light/form.css";
-                        }
-                )).toExternalForm()
-        );
     }
 }
