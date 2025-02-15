@@ -16,13 +16,34 @@ public class ThumbnailImage extends ImageView {
     Overlay overlay;
 
     // Thumbnail config
-    double scaleThumbImage = 0.6;
+    double scaleThumbImage = 0.8;
     boolean showThumbnail = true;
 
     // Constructor null, path and Image, for customization
-    public ThumbnailImage() {this(null, null);}
-    public ThumbnailImage(String s) {this(s, null);}
-    public ThumbnailImage(Image image) {this(null, image);}
+
+    /**
+     * Creates an empty thumbnail image, the thumbnail will not be displayed until set <code>setThumbImage()</code>
+     * and <code>ImageView</code>.
+     */
+    public ThumbnailImage() {
+        this(null, null);
+    }
+
+    /**
+     * Creates thumbnail image, a thumbnail will be displayed when a user click on <code>ImageView</code>
+     * @param s the path or url that will be displayed on thumbnail and <code>ImageView</code>.
+     */
+    public ThumbnailImage(String s) {
+        this(s, null);
+    }
+
+    /**
+     * Creates thumbnail image, a thumbnail will be displayed when a user click on <code>ImageView</code>
+     * @param image the image that will be displayed on thumbnail and <code>ImageView</code>.
+     */
+    public ThumbnailImage(Image image) {
+        this(null, image);
+    }
 
     // General constructor class
     private ThumbnailImage(String s, Image image) {
