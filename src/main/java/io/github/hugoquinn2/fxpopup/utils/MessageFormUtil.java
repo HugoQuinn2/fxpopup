@@ -5,22 +5,15 @@ import io.github.hugoquinn2.fxpopup.config.FieldData;
 import io.github.hugoquinn2.fxpopup.config.FxPopupConfig;
 import io.github.hugoquinn2.fxpopup.config.StyleConfig;
 import io.github.hugoquinn2.fxpopup.constants.Theme;
-import io.github.hugoquinn2.fxpopup.controller.FxPopupForm;
 import io.github.hugoquinn2.fxpopup.controller.MessageField;
-import io.github.hugoquinn2.fxpopup.controller.MessageForm;
+import io.github.hugoquinn2.fxpopup.controller.Form;
 import io.github.hugoquinn2.fxpopup.service.ThemeDetector;
-import javafx.fxml.FXMLLoader;
-import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.TextFlow;
 
-import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.Objects;
 
@@ -144,9 +137,9 @@ public class MessageFormUtil {
 
     public static void isValidObjectForm(Object object) {
         Class<?> clazz = object.getClass();
-        MessageForm annotation = clazz.getAnnotation(MessageForm.class);
+        Form annotation = clazz.getAnnotation(Form.class);
 
-        if (!clazz.isAnnotationPresent(MessageForm.class))
+        if (!clazz.isAnnotationPresent(Form.class))
             throw new NullPointerException(String.format("Object <%s> required annotation @MessageForm", clazz.getName()));
 
         if (annotation.validator() == null)

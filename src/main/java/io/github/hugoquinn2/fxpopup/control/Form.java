@@ -4,7 +4,6 @@ import io.github.hugoquinn2.fxpopup.constants.FxPopIcon;
 import io.github.hugoquinn2.fxpopup.constants.Theme;
 import io.github.hugoquinn2.fxpopup.controller.*;
 import io.github.hugoquinn2.fxpopup.model.Icon;
-import io.github.hugoquinn2.fxpopup.service.ThemeDetector;
 import io.github.hugoquinn2.fxpopup.utils.MasterUtils;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
@@ -13,7 +12,6 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 
 import java.util.Arrays;
-import java.util.Objects;
 
 import static io.github.hugoquinn2.fxpopup.config.CssClasses.*;
 import static io.github.hugoquinn2.fxpopup.utils.MessageFormUtil.*;
@@ -36,7 +34,7 @@ public class Form extends VBox {
     private boolean isClosable;
     private Theme theme;
 
-    private final MessageForm messageForm;
+    private final io.github.hugoquinn2.fxpopup.controller.Form form;
     private final Class<?> referenceObjectClazz;
     private String nameForm;
 
@@ -70,8 +68,8 @@ public class Form extends VBox {
         this.footerContainer = new HBox();
 
         referenceObjectClazz = referenceObject.getClass();
-        messageForm = referenceObjectClazz.getAnnotation(MessageForm.class);
-        nameForm = messageForm.name();
+        form = referenceObjectClazz.getAnnotation(io.github.hugoquinn2.fxpopup.controller.Form.class);
+        nameForm = form.name();
 
         this.titleLabel = new Label(nameForm);
 
@@ -128,7 +126,7 @@ public class Form extends VBox {
 
     private void setSendActions() {
         try {
-            Class<? extends FxPopupForm<?>> validatorClass = messageForm.validator();
+            Class<? extends FxPopupForm<?>> validatorClass = form.validator();
 
             FxPopupForm<Object> validator = (FxPopupForm<Object>) validatorClass.getDeclaredConstructor().newInstance();
 

@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface MessageForm {
+public @interface Form {
 
     /**
      * The name of the form. This will typically be used for identifying
