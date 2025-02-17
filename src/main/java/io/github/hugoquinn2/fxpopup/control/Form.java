@@ -1,7 +1,6 @@
 package io.github.hugoquinn2.fxpopup.control;
 
 import io.github.hugoquinn2.fxpopup.constants.FxPopIcon;
-import io.github.hugoquinn2.fxpopup.constants.Theme;
 import io.github.hugoquinn2.fxpopup.controller.*;
 import io.github.hugoquinn2.fxpopup.model.Icon;
 import io.github.hugoquinn2.fxpopup.utils.MasterUtils;
@@ -32,7 +31,6 @@ public class Form extends VBox {
     // Form Params
     private Object referenceObject;
     private boolean isClosable;
-    private Theme theme;
 
     private final io.github.hugoquinn2.fxpopup.controller.Form form;
     private final Class<?> referenceObjectClazz;
@@ -121,7 +119,7 @@ public class Form extends VBox {
     public void generateFields() {
         Arrays.stream(referenceObjectClazz.getDeclaredFields())
                 .filter(field -> field.isAnnotationPresent(FormField.class))
-                .forEach(field -> createField(field, referenceObject, fieldsContainer, theme));
+                .forEach(field -> createField(field, referenceObject, fieldsContainer));
     }
 
     private void setSendActions() {
@@ -214,14 +212,6 @@ public class Form extends VBox {
 
     public void setTitleLabel(Label titleLabel) {
         this.titleLabel = titleLabel;
-    }
-
-    public Theme getTheme() {
-        return theme;
-    }
-
-    public void setTheme(Theme theme) {
-        this.theme = theme;
     }
 
     public Pane getHeaderContainer() {

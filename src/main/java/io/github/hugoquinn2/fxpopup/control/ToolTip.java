@@ -1,6 +1,5 @@
 package io.github.hugoquinn2.fxpopup.control;
 
-import io.github.hugoquinn2.fxpopup.constants.Theme;
 import io.github.hugoquinn2.fxpopup.utils.MasterUtils;
 import io.github.hugoquinn2.fxpopup.utils.ToolTipUtils;
 import javafx.application.Platform;
@@ -28,8 +27,6 @@ public class ToolTip extends VBox {
     private VPos vPosDisplay;
     private HPos hPosDisplay;
     private double space;
-
-    private Theme theme;
 
     // Customs constuctors
     /**
@@ -190,14 +187,6 @@ public class ToolTip extends VBox {
 
     public void setNodeFather(Node nodeFather) {
         this.nodeFather = nodeFather;
-    }
-
-    public Theme getTheme() {
-        return theme;
-    }
-
-    public void setTheme(Theme theme) {
-        this.theme = theme;
     }
 
     public HPos gethPosDisplay() {

@@ -1,16 +1,9 @@
 package io.github.hugoquinn2.fxpopup.control;
 
-import io.github.hugoquinn2.fxpopup.config.FxPopupConfig;
 import io.github.hugoquinn2.fxpopup.constants.FxPopIcon;
 import io.github.hugoquinn2.fxpopup.constants.MessageType;
-import io.github.hugoquinn2.fxpopup.constants.Theme;
-import io.github.hugoquinn2.fxpopup.controller.StyleManager;
-import io.github.hugoquinn2.fxpopup.controller.ThemeManager;
 import io.github.hugoquinn2.fxpopup.model.Icon;
-import io.github.hugoquinn2.fxpopup.service.ThemeDetector;
 import io.github.hugoquinn2.fxpopup.utils.MasterUtils;
-import io.github.hugoquinn2.fxpopup.utils.MessageFormUtil;
-import io.github.hugoquinn2.fxpopup.utils.MessagePopupUtil;
 import io.github.hugoquinn2.fxpopup.utils.StyleUtil;
 import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
@@ -22,8 +15,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.util.Duration;
-
-import java.util.Objects;
 
 import static io.github.hugoquinn2.fxpopup.config.CssClasses.*;
 
@@ -39,8 +30,6 @@ public class Message extends HBox {
     // Message params
     private MessageType messageType;
     private int duration;
-    private Theme theme = Theme.SYSTEM;
-    private Theme oldTheme;
 
     // Effects
     private Transition showTransition;
@@ -290,13 +279,5 @@ public class Message extends HBox {
     public void setPauseBeforeRemove(Transition pauseBeforeRemove) {
         this.pauseBeforeRemove = pauseBeforeRemove;
         this.pauseBeforeRemove.setOnFinished(event -> removeTransition.play());
-    }
-
-    public Theme getTheme() {
-        return theme;
-    }
-
-    public void setTheme(Theme theme) {
-        this.theme = theme;
     }
 }

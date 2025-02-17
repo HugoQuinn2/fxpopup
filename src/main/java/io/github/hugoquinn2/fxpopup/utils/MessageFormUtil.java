@@ -54,7 +54,7 @@ public class MessageFormUtil {
         return true;
     }
 
-    public static void createField(Field field, Object model, Parent parent, Theme theme) {
+    public static void createField(Field field, Object model, Parent parent) {
         FormField annotation = field.getAnnotation(FormField.class);
 
         // Header
@@ -91,7 +91,6 @@ public class MessageFormUtil {
         // Tool Tip
         if (!annotation.toolTip().isEmpty()) {
             ToolTip toolTip = new ToolTip(annotation.toolTip(),fieldContainer);
-            toolTip.setTheme(theme);
         }
 
         if (!annotation.label().isEmpty())

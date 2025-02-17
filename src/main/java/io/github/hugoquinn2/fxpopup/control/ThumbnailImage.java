@@ -3,13 +3,11 @@ package io.github.hugoquinn2.fxpopup.control;
 import io.github.hugoquinn2.fxpopup.utils.MasterUtils;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
-import javafx.stage.Screen;
 
 import static io.github.hugoquinn2.fxpopup.config.CssClasses.THUMBNAIL_IMAGE_CLASS;
 
