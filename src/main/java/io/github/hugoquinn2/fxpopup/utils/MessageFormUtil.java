@@ -2,12 +2,9 @@ package io.github.hugoquinn2.fxpopup.utils;
 
 import io.github.hugoquinn2.fxpopup.control.ToolTip;
 import io.github.hugoquinn2.fxpopup.config.FieldData;
-import io.github.hugoquinn2.fxpopup.config.FxPopupConfig;
 import io.github.hugoquinn2.fxpopup.config.StyleConfig;
-import io.github.hugoquinn2.fxpopup.constants.Theme;
 import io.github.hugoquinn2.fxpopup.controller.FormField;
 import io.github.hugoquinn2.fxpopup.controller.Form;
-import io.github.hugoquinn2.fxpopup.service.ThemeDetector;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
@@ -15,7 +12,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.TextFlow;
 
 import java.lang.reflect.Field;
-import java.util.Objects;
 
 public class MessageFormUtil {
     public static void createField(Field field, Object model, Parent parent) {
