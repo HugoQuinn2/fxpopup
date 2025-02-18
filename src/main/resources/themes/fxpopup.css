@@ -1,0 +1,5 @@
+.node-popup-container {
+    -fx-padding: 10px;
+    -fx-hgap: 10px;
+    -fx-vgap: 10px;
+}

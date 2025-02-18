@@ -19,6 +19,7 @@ public class StyleManager {
     private static final String FORM_LIGHT_STYLE_PATH = "/themes/light/form.css";
     private static final String TOOL_TIP_DARK_STYLE_PATH = "/themes/dark/tool-tip.css";
     private static final String TOOL_TIP_LIGHT_STYLE_PATH = "/themes/light/tool-tip.css";
+    private static final String FXPOPUP_STYLE_PATH = "/themes/fxpopup.css";
 
     public static void applyAutoStyle() {
         Platform.runLater(() -> {
@@ -28,6 +29,7 @@ public class StyleManager {
                 loadMessageStyle(scene, ThemeManager.getGlobalTheme());
                 loadFormStyle(scene, ThemeManager.getGlobalTheme());
                 loadToolTipStyle(scene, ThemeManager.getGlobalTheme());
+                loadFxPopupStyle(scene);
 
                 ThemeManager.globalTheme().addListener((obs, oldTheme, newTheme) -> {
                     if (oldTheme != null) {
@@ -44,6 +46,16 @@ public class StyleManager {
                 });
             }
         });
+    }
+    // --------------- FxPopup Load Style --------------------------
+    private static void loadFxPopupStyle(Scene scene) {
+        String style = Objects.requireNonNull(StyleManager.class.getResource(FXPOPUP_STYLE_PATH)).toExternalForm();
+
+        if (!scene.getStylesheets().contains(style))
+            scene.getStylesheets().add(
+                    0,
+                    style
+            );
     }
 
     // --------------- Message Load Style --------------------------

@@ -1,8 +1,8 @@
 package io.github.hugoquinn2.fxpopup.controller;
 
 import io.github.hugoquinn2.fxpopup.constants.Theme;
+import io.github.hugoquinn2.fxpopup.utils.FxPopupUtils;
 import io.github.hugoquinn2.fxpopup.utils.MasterUtils;
-import io.github.hugoquinn2.fxpopup.utils.MessagePopupUtil;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -38,7 +38,7 @@ public class FxPopup implements FxPopupInterface {
     @Override
     public void add(Pos pos, Node node) {
         Platform.runLater(() -> {
-            MessagePopupUtil.injectFxml(node, MessagePopupUtil.parsePosByPosMessage(pos), pos);
+            FxPopupUtils.injectFxml(pos, node);
         });
     }
 
