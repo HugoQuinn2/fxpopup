@@ -67,6 +67,7 @@
     -fx-text-fill: #FFFFFF;
     -fx-border-radius: 8px;
     -fx-background-radius: 8px;
+    -fx-pref-width: 150px;
 }
 
 /* -------------------- Fields ---------------------------*/
@@ -110,7 +111,7 @@
     -fx-font: 12px sans-serif;
     -fx-text-fill: #333333;
     -fx-fill: #333333;
-    -fx-background-color: #FFFFFF;
+    -fx-background-color: transparent;
     -fx-border-radius: 8px;
     -fx-background-radius: 8px;
 }

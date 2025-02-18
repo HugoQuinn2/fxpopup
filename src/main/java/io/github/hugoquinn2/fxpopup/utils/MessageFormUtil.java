@@ -18,42 +18,6 @@ import java.lang.reflect.Field;
 import java.util.Objects;
 
 public class MessageFormUtil {
-    /**
-     * Retrieves the default style path for the given theme.
-     * @param theme The theme (LIGHT or DARK).
-     * @return The stylesheet path as a string.
-     */
-    public static String getDefaultStyle(Theme theme) {
-        return Objects.requireNonNull(MessagePopupUtil.class.getResource(Objects.requireNonNull(getStylePath(theme)))).toExternalForm();
-    }
-
-    private static String getStylePath(Theme theme) {
-        return switch (theme) {
-            case SYSTEM -> ThemeDetector.isDarkTheme() ?
-                    FxPopupConfig.pathDarkMessageForm : FxPopupConfig.pathLightMessageForm;
-            case LIGHT -> FxPopupConfig.pathLightMessageForm;
-            case DARK -> FxPopupConfig.pathDarkMessageForm;
-        };
-    }
-
-    /**
-     * Validates the structure of the parent form.
-     * @param parent The parent form to validate.
-     * @return True if valid, otherwise throws exceptions.
-     */
-    public static boolean isValidParentForm(Parent parent) {
-        if (parent == null)
-            throw new NullPointerException("Parent form can't be null");
-
-        if (MasterUtils.findNodeById(parent, FxPopupConfig.fieldsContainerId) == null)
-            throw new NullPointerException("Parent form required fields container with id: #fieldsContainer");
-
-        if (MasterUtils.findNodeById(parent, FxPopupConfig.titleFormId) == null)
-            throw new NullPointerException("Parent form required label/text with id: #titleForm");
-
-        return true;
-    }
-
     public static void createField(Field field, Object model, Parent parent) {
         FormField annotation = field.getAnnotation(FormField.class);
 
@@ -139,7 +103,7 @@ public class MessageFormUtil {
         Form annotation = clazz.getAnnotation(Form.class);
 
         if (!clazz.isAnnotationPresent(Form.class))
-            throw new NullPointerException(String.format("Object <%s> required annotation @MessageForm", clazz.getName()));
+            throw new NullPointerException(String.format("Object <%s> required annotation @Form", clazz.getName()));
 
         if (annotation.validator() == null)
             throw new NullPointerException(String.format("Object <%s> required param validator.", clazz.getName()));

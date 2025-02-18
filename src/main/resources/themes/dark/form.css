@@ -69,6 +69,7 @@
     -fx-text-fill: #F3F9F5; /* Texto claro */
     -fx-border-radius: 8px;
     -fx-background-radius: 8px;
+    -fx-pref-width: 150px;
 }
 
 /* -------------------- Fields ---------------------------*/
