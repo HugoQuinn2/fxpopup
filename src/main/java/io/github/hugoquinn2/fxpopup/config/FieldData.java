@@ -81,4 +81,12 @@ public class FieldData {
      * Regular expression for validating a number (integer or decimal).
      */
     public static final String numberMatch = "^[-+]?\\d*\\.?\\d+$";
+
+    public static final String cardMatch = "^(?:4[0-9]{12}(?:[0-9]{3})?|3[47][0-9]{13})$";
+
+    public static final String visaMatch = "^4[0-9]{12}(?:[0-9]{3})?$";
+
+    public static final String mcMatch = "^(5[1-5][0-9]{14}|2221-2720[0-9]{12}|27[0-9]{14})$";
+
+    public static final String amexMatch = "^3[47][0-9]{13}$";
 }

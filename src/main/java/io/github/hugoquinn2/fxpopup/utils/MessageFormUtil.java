@@ -85,6 +85,7 @@ public class MessageFormUtil {
             case PHONE -> FieldUtil.createPhoneField(field, model, annotation.icon());
             case COUNTRY -> FieldUtil.createCountryField(field, model, annotation.icon());
             case CHECK -> FieldUtil.createCheckBoxField(field, model, annotation.icon());
+            case CARD -> FieldUtil.createCardField(field, model, annotation.icon());
         };
     }
 

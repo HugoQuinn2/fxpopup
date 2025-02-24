@@ -20,7 +20,11 @@ public enum FxPopIcon {
     CHECK_SQUARE("check-square"),
     CLOSE_SQUARE("close-square"),
     SQUARE("square"),
-    MINUS_SQUARE("minus-square");
+    MINUS_SQUARE("minus-square"),
+    VISA("visa"),
+    MASTER_CARD("master-card"),
+    AMEX("amex"),
+    CARD("card");
 
     public String literalIcon;
 

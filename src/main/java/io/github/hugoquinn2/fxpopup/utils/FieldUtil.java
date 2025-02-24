@@ -14,6 +14,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 
 import java.lang.reflect.Field;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.UnaryOperator;
 
 /**
@@ -398,6 +399,44 @@ public class FieldUtil {
         }
     }
 
+    public static Parent createCardField(Field field, Object model, FxPopIcon icon) {
+        field.setAccessible(true);
+
+        if (!MasterUtils.isString(field))
+            throw new IllegalArgumentException(String.format("Invalid field type for @%s. Required String or Long, managed: <%s>", field.getName(), field.getType()));
+
+        try {
+            // Field information
+            FormField annotation = field.getAnnotation(FormField.class);
+            Object data = field.get(model);
+
+            // Field structure
+            Icon iconLabel = new Icon(icon);
+            TextField textField = new TextField(data != null ? data.toString() : null);
+            AtomicReference<Icon> cardTypeLabel = new AtomicReference<>(new Icon());
+            HBox container = new HBox(iconLabel, textField, cardTypeLabel.get());
+
+            // Define style
+            StyleUtil.setTransparent(textField);
+            container.getStyleClass().add(StyleConfig.FIELD);
+            textField.setPromptText(annotation.placeholder());
+
+            HBox.setHgrow(textField, Priority.ALWAYS);
+            container.setAlignment(Pos.CENTER);
+
+            // Special Feature to Card Field
+            textField.textProperty().addListener((obs, oldValue, newValue) -> {
+                cardTypeLabel.get().setIcon(getCardType(newValue));
+            });
+
+            setAutoUpdateModel(textField, field, model);
+            MasterUtils.setRequired(container, annotation.required(), FieldData.cardMatch, textField);
+            return container;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     // Helper Methods
 
     /**
@@ -529,5 +568,16 @@ public class FieldUtil {
             };
 
         return new TextFormatter<>(filter);
+    }
+
+    private static FxPopIcon getCardType(String cardNumber) {
+        if (cardNumber.matches(FieldData.visaMatch))
+            return FxPopIcon.VISA;
+        else if (cardNumber.matches(FieldData.mcMatch))
+            return FxPopIcon.MASTER_CARD;
+        else if (cardNumber.matches(FieldData.amexMatch))
+            return FxPopIcon.AMEX;
+        else
+            return FxPopIcon.CARD;
     }
 }
