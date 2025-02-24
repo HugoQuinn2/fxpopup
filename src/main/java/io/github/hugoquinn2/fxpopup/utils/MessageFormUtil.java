@@ -13,6 +13,8 @@ import javafx.scene.text.TextFlow;
 
 import java.lang.reflect.Field;
 
+import static io.github.hugoquinn2.fxpopup.config.CssClasses.*;
+
 public class MessageFormUtil {
     public static void createField(Field field, Object model, Parent parent) {
         FormField annotation = field.getAnnotation(FormField.class);
@@ -25,42 +27,43 @@ public class MessageFormUtil {
         if (!label.getText().isEmpty()) header.getChildren().add(label);
         if (annotation.required()) header.getChildren().add(textRequired);
 
-        label.setId(field.getName() + "Label");
-        textRequired.setId(field.getName() + "TextRequired");
-
         // Field
-        Parent fieldContainer = createFieldByType(field, model);
+        Parent customField = createFieldByType(field, model);
         Label context = new Label(annotation.context());
 
-        fieldContainer.setId(field.getName() + "FieldContainer");
-        context.setId(field.getName() + "ContextField");
-
-        fieldContainer.setDisable(annotation.disable());
+        customField.setDisable(annotation.disable());
 
         // Field style
         textRequired.getStyleClass().add(StyleConfig.TEXT_REQUIRED);
         context.getStyleClass().add(StyleConfig.CONTEXT);
         label.getStyleClass().add(StyleConfig.LABEL);
 
-        VBox fieldBody = new VBox();
-        fieldBody.getStyleClass().add("form-field-container");
+        VBox fieldContainer = new VBox();
+        fieldContainer.getStyleClass().add("form-field-container");
+
+        // Set id to field
+        fieldContainer.setId(String.format(FORM_FIELD_CONTAINER_ID, field.getName()));
+        customField.setId(String.format(FORM_CUSTOM_FIELD_ID, field.getName()));
+        context.setId(String.format(FORM_FIELD_CONTEXT_ID, field.getName()));
+        label.setId(String.format(FORM_FIELD_LABEL_ID, field.getName()));
+        textRequired.setId(String.format(FORM_FIELD_LABEL_REQUIRED_ID, field.getName()));
 
         label.setWrapText(true);
         context.setWrapText(true);
 
         // Tool Tip
         if (!annotation.toolTip().isEmpty()) {
-            ToolTip toolTip = new ToolTip(annotation.toolTip(),fieldContainer);
+            ToolTip toolTip = new ToolTip(annotation.toolTip(),customField);
         }
 
         if (!annotation.label().isEmpty())
-            fieldBody.getChildren().add(header);
-        if (!fieldContainer.getChildrenUnmodifiable().isEmpty())
-            fieldBody.getChildren().add(fieldContainer);
+            fieldContainer.getChildren().add(header);
+        if (!customField.getChildrenUnmodifiable().isEmpty())
+            fieldContainer.getChildren().add(customField);
         if (!context.getText().isEmpty() || !context.getText().isBlank())
-            fieldBody.getChildren().add(context);
+            fieldContainer.getChildren().add(context);
 
-        ((Pane) parent).getChildren().add(fieldBody);
+        ((Pane) parent).getChildren().add(fieldContainer);
     }
 
     private static Parent createFieldByType(Field field, Object model) {

@@ -29,4 +29,11 @@ public class CssClasses {
     public static final String FORM_CLOSE_BUTTON_CLASS = "form-close-button";
     public static final String FORM_SEND_BUTTON_CLASS = "form-send-button";
     public static final String FORM_ERROR_LABEL_CLASS = "form-error";
+
+    // 🌐 Form id fields
+    public static final String FORM_FIELD_LABEL_ID = "%sLabelField";
+    public static final String FORM_FIELD_LABEL_REQUIRED_ID = "%sLabelRequired";
+    public static final String FORM_FIELD_CONTEXT_ID = "%sContextField";
+    public static final String FORM_CUSTOM_FIELD_ID = "%sCustomField";
+    public static final String FORM_FIELD_CONTAINER_ID = "%sFieldContainer";
 }
