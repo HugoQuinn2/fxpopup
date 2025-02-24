@@ -10,40 +10,10 @@ import javafx.geometry.VPos;
  */
 public class FxPopupConfig {
 
-    // ===============================
-    // General Configuration Constants
-    // ===============================
-
-    /**
-     * Default Pos Tool Tip
-     */
-    public static final VPos defaultToolTipPos = VPos.BOTTOM;
-
-    /**
-     *
-     */
-    public static final double messageContainerPadding = 10;
-
-
     /**
      * URL used for geocoding services via OpenStreetMap's Nominatim API.
      */
     public static final String NOMINATIM_URL = "https://nominatim.openstreetmap.org/search";
-
-    /**
-     * Maximum width for popup windows.
-     */
-    public static final int maxWidth = 400;
-
-    /**
-     * Insets (padding) for the message manager in the popup.
-     */
-    public static final int insetsMessageManager = 20;
-
-    /**
-     * Default position for the popup window (bottom center).
-     */
-    public static final Pos defaultPos = Pos.BOTTOM_RIGHT;
 
     /**
      * Scale factor for icons in the popup.
@@ -55,81 +25,4 @@ public class FxPopupConfig {
      * Icons are expected to be in the "/icons" directory and in SVG format.
      */
     public static final String iconPath = "/icons/%s.svg";
-
-
-    // ============================
-    // Form and Layout Configuration
-    // ============================
-
-    /**
-     * The ID of the message form container in the popup layout.
-     */
-    public static final String messageFormId = "messageFormBody";
-
-    /**
-     * The ID of the title form container in the popup layout.
-     */
-    public static final String titleFormId = "titleForm";
-
-    /**
-     * The ID of the container for the form fields.
-     */
-    public static final String fieldsContainerId = "fieldsContainer";
-
-    /**
-     * The ID of the overlay background element.
-     */
-    public static final String overlayId = "overlay";
-
-    /**
-     * The ID of the title element in the message form.
-     */
-    public static final String titleId = "messageTitle";
-
-    /**
-     * The ID of the context element in the message form.
-     */
-    public static final String contextId = "messageContext";
-
-    /**
-     * The ID of the message manager container.
-     */
-    public static final String messageManagerId = "messageManager";
-
-    /**
-     * The ID of the close button for the message popup.
-     */
-    public static final String buttonDropId = "buttonCloseMessage";
-
-
-    // ============================
-    // File Paths for Layouts and Themes
-    // ============================
-
-    /**
-     * Path to the basic popup layout FXML file.
-     */
-    public static final String pathPopupMessage = "/layout/popupSimple.fxml";
-
-    /**
-     * Path to the message form layout FXML file.
-     */
-    public static final String pathMessageForm = "/layout/MessageForm.fxml";
-
-    // ============================
-    // Theme Configuration
-    // ============================
-
-    /**
-     * Default theme for the popup (light theme).
-     */
-    public static final Theme defaultTheme = Theme.SYSTEM;
-
-    // Paths to the dark theme CSS files for different message types
-    public static final String pathDarkMessageForm = "/themes/dark/form.css";
-    public static final String pathDarkToolTip = "/themes/dark/tool-tip.css";
-
-    // Paths to the light theme CSS files for different message types
-    public static final String pathLightMessageForm = "/themes/light/form.css";
-    public static final String pathLightToolTip = "/themes/light/tool-tip.css";
 }
