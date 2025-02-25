@@ -82,11 +82,11 @@ public class FieldData {
      */
     public static final String numberMatch = "^[-+]?\\d*\\.?\\d+$";
 
-    public static final String cardMatch = "^(?:4[0-9]{12}(?:[0-9]{3})?|3[47][0-9]{13})$";
+    public static final String cardMatch = "^(?:4[0-9]{12}(?:[0-9]{3})?|[25][1-7][0-9]{14}|6(?:011|5[0-9][0-9])[0-9]{12}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|(?:2131|1800|35\\d{3})\\d{11})$";
 
     public static final String visaMatch = "^4[0-9]{12}(?:[0-9]{3})?$";
 
-    public static final String mcMatch = "^(5[1-5][0-9]{14}|2221-2720[0-9]{12}|27[0-9]{14})$";
+    public static final String mcMatch = "^(?:5[1-5][0-9]{2}|222[1-9]|22[3-9][0-9]|2[3-6][0-9]{2}|27[01][0-9]|2720)[0-9]{12}$";
 
     public static final String amexMatch = "^3[47][0-9]{13}$";
 }

@@ -577,7 +577,9 @@ public class FieldUtil {
             return FxPopIcon.MASTER_CARD;
         else if (cardNumber.matches(FieldData.amexMatch))
             return FxPopIcon.AMEX;
-        else
+        else if (cardNumber.matches(FieldData.cardMatch))
             return FxPopIcon.CARD;
+        else
+            return FxPopIcon.NOTHING;
     }
 }
