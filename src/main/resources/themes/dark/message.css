@@ -1,14 +1,15 @@
 /* --------------------- General Style --------------------- */
 .message {
-    -fx-background-color: #2F3032;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 20, 0.3, 0, 5);
+    -fx-background-color: #474748;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 5, 0.1, 0, 2);
     -fx-border-radius: 8px;
     -fx-background-radius: 8px;
     -fx-spacing: 10px;
+    -fx-pref-width: 350px;
 }
 
 .message-indicator {
-    -fx-background-color: transparent;
+    -fx-background-color: #D4D5D8;
 
     -fx-border-radius: 8px 0px 0px 8px;
     -fx-background-radius: 8px 0px 0px 8px;
@@ -26,81 +27,81 @@
 .message-context,
 .message-title{
     -fx-font: 14px sans-serif;
-    -fx-text-fill: #E9E9E9;
+    -fx-text-fill: #FDFDFE;
 }
 
 .message-close-button .icon {
-     -fx-fill: #E9E9E9;
+     -fx-fill: #FDFDFE;
 }
 
 /* --------------------- ERROR --------------------- */
 .message.error {
-    -fx-background-color: #221D1D;
+    -fx-background-color: #4B1113;
 }
 
 .message.error .message-context,
 .message.error .message-title {
-    -fx-text-fill: #E9E9E9;
+    -fx-text-fill: #FFEBEC;
 }
 
 .message.error .message-close-button .icon {
-    -fx-fill: #E9E9E9;
+    -fx-fill: #FFEBEC;
 }
 
 .message.error .message-indicator {
-    -fx-background-color: #831C1C;
+    -fx-background-color: #E13238;
 }
 
 /* --------------------- SUCCESS --------------------- */
 .message.success {
-    -fx-background-color: #1D221F;
+    -fx-background-color: #003100;
 }
 
 .message.success .message-context,
 .message.success .message-title {
-    -fx-text-fill: #E9E9E9;
+    -fx-text-fill: #E6F6E6;
 }
 
 .message.success .message-close-button .icon {
-    -fx-fill: #E9E9E9;
+    -fx-fill: #E6F6E6;
 }
 
 .message.success .message-indicator {
-    -fx-background-color: #1C8350;
+    -fx-background-color: #009400;
 }
 
 /* --------------------- WARNING --------------------- */
 .message.warning {
-    -fx-background-color: #21221D;
+    -fx-background-color: #4D3800;
 }
 
 .message.warning .message-context,
 .message.warning .message-title {
-    -fx-text-fill: #E9E9E9;
+    -fx-text-fill: #FFF8E6;
 }
 
 .message.warning .message-close-button .icon {
-    -fx-fill: #E9E9E9;
+    -fx-fill: #FFF8E6;
 }
 
 .message.warning .message-indicator {
-    -fx-background-color: #70831C;
+    -fx-background-color: #E6A700;
 }
 
 /* --------------------- INFO --------------------- */
 .message.info {
-    -fx-background-color: #1D1E22;
+    -fx-background-color: #193C47;
 }
 
 .message.info .message-context,
 .message.info .message-title {
-    -fx-text-fill: #E9E9E9;
+    -fx-text-fill: #EEF9FD;
 }
 
 .message.info .message-close-button .icon {
-    -fx-fill: #E9E9E9;
+    -fx-fill: #EEF9FD;
 }
 
 .message.info .message-indicator {
-    -fx-background-color: #1C4B83;
+    -fx-background-color: #4CB3D4;
 }
