@@ -2,7 +2,6 @@
     -fx-border-radius: 8px;
     -fx-background-radius: 8px;
     -fx-background-color: #FFFFFF;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0.1, 0, 5);
 }
 
 /* ----- Labels Styles --------------------------*/
