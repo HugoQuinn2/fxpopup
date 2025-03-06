@@ -20,14 +20,18 @@
 }
 
 .message-content-container {
-    -fx-spacing: 3px;
-    -fx-padding: 5px;
+    -fx-spacing: 5px;
+    -fx-padding: 10px 5px 10px 5px;
 }
 
 .message-context,
 .message-title{
     -fx-font: 14px sans-serif;
     -fx-text-fill: #FDFDFE;
+}
+
+.message-title {
+    -fx-font-weight: bold;
 }
 
 .message-close-button .icon {
