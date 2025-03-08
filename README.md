@@ -8,7 +8,7 @@ FxPopup
   </a>
 </p>
 
-FxPopup is a JavaFX library that simplifies the creation of automatic forms
+FxPopup is a `JavaFX` library that simplifies the creation of automatic forms
 and popup messages with minimal effort. With just a single line of code, developers
 can generate dynamic forms or display messages, while maintaining the flexibility to
 use custom views for both functionalities.
@@ -36,11 +36,11 @@ dependencies {
 
 ![Recording 2024-12-28 at 14 47 14](https://github.com/user-attachments/assets/366777a9-c1a2-4587-893e-4d90cd8d37d9)
 
-FxPopup seamlessly injects XML code into a JavaFX application to display 
+FxPopup seamlessly injects `XML` code into a JavaFX application to display 
 notifications to the user. To function correctly, the main container of 
-the application must be a StackPane. 
-If your root parent is not a StackPane, FxPopup will automatically wrap 
-your root element in a StackPane to ensure compatibility.
+the application must be a `StackPane`. 
+If your root parent is not a `StackPane`, FxPopup will automatically wrap 
+your root element in a `StackPane` to ensure compatibility.
 
 ```java
 //Example use lib
@@ -70,6 +70,6 @@ FxPopup by default use <code>SYSTEM</code>, but you can force <code>LIGHT</code>
 </p>
 
 ```java
-fxPopup.setTheme(Theme.DARK); //Theme.LIGHT or Theme.SYSTEM
+fxPopup.setGlobalTheme(Theme.DARK); //Theme.LIGHT or Theme.SYSTEM
 ```
 
