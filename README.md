@@ -18,7 +18,7 @@ use custom views for both functionalities.
 <dependency>
     <groupId>io.github.hugoquinn2</groupId>
     <artifactId>fxpopup</artifactId>
-    <version>1.2.0</version>
+    <version>1.2.1</version>
 </dependency>
 ```
 ## Gradle
@@ -28,7 +28,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'io.github.hugoquinn2:fxpopup:1.2.0'
+    implementation 'io.github.hugoquinn2:fxpopup:1.2.1'
 }
 ```
 
