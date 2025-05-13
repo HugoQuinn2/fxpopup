@@ -135,6 +135,7 @@ public class Form extends VBox {
                     if (isAllRequired(this) && validator.validate(referenceObject)) {
                         validator.isValidForm(referenceObject);
                         errorLabel.setText("");
+                        sendButton.setDisable(false);
                     } else {
                         sendButton.setDisable(false);
                     }

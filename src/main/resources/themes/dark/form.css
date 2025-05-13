@@ -59,7 +59,6 @@
 }
 
 .form-close-button:hover {
-    -fx-background-claro: red;
     -fx-cursor: hand;
 }
 
