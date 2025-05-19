@@ -4,6 +4,7 @@ import javafx.scene.Parent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import lombok.Builder;
 
 import static io.github.hugoquinn2.fxpopup.config.CssClasses.OVERLAY_CLASS;
 
@@ -40,6 +41,7 @@ public class Overlay extends Rectangle {
      * @param color the background color.
      * @param opacity the opacity value.
      */
+    @Builder
     public Overlay(Color color, double opacity) {
         this.setFill(color);
         this.setOpacity(opacity);
