@@ -138,7 +138,8 @@ public class MasterUtils {
      */
     public static void remove(Node node) {
         Parent parent = node.getParent();
-        ((Pane) parent).getChildren().remove(node);
+        if (parent != null)
+            ((Pane) parent).getChildren().remove(node);
     }
 
     /**
