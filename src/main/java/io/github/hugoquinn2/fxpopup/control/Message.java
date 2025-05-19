@@ -15,6 +15,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.util.Duration;
+import lombok.Builder;
 
 import static io.github.hugoquinn2.fxpopup.config.CssClasses.*;
 
@@ -36,7 +37,15 @@ public class Message extends HBox {
     private Transition removeTransition;
     private Transition pauseBeforeRemove;
 
-    // Constructor with context
+    // Constructors
+    /**
+     * Create an empty message with <code>MessageType.NONE</code>, the message
+     * will not be deleted by itself.
+     */
+    public Message() {
+        this(null, null, MessageType.NONE, 0);
+    }
+
     /**
      * Create a message with custom title, empty context and default message type <code>MessageType.NONE</code>, the message
      * will not be deleted by itself.
@@ -47,6 +56,15 @@ public class Message extends HBox {
     }
 
     /**
+     * Create a message with custom title, empty context and default message type <code>MessageType.NONE</code>. The message wil be deleted by itself
+     * after <code>duration</code>.
+     * @param title the title to displayed.
+     */
+    public Message(String title, int duration) {
+        this(title, null, MessageType.NONE, duration);
+    }
+
+    /**
      * Create a message with custom title, context and default message type <code>MessageType.NONE</code>, the message
      * will not be deleted by itself.
      * @param title the title to displayed.
@@ -54,6 +72,17 @@ public class Message extends HBox {
      */
     public Message(String title, String context) {
         this(title, context, MessageType.NONE, 0);
+    }
+
+    /**
+     * Create a message with custom title, context and default message type <code>MessageType.NONE</code>, The message wil be deleted by itself
+     * after <code>duration</code>.
+     * @param title the title to displayed.
+     * @param context the context to displayed.
+     * @param duration the duration before the message is deleted by itself.
+     */
+    public Message(String title, String context, int duration) {
+        this(title, context, MessageType.NONE, duration);
     }
 
     /**
@@ -99,9 +128,14 @@ public class Message extends HBox {
      *                    and <code>.error</code>.
      * @param duration the duration before the message is deleted by itself.
      */
+    @Builder
     public Message(String title, String context, MessageType messageType, int duration) {
+        // Default Message params
+        if (messageType == null)
+            messageType = MessageType.NONE;
+
         if (duration < 0)
-            throw new IllegalArgumentException("The duration cannot be less than 1");
+            throw new IllegalArgumentException("The duration cannot be less than 0");
 
         this.title = new Label(title);
         this.context = new Label(context);
